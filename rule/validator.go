@@ -1,6 +1,9 @@
 package rule
 
-import "regexp"
+import (
+	"encoding/json"
+	"regexp"
+)
 
 // 验证器
 type Validator func(string) bool
@@ -129,4 +132,10 @@ func chinaMobile(str string) bool {
 func chinese(str string) bool {
 	rule := `^[\p{Han}]+$`
 	return regexp.MustCompile(rule).MatchString(str)
+}
+
+// JSON类型
+func jsonRule(str string) bool {
+	var js json.RawMessage
+	return json.Unmarshal([]byte(str), &js) == nil
 }

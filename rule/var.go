@@ -36,6 +36,7 @@ var (
 	ChinaTel       = NewValidator(chinaTel, "只能是中国大陆地区的电话号码")
 	ChinaMobile    = NewValidator(chinaMobile, "只能是中国大陆地区的手机号码")
 	ChinaIDCard    = NewValidator(chinaIDCard, "只能是中国大陆地区的身份证号码")
+	JSON           = NewValidator(jsonRule, "不能有效的序列化成JSON")
 )
 
 // 内置修剪器变量名

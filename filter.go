@@ -3,7 +3,7 @@ package filter
 import (
 	"errors"
 
-	"filter/rule"
+	"github.com/dxvgef/filter/rule"
 )
 
 // Result

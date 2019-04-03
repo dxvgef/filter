@@ -6,7 +6,8 @@ import (
 	"filter/rule"
 )
 
-func TestEmail(t *testing.T) {
+// TestValidation 测试验证器
+func TestValidation(t *testing.T) {
 	value := "dxvgef@outlook.com"
 	err := Result(value, rule.Email)
 	if err != nil {
@@ -14,6 +15,7 @@ func TestEmail(t *testing.T) {
 	}
 }
 
+// TestTrim 测试修剪器
 func TestTrim(t *testing.T) {
 	value := "    127.0.0.1      "
 	err := Result(value, rule.Trim, rule.IP.Error("请填写正确的IP地址"))
@@ -22,12 +24,26 @@ func TestTrim(t *testing.T) {
 	}
 }
 
-func TestCustom(t *testing.T) {
+// TestCustomValidation 测试自定义验证器
+func TestCustomValidation(t *testing.T) {
 	value := "    127.0.0.1      "
-	var f = func(value string) bool {
+	var validator = func(value string) bool {
 		return true
 	}
-	customRule := rule.NewValidator(f, "默认消息")
+	customRule := rule.NewValidator(validator, "默认消息")
+	err := Result(value, rule.Trim, customRule)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}
+
+// TestCustomTrimmer 测试自定义修剪器
+func TestCustomTrimmer(t *testing.T) {
+	value := "abc"
+	var trimmer = func(value string) string {
+		return value[0:1]
+	}
+	customRule := rule.NewTrimmer(trimmer)
 	err := Result(value, rule.Trim, customRule)
 	if err != nil {
 		t.Log(err.Error())

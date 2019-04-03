@@ -16,7 +16,7 @@ func TestEmail(t *testing.T) {
 
 func TestTrim(t *testing.T) {
 	value := "    127.0.0.1      "
-	err := Result(value, rule.TrimSpace, rule.IP.Error("请填写正确的IP地址"))
+	err := Result(value, rule.Trim, rule.IP.Error("请填写正确的IP地址"))
 	if err != nil {
 		t.Log(err.Error())
 	}
@@ -28,7 +28,7 @@ func TestCustom(t *testing.T) {
 		return true
 	}
 	customRule := rule.NewValidator(f, "默认消息")
-	err := Result(value, rule.TrimSpace, customRule)
+	err := Result(value, rule.Trim, customRule)
 	if err != nil {
 		t.Log(err.Error())
 	}

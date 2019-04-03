@@ -6,8 +6,8 @@ import (
 	"filter/rule"
 )
 
-// Filter
-func Filter(value string, rules ...rule.Rule) error {
+// Result
+func Result(value string, rules ...rule.Rule) error {
 	// 运行修剪器
 	for k := range rules {
 		if rules[k].Trim != nil {

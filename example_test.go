@@ -3,7 +3,7 @@ package filter
 import (
 	"testing"
 
-	"filter/rule"
+	"github.com/dxvgef/filter/rule"
 )
 
 // TestValidation 测试验证器

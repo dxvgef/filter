@@ -3,14 +3,20 @@ package rule
 import (
 	"encoding/json"
 	"regexp"
+	"strconv"
+	"unicode/utf8"
 )
 
 // 验证器
 type Validator func(string) bool
 
+// 长度验证器
+type LengthValidator func(string, int) bool
+
 // Error 为验证器自定义错误消息
-func (v *Rule) Error(message string) Rule {
-	return NewValidator(v.Validate, message)
+func (v Rule) Error(message string) Rule {
+	v.Message = message
+	return v
 }
 
 // NewValidator 创建新验证器
@@ -21,9 +27,43 @@ func NewValidator(validator Validator, message string) Rule {
 	}
 }
 
+// SetMinLength 设置最小长度验证器
+func SetMinLength(min int, validator LengthValidator, message string) Rule {
+	return Rule{
+		Message:        message,
+		LengthValidate: validator,
+		MinLength:      min,
+	}
+}
+
+// SetMaxLength 设置最大长度验证器
+func SetMaxLength(max int, validator LengthValidator, message string) Rule {
+	return Rule{
+		Message:        message,
+		LengthValidate: validator,
+		MaxLength:      max,
+	}
+}
+
 // 不能为空
-func must(value string) bool {
+func required(value string) bool {
 	if value == "" {
+		return false
+	}
+	return true
+}
+
+func minLength(value string, min int) bool {
+	l := utf8.RuneCountInString(value)
+	if l < min {
+		return false
+	}
+	return true
+}
+
+func maxLength(value string, max int) bool {
+	l := utf8.RuneCountInString(value)
+	if l > max {
 		return false
 	}
 	return true
@@ -117,13 +157,13 @@ func letterAndDigit(str string) bool {
 }
 
 // 中国大陆地区座机号码
-func chinaTel(str string) bool {
+func chineseTel(str string) bool {
 	rule := `^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$`
 	return regexp.MustCompile(rule).MatchString(str)
 }
 
 // 中国大陆地区手机号码
-func chinaMobile(str string) bool {
+func chineseMobile(str string) bool {
 	rule := `^1(3|4|5|7|8)\d{9}$`
 	return regexp.MustCompile(rule).MatchString(str)
 }
@@ -138,4 +178,44 @@ func chinese(str string) bool {
 func jsonRule(str string) bool {
 	var js json.RawMessage
 	return json.Unmarshal([]byte(str), &js) == nil
+}
+
+// 中国大陆地区身份证号码
+func chineseIdentityCard(str string) bool {
+	var idV int
+	if str[17:] == "X" {
+		idV = 88
+	} else {
+		var err error
+		if idV, err = strconv.Atoi(str[17:]); err != nil {
+			return false
+		}
+	}
+
+	var verify int
+	id := str[:17]
+	arr := make([]int, 17)
+	for i := 0; i < 17; i++ {
+		arr[i], _ = strconv.Atoi(string(id[i]))
+	}
+	wi := [17]int{7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2}
+	var res int
+	for i := 0; i < 17; i++ {
+		res += arr[i] * wi[i]
+	}
+	verify = res % 11
+
+	var temp int
+	a18 := [11]int{1, 0, 88 /* 'X' */, 9, 8, 7, 6, 5, 4, 3, 2}
+	for i := 0; i < 11; i++ {
+		if i == verify {
+			temp = a18[i]
+			break
+		}
+	}
+	if temp == idV {
+		return true
+	}
+
+	return false
 }

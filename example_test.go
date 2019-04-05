@@ -6,10 +6,23 @@ import (
 	"github.com/dxvgef/filter/rule"
 )
 
-// TestValidation 测试验证器
+// TestValidation 测试普通验证器
 func TestValidation(t *testing.T) {
 	value := "dxvgef@outlook.com"
 	err := Result(value, rule.Email)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}
+
+// TestLengthValidation 测试长度验证器
+func TestLengthValidation(t *testing.T) {
+	value := "ab"
+	err := Result(value,
+		rule.MinLength(3),
+		rule.MaxLength(8),
+		rule.Email,
+	)
 	if err != nil {
 		t.Log(err.Error())
 	}

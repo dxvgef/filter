@@ -21,7 +21,30 @@ func TestLengthValidation(t *testing.T) {
 	err := Result(value,
 		rule.MinLength(3),
 		rule.MaxLength(8),
-		rule.Email,
+	)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}
+
+// TestIntRangeValidation 测试整数值范围验证器
+func TestIntRangeValidation(t *testing.T) {
+	value := "9"
+	err := Result(value,
+		rule.MinInteger(3),
+		rule.MaxInteger(8),
+	)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}
+
+// TestFloatRangeValidation 测试浮点数值范围验证器
+func TestFloatRangeValidation(t *testing.T) {
+	value := "3.4"
+	err := Result(value,
+		rule.MinFloat(3.5),
+		rule.MaxFloat(8.5),
 	)
 	if err != nil {
 		t.Log(err.Error())

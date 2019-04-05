@@ -13,6 +13,12 @@ type Validator func(string) bool
 // 长度验证器
 type LengthValidator func(string, int) bool
 
+// 整数值范围验证器
+type IntRangeValidator func(string, int64) bool
+
+//  浮点数值范围验证器
+type FloatRangeValidator func(string, float64) bool
+
 // Error 为验证器自定义错误消息
 func (v Rule) Error(message string) Rule {
 	v.Message = message
@@ -27,8 +33,8 @@ func NewValidator(validator Validator, message string) Rule {
 	}
 }
 
-// SetMinLength 设置最小长度验证器
-func SetMinLength(min int, validator LengthValidator, message string) Rule {
+// NewMinLengthValidator 创建字符串最小长度验证器
+func NewMinLengthValidator(min int, validator LengthValidator, message string) Rule {
 	return Rule{
 		Message:        message,
 		LengthValidate: validator,
@@ -36,12 +42,48 @@ func SetMinLength(min int, validator LengthValidator, message string) Rule {
 	}
 }
 
-// SetMaxLength 设置最大长度验证器
-func SetMaxLength(max int, validator LengthValidator, message string) Rule {
+// NewMaxLengthValidator 创建字符串最大长度验证器
+func NewMaxLengthValidator(max int, validator LengthValidator, message string) Rule {
 	return Rule{
 		Message:        message,
 		LengthValidate: validator,
 		MaxLength:      max,
+	}
+}
+
+// NewMinIntegerValidator 创建整数最小值验证器
+func NewMinIntegerValidator(min int64, validator IntRangeValidator, message string) Rule {
+	return Rule{
+		Message:              message,
+		IntegerRangeValidate: validator,
+		MinIntegerValue:      min,
+	}
+}
+
+// NewMaxIntegerValidator 创建整数最大值验证器
+func NewMaxIntegerValidator(max int64, validator IntRangeValidator, message string) Rule {
+	return Rule{
+		Message:              message,
+		IntegerRangeValidate: validator,
+		MaxIntegerValue:      max,
+	}
+}
+
+// NewMinFloatValidator 创建浮点数最小值验证器
+func NewMinFloatValidator(min float64, validator FloatRangeValidator, message string) Rule {
+	return Rule{
+		Message:            message,
+		FloatRangeValidate: validator,
+		MinFloatValue:      min,
+	}
+}
+
+// NewMaxFloatValidator 创建浮点数最大值验证器
+func NewMaxFloatValidator(max float64, validator FloatRangeValidator, message string) Rule {
+	return Rule{
+		Message:            message,
+		FloatRangeValidate: validator,
+		MaxFloatValue:      max,
 	}
 }
 
@@ -64,6 +106,50 @@ func minLength(value string, min int) bool {
 func maxLength(value string, max int) bool {
 	l := utf8.RuneCountInString(value)
 	if l > max {
+		return false
+	}
+	return true
+}
+
+func minInteger(value string, min int64) bool {
+	v, err := strconv.ParseInt(value, 10, 64)
+	if err != nil {
+		return false
+	}
+	if v < min {
+		return false
+	}
+	return true
+}
+
+func maxInteger(value string, max int64) bool {
+	v, err := strconv.ParseInt(value, 10, 64)
+	if err != nil {
+		return false
+	}
+	if v > max {
+		return false
+	}
+	return true
+}
+
+func minFloat(value string, min float64) bool {
+	v, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return false
+	}
+	if v < min {
+		return false
+	}
+	return true
+}
+
+func maxFloat(value string, max float64) bool {
+	v, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return false
+	}
+	if v > max {
 		return false
 	}
 	return true

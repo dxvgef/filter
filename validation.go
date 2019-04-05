@@ -33,6 +33,39 @@ func Result(value string, rules ...rule.Rule) error {
 				return errors.New(rules[k].Message)
 			}
 		}
+		// 验证值的范围
+		if rules[k].MinIntegerValue != 0 {
+			if result := rules[k].IntegerRangeValidate(value, rules[k].MinIntegerValue); result != true {
+				if rules[k].Message != "" {
+					return errors.New(rules[k].Message)
+				}
+				return errors.New(rules[k].Message)
+			}
+		}
+		if rules[k].MaxIntegerValue != 0 {
+			if result := rules[k].IntegerRangeValidate(value, rules[k].MaxIntegerValue); result != true {
+				if rules[k].Message != "" {
+					return errors.New(rules[k].Message)
+				}
+				return errors.New(rules[k].Message)
+			}
+		}
+		if rules[k].MinFloatValue != 0 {
+			if result := rules[k].FloatRangeValidate(value, rules[k].MinFloatValue); result != true {
+				if rules[k].Message != "" {
+					return errors.New(rules[k].Message)
+				}
+				return errors.New(rules[k].Message)
+			}
+		}
+		if rules[k].MaxFloatValue != 0 {
+			if result := rules[k].FloatRangeValidate(value, rules[k].MaxFloatValue); result != true {
+				if rules[k].Message != "" {
+					return errors.New(rules[k].Message)
+				}
+				return errors.New(rules[k].Message)
+			}
+		}
 		// 普通验证
 		if rules[k].Validate != nil {
 			if result := rules[k].Validate(value); result != true {

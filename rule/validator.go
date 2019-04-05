@@ -139,3 +139,19 @@ func jsonRule(str string) bool {
 	var js json.RawMessage
 	return json.Unmarshal([]byte(str), &js) == nil
 }
+
+// 密码，必须包含大小写字母和数字
+func password(str string) bool {
+	//rule := `([a-z]+?)([A-Z]+?)(\d+?)`
+	rule := `([a-z]+?)`
+	result1 := regexp.MustCompile(rule).MatchString(str)
+	rule = `([A-Z]+?)`
+	result2 := regexp.MustCompile(rule).MatchString(str)
+	rule = `(\d+?)`
+	result3 := regexp.MustCompile(rule).MatchString(str)
+	if !result1 || !result2 || !result3 {
+		return false
+	}
+	return true
+}
+

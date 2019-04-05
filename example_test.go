@@ -49,3 +49,11 @@ func TestCustomTrimmer(t *testing.T) {
 		t.Log(err.Error())
 	}
 }
+
+func TestPassword(t *testing.T) {
+	value := "+()+)$(@_A__a_1$(a*&$"
+	err := Result(value, rule.Password.Error("hello"))
+	if err != nil {
+		t.Log(err.Error())
+	}
+}

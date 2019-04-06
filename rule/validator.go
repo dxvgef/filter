@@ -181,3 +181,23 @@ func chineseIdentityCard(str string) bool {
 
 	return false
 }
+
+func hasLower(str string) bool {
+	rule := `([a-z]+?)`
+	return regexp.MustCompile(rule).MatchString(str)
+}
+
+func hasUpper(str string) bool {
+	rule := `([A-Z]+?)`
+	return regexp.MustCompile(rule).MatchString(str)
+}
+
+func hasDigit(str string) bool {
+	rule := `(\d+?)`
+	return regexp.MustCompile(rule).MatchString(str)
+}
+
+func hasSpecialLetter(str string) bool {
+	rule := `([~!@#$%^&*()_+\-=:;\"'/?<>,.\[\]{}|]+?)`
+	return regexp.MustCompile(rule).MatchString(str)
+}

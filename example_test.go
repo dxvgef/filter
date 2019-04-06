@@ -85,3 +85,39 @@ func TestCustomTrimmer(t *testing.T) {
 		t.Log(err.Error())
 	}
 }
+
+// TestHasLower 测试含有至少有一位小写字母
+func TestHasLower(t *testing.T) {
+	value := "outlook.com"
+	err := Result(value, rule.HasLower)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}
+
+// TestHasUpper 测试含有至少有一位大写字母
+func TestHasUpper(t *testing.T) {
+	value := "outLook"
+	err := Result(value, rule.HasUpper)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}
+
+// TestHasDigit 测试含有至少有一位数字
+func TestHasDigit(t *testing.T) {
+	value := "outLook2"
+	err := Result(value, rule.HasDigit)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}
+
+// TestHasSpecialLetter 测试含有至少有一个特殊字符
+func TestHasSpecialLetter(t *testing.T) {
+	value := "outLook.com"
+	err := Result(value, rule.HasSpecialLetter)
+	if err != nil {
+		t.Log(err.Error())
+	}
+}

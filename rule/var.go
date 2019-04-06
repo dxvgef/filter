@@ -32,10 +32,10 @@ var (
 	Nfloat   = NewValidator(nfloat, "只能是负小数")
 	JSON     = NewValidator(jsonRule, "不能有效的序列化成JSON")
 
-	HasLower         = NewValidator(hasLower, "含有至少一个小写字母")
-	HasUpper         = NewValidator(hasUpper, "含有至少一个大写字母")
-	HasDigit         = NewValidator(hasDigit, "含有至少一个数字")
-	HasSpecialLetter = NewValidator(hasSpecialLetter, "含有至少一个特殊字符")
+	HasLower       = NewValidator(hasLower, "含有至少一个小写字母")
+	HasUpper       = NewValidator(hasUpper, "含有至少一个大写字母")
+	HasDigit       = NewValidator(hasDigit, "含有至少一个数字")
+	HasSpecialChar = NewValidator(hasSpecialChar, "含有至少一个特殊字符")
 
 	Email = NewValidator(email, "不是有效的电邮地址")
 	IP    = NewValidator(ip, "不是有效的IP地址")

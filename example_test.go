@@ -114,9 +114,9 @@ func TestHasDigit(t *testing.T) {
 }
 
 // TestHasSpecialLetter 测试含有至少有一个特殊字符
-func TestHasSpecialLetter(t *testing.T) {
+func TestHasSpecialChar(t *testing.T) {
 	value := "outLook.com"
-	err := Result(value, rule.HasSpecialLetter)
+	err := Result(value, rule.HasSpecialChar)
 	if err != nil {
 		t.Log(err.Error())
 	}

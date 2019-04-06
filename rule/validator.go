@@ -197,7 +197,7 @@ func hasDigit(str string) bool {
 	return regexp.MustCompile(rule).MatchString(str)
 }
 
-func hasSpecialLetter(str string) bool {
+func hasSpecialChar(str string) bool {
 	rule := `([~!@#$%^&*()_+\-=:;\"'/?<>,.\[\]{}|]+?)`
 	return regexp.MustCompile(rule).MatchString(str)
 }

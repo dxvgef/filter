@@ -4,21 +4,26 @@ import "strconv"
 
 // Rule 规则
 type Rule struct {
-	Validate             Validator            // 验证器
-	Trim                 Trimmer              // 修剪器
-	Message              string               // 自定义失败消息
-	LengthValidate       LengthValidator      // 长度验证器
-	MinLength            int                  // 最小长度
-	MaxLength            int                  // 最大长度
-	IntegerRangeValidate IntRangeValidator    // 整数值范围验证器
-	MinIntegerValue      int64                // 最小整数值
-	MaxIntegerValue      int64                // 最大整数值
-	FloatRangeValidate   FloatRangeValidator  // 整数值范围验证器
-	MinFloatValue        float64              // 最小浮点数值
-	MaxFloatValue        float64              // 最大浮点数值
-	StringOpts           [] StringOpt         // 字符串处理
-	StringValueValidate  StringInValidator    // 字符串包含验证
-	StringValue          [] string
+	Message  string    // 自定义失败消息
+	Validate Validator // 验证器
+	Trimmer  Trimmer   // 修剪器
+
+	LengthValidate LengthValidator // 长度验证器
+	MinLength      int             // 最小长度
+	MaxLength      int             // 最大长度
+
+	IntegerRangeValidate IntRangeValidator   // 整数值范围验证器
+	MinIntegerValue      int64               // 最小整数值
+	MaxIntegerValue      int64               // 最大整数值
+	FloatRangeValidate   FloatRangeValidator // 整数值范围验证器
+	MinFloatValue        float64             // 最小浮点数值
+	MaxFloatValue        float64             // 最大浮点数值
+
+	InValidate inValidator // 必须存在于slice的验证器
+	InValues   []string    // 指定的slice
+
+	ContainValidate ContainValidator // 必须存在指定字符串的验证器
+	ContainString   string           // 包含指定的字符串
 }
 
 // 内置验证器变量名
@@ -55,8 +60,11 @@ var (
 
 // 内置修剪器变量名
 var (
-	Trim       = NewTrimmer(trim) //  去除前后空格
-	StringOpts = NewStringOpt(CamelCase, )
+	Trim                  = NewTrimmer(trim)                  // 去除前后空格
+	RemoveSpace           = NewTrimmer(removeSpace)           // 去除所有的空格
+	SnakeCaseToCamelCase  = NewTrimmer(snakeCaseToCamelCase)  // 蛇形转驼峰
+	SnakeCaseToPascalCase = NewTrimmer(snakeCaseToPascalCase) // 蛇形转帕斯卡
+	CamelCaseToSnakeCase  = NewTrimmer(camelCaseToSnakeCase)  // 驼峰/帕斯卡转蛇形
 )
 
 // 内置特殊验证器
@@ -85,8 +93,13 @@ var (
 	MaxFloat = func(max float64) Rule {
 		return NewMaxFloatValidator(max, maxFloat, "数值不能大于"+strconv.FormatFloat(max, 'f', -1, 64))
 	}
-	// 包含值
-	StringInValidate = func(slice []string) Rule {
-		return NewStringInValidate(slice,stringContains,"只能是特定参数字符串值")
+	// 值必须存在于slice
+	InSlice = func(slice []string) Rule {
+		return NewInValidate(slice, inSlice, "不允许的值")
+	}
+
+	// 必须存在指定字符串
+	Contains = func(sub string) Rule {
+		return NewContainValidate(sub, contains, "不允许的值")
 	}
 )

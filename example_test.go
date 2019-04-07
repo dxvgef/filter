@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/dxvgef/filter/rule"
-	"strings"
 )
 
 // TestValidation 测试普通验证器
@@ -121,26 +120,4 @@ func TestHasSpecialChar(t *testing.T) {
 	if err != nil {
 		t.Log(err.Error())
 	}
-}
-
-// TestStringConverterOpt 测试字符日转换优化器
-func TestStringConverterOpt(t *testing.T) {
-	value := "Package fasthttp is a fast HTTP implementation for Go, up to 10 times faster than net/http"
-	err := Result(value, rule.NewStringOpt(rule.TrimStringAndSnake))
-	if err != nil {
-		t.Log(err.Error())
-	}
-	t.Log(value) //todo 结果值没变,bug
-}
-
-
-// TestStringValueInByStringValidate 测试包含字符串
-func TestStringValueInByStringValidate(t *testing.T){
-	value := "Package fasthttp is a fast HTTP implementation for Go, up to 10 times faster than net/http"
-	split := strings.Split(value, " ")
-	err := Result("Go,", rule.StringInValidate(split))
-	if err != nil {
-		t.Log(err.Error())
-	}
-
 }

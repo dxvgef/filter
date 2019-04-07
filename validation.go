@@ -85,15 +85,6 @@ func Result(value string, rules ...rule.Rule) error {
 			}
 		}
 
-		// interface值存在验证
-		if rules[k].InterfaceValue != nil {
-			if result := rules[k].InterfaceValidate(value, rules[k].InterfaceValue); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
-				}
-				return errors.New(rules[k].Message)
-			}
-		}
 		// string 值存在验证
 		if rules[k].StringValue != nil {
 			if result := rules[k].StringValueValidate(value, rules[k].StringValue); result != true {

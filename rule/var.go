@@ -16,8 +16,6 @@ type Rule struct {
 	FloatRangeValidate   FloatRangeValidator  // 整数值范围验证器
 	MinFloatValue        float64              // 最小浮点数值
 	MaxFloatValue        float64              // 最大浮点数值
-	InterfaceValidate    InterfaceInValidator // 值验证器
-	InterfaceValue       interface{}          // 接口类型值
 	StringOpts           [] StringOpt         // 字符串处理
 	StringValueValidate  StringInValidator    // 字符串包含验证
 	StringValue          [] string
@@ -88,9 +86,6 @@ var (
 		return NewMaxFloatValidator(max, maxFloat, "数值不能大于"+strconv.FormatFloat(max, 'f', -1, 64))
 	}
 	// 包含值
-	InterfaceInValidate = func(value interface{}) Rule {
-		return NewInterfaceInValidator(value, contains, "只能是特定的参数值")
-	}
 	StringInValidate = func(slice []string) Rule {
 		return NewStringInValidate(slice,stringContains,"只能是特定参数字符串值")
 	}

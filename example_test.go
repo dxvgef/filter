@@ -133,15 +133,7 @@ func TestStringConverterOpt(t *testing.T) {
 	t.Log(value) //todo 结果值没变,bug
 }
 
-// TestValueInByReflect 测试包含interface
-func TestValueInByReflect(t *testing.T) {
-	value := "Package fasthttp is a fast HTTP implementation for Go, up to 10 times faster than net/http"
-	split := strings.Split(value, " ")
-	err := Result("Go,", rule.InterfaceInValidate(split))
-	if err != nil {
-		t.Log(err.Error())
-	}
-}
+
 // TestStringValueInByStringValidate 测试包含字符串
 func TestStringValueInByStringValidate(t *testing.T){
 	value := "Package fasthttp is a fast HTTP implementation for Go, up to 10 times faster than net/http"

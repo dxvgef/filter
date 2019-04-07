@@ -9,6 +9,7 @@ import (
 
 type StringOpt func(v string) string
 
+// 字符串优化函数
 func NewStringOpt(opt... StringOpt) Rule {
 	return Rule{
 		StringOpts: opt,

@@ -2,93 +2,118 @@ package filter
 
 import (
 	"errors"
-
-	"github.com/dxvgef/filter/rule"
 )
 
+// 验证器
+type validator func(string) bool
+
+// NewValidator 创建新验证器
+func NewValidator(validator validator, message string) Rule {
+	return Rule{
+		validator: validator,
+		message:   message,
+	}
+}
+
 // Result
-func Result(value string, rules ...rule.Rule) error {
+func Result(value string, rules ...Rule) error {
 	// 运行修剪器
 	for k := range rules {
-		if rules[k].Trimmer != nil {
-			value = rules[k].Trimmer(value)
+		if rules[k].trimmer != nil {
+			value = rules[k].trimmer(value)
 		}
 	}
+
 	// 运行普通验证器
 	for k := range rules {
 		// 字符串长度验证
-		if rules[k].LengthValidate != nil && rules[k].MinLength > 0 {
-			if result := rules[k].LengthValidate(value, rules[k].MinLength); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].length.validator != nil && rules[k].length.min > 0 {
+			if result := rules[k].length.validator(value, rules[k].length.min); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
-		if rules[k].LengthValidate != nil && rules[k].MaxLength > 0 {
-			if result := rules[k].LengthValidate(value, rules[k].MaxLength); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].length.validator != nil && rules[k].length.max > 0 {
+			if result := rules[k].length.validator(value, rules[k].length.max); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
 		// 验证值的范围
-		if rules[k].IntegerRangeValidate != nil && rules[k].MinIntegerValue != 0 {
-			if result := rules[k].IntegerRangeValidate(value, rules[k].MinIntegerValue); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].intRange.validator != nil && rules[k].intRange.min != 0 {
+			if result := rules[k].intRange.validator(value, rules[k].intRange.min); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
-		if rules[k].IntegerRangeValidate != nil && rules[k].MaxIntegerValue != 0 {
-			if result := rules[k].IntegerRangeValidate(value, rules[k].MaxIntegerValue); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].intRange.validator != nil && rules[k].intRange.max != 0 {
+			if result := rules[k].intRange.validator(value, rules[k].intRange.max); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
-		if rules[k].FloatRangeValidate != nil && rules[k].MinFloatValue != 0 {
-			if result := rules[k].FloatRangeValidate(value, rules[k].MinFloatValue); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].floatRange.validator != nil && rules[k].floatRange.min != 0 {
+			if result := rules[k].floatRange.validator(value, rules[k].floatRange.min); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
-		if rules[k].FloatRangeValidate != nil && rules[k].MaxFloatValue != 0 {
-			if result := rules[k].FloatRangeValidate(value, rules[k].MaxFloatValue); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].floatRange.validator != nil && rules[k].floatRange.max != 0 {
+			if result := rules[k].floatRange.validator(value, rules[k].floatRange.max); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
 		// 普通验证
-		if rules[k].Validate != nil {
-			if result := rules[k].Validate(value); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].validator != nil {
+			if result := rules[k].validator(value); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
 
 		// 验证值只能是slice中的值
-		if rules[k].InValidate != nil {
-			if result := rules[k].InValidate(value, rules[k].InValues); result != true {
-				if rules[k].Message != "" {
-					return errors.New(rules[k].Message)
+		if rules[k].inSlice.validator != nil {
+			if result := rules[k].inSlice.validator(value, rules[k].inSlice.slice); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].Message)
+				return errors.New(rules[k].message)
 			}
 		}
 
-		// 验证值必须存在指定字符
-		if rules[k].ContainValidate != nil {
+		// 验证值必须存在指定字符串
+		if rules[k].contains.validator != nil && rules[k].contains.sub != "" {
+			if result := rules[k].contains.validator(value, rules[k].contains.sub); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
+				}
+				return errors.New(rules[k].message)
+			}
+		}
 
+		// 验证值必须存在指定的前缀字符串
+		if rules[k].hasPrefix.validator != nil && rules[k].hasPrefix.sub != "" {
+			if result := rules[k].hasPrefix.validator(value, rules[k].hasPrefix.sub); result != true {
+				if rules[k].message != "" {
+					return errors.New(rules[k].message)
+				}
+				return errors.New(rules[k].message)
+			}
 		}
 
 	}

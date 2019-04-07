@@ -26,23 +26,6 @@ var xvalues = [256]byte{
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 }
 
-// 验证器
-type Validator func(string) bool
-
-// Error 为验证器自定义错误消息
-func (v Rule) Error(message string) Rule {
-	v.Message = message
-	return v
-}
-
-// NewValidator 创建新验证器
-func NewValidator(validator Validator, message string) Rule {
-	return Rule{
-		Validate: validator,
-		Message:  message,
-	}
-}
-
 // 不能为空
 func required(value string) bool {
 	if value == "" {
@@ -255,28 +238,4 @@ func chineseIdentityCard(str string) bool {
 	}
 
 	return false
-}
-
-// 是否存在小写字母
-func hasLower(str string) bool {
-	rule := `([a-z]+?)`
-	return regexp.MustCompile(rule).MatchString(str)
-}
-
-// 是否存在大写字母
-func hasUpper(str string) bool {
-	rule := `([A-Z]+?)`
-	return regexp.MustCompile(rule).MatchString(str)
-}
-
-// 是否存在数字
-func hasDigit(str string) bool {
-	rule := `(\d+?)`
-	return regexp.MustCompile(rule).MatchString(str)
-}
-
-// 是否存在特殊字符
-func hasSpecialChar(str string) bool {
-	rule := `([~!@#$%^&*()_+\-=:;\"'/?<>,.\[\]{}|]+?)`
-	return regexp.MustCompile(rule).MatchString(str)
 }

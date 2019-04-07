@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/dxvgef/filter/rule"
+	"fmt"
 )
 
 // Result
@@ -13,6 +14,14 @@ func Result(value string, rules ...rule.Rule) error {
 		if rules[k].Trim != nil {
 			value = rules[k].Trim(value)
 		}
+		if rules[k].StringOpts != nil {
+			opts := rules[k].StringOpts
+			for _, fn := range opts {
+				value = fn(value)
+				fmt.Println(value)
+			}
+		}
+
 	}
 	// 运行普通验证器
 	for k := range rules {
@@ -69,6 +78,25 @@ func Result(value string, rules ...rule.Rule) error {
 		// 普通验证
 		if rules[k].Validate != nil {
 			if result := rules[k].Validate(value); result != true {
+				if rules[k].Message != "" {
+					return errors.New(rules[k].Message)
+				}
+				return errors.New(rules[k].Message)
+			}
+		}
+
+		// interface值存在验证
+		if rules[k].InterfaceValue != nil {
+			if result := rules[k].InterfaceValidate(value, rules[k].InterfaceValue); result != true {
+				if rules[k].Message != "" {
+					return errors.New(rules[k].Message)
+				}
+				return errors.New(rules[k].Message)
+			}
+		}
+		// string 值存在验证
+		if rules[k].StringValue != nil {
+			if result := rules[k].StringValueValidate(value, rules[k].StringValue); result != true {
 				if rules[k].Message != "" {
 					return errors.New(rules[k].Message)
 				}

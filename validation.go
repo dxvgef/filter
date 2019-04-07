@@ -16,7 +16,7 @@ func NewValidator(validator validator, message string) Rule {
 }
 
 // Result
-func Result(value string, rules ...Rule) error {
+func Result(value string, rules ...Rule) (string, error) {
 	// 运行修剪器
 	for k := range rules {
 		if rules[k].trimmer != nil {
@@ -30,59 +30,59 @@ func Result(value string, rules ...Rule) error {
 		if rules[k].length.validator != nil && rules[k].length.min > 0 {
 			if result := rules[k].length.validator(value, rules[k].length.min); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 		if rules[k].length.validator != nil && rules[k].length.max > 0 {
 			if result := rules[k].length.validator(value, rules[k].length.max); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 		// 验证值的范围
 		if rules[k].intRange.validator != nil && rules[k].intRange.min != 0 {
 			if result := rules[k].intRange.validator(value, rules[k].intRange.min); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 		if rules[k].intRange.validator != nil && rules[k].intRange.max != 0 {
 			if result := rules[k].intRange.validator(value, rules[k].intRange.max); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 		if rules[k].floatRange.validator != nil && rules[k].floatRange.min != 0 {
 			if result := rules[k].floatRange.validator(value, rules[k].floatRange.min); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 		if rules[k].floatRange.validator != nil && rules[k].floatRange.max != 0 {
 			if result := rules[k].floatRange.validator(value, rules[k].floatRange.max); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 		// 普通验证
 		if rules[k].validator != nil {
 			if result := rules[k].validator(value); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 
@@ -90,9 +90,9 @@ func Result(value string, rules ...Rule) error {
 		if rules[k].inSlice.validator != nil {
 			if result := rules[k].inSlice.validator(value, rules[k].inSlice.slice); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 
@@ -100,9 +100,9 @@ func Result(value string, rules ...Rule) error {
 		if rules[k].contains.validator != nil && rules[k].contains.sub != "" {
 			if result := rules[k].contains.validator(value, rules[k].contains.sub); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 
@@ -110,12 +110,12 @@ func Result(value string, rules ...Rule) error {
 		if rules[k].hasPrefix.validator != nil && rules[k].hasPrefix.sub != "" {
 			if result := rules[k].hasPrefix.validator(value, rules[k].hasPrefix.sub); result != true {
 				if rules[k].message != "" {
-					return errors.New(rules[k].message)
+					return "", errors.New(rules[k].message)
 				}
-				return errors.New(rules[k].message)
+				return "", errors.New(rules[k].message)
 			}
 		}
 
 	}
-	return nil
+	return value, nil
 }

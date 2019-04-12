@@ -1,10 +1,10 @@
 package filter
 
-// Rule 规则
+// Rules 规则
 type Rule struct {
 	message string // 自定义失败消息
 
-	trimmer   Trimmer   // 修剪器
+	formatter Formatter // 格式化器
 	validator validator // 验证器
 	// 长度
 	length struct {

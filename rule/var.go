@@ -40,11 +40,11 @@ var (
 
 // 内置修剪器变量名
 var (
-	Trim                  = filter.NewTrimmer(trim)                  // 去除前后空格
-	RemoveSpace           = filter.NewTrimmer(removeSpace)           // 去除所有的空格
-	SnakeCaseToCamelCase  = filter.NewTrimmer(snakeCaseToCamelCase)  // 蛇形转驼峰
-	SnakeCaseToPascalCase = filter.NewTrimmer(snakeCaseToPascalCase) // 蛇形转帕斯卡
-	CamelCaseToSnakeCase  = filter.NewTrimmer(camelCaseToSnakeCase)  // 驼峰/帕斯卡转蛇形
+	Trim                  = filter.NewFormatter(trim)                  // 去除前后空格
+	RemoveSpace           = filter.NewFormatter(removeSpace)           // 去除所有的空格
+	SnakeCaseToCamelCase  = filter.NewFormatter(snakeCaseToCamelCase)  // 蛇形转驼峰
+	SnakeCaseToPascalCase = filter.NewFormatter(snakeCaseToPascalCase) // 蛇形转帕斯卡
+	CamelCaseToSnakeCase  = filter.NewFormatter(camelCaseToSnakeCase)  // 驼峰/帕斯卡转蛇形
 )
 
 // 内置特殊验证器
@@ -58,11 +58,11 @@ var (
 		return filter.NewMaxLengthValidator(max, maxLength, "不能大于"+strconv.Itoa(max)+"个字符")
 	}
 	// 最小整数值
-	MinInteger = func(min int64) filter.Rule {
+	MinInt = func(min int64) filter.Rule {
 		return filter.NewMinIntegerValidator(min, minInteger, "数值不能小于"+strconv.FormatInt(min, 10))
 	}
 	// 最大整数值
-	MaxInteger = func(max int64) filter.Rule {
+	MaxInt = func(max int64) filter.Rule {
 		return filter.NewMaxIntegerValidator(max, maxInteger, "数值不能大于"+strconv.FormatInt(max, 10))
 	}
 	// 最小浮点数值

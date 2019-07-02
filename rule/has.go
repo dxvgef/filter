@@ -1,8 +1,8 @@
 package rule
 
 import (
-	"regexp"
 	"strings"
+	"unicode"
 )
 
 // 值必须存在于slice
@@ -27,24 +27,40 @@ func hasPrefix(str string, sub string) bool {
 
 // 是否存在小写字母
 func hasLower(str string) bool {
-	rule := `([a-z]+?)`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsLower(v) == true {
+			return true
+		}
+	}
+	return false
 }
 
 // 是否存在大写字母
 func hasUpper(str string) bool {
-	rule := `([A-Z]+?)`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsUpper(v) == true {
+			return true
+		}
+	}
+	return false
 }
 
 // 是否存在数字
 func hasDigit(str string) bool {
-	rule := `(\d+?)`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsDigit(v) == true {
+			return true
+		}
+	}
+	return false
 }
 
-// 是否存在特殊字符
+// 是否存在除字母、数字、汉字之外的其它特殊字符
 func hasSpecialChar(str string) bool {
-	rule := `([~!@#$%^&*()_+\-=:;\"'/?<>,.\[\]{}|]+?)`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsDigit(v) == false || unicode.IsLetter(v) == false || unicode.Is(unicode.Han, v) == false {
+			return true
+		}
+	}
+	return false
 }

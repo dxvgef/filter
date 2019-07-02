@@ -2,9 +2,10 @@ package rule
 
 import (
 	"encoding/json"
-	"regexp"
+	"net"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 var xvalues = [256]byte{
@@ -35,108 +36,273 @@ func required(value string) bool {
 }
 
 // 电邮地址
-func email(value string) bool {
-	rule := `^[a-z0-9]+([\-_\.][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,4}$`
-	return regexp.MustCompile(rule).MatchString(value)
+func email(str string) bool {
+	emailSlice := strings.Split(str, "@")
+	if len(emailSlice) != 2 {
+		return false
+	}
+	if emailSlice[0] == "" || emailSlice[1] == "" {
+		return false
+	}
+
+	for k, v := range emailSlice[0] {
+		if k == 0 && unicode.IsLetter(v) == false && unicode.IsDigit(v) == false {
+			return false
+		} else if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false && v != '@' && v != '.' && v != '_' && v != '-' {
+			return false
+		}
+	}
+
+	domainSlice := strings.Split(emailSlice[1], ".")
+	if len(domainSlice) < 2 {
+		return false
+	}
+	domainSliceLen := len(domainSlice)
+	for i := 0; i < domainSliceLen; i++ {
+		for k, v := range domainSlice[i] {
+			if i != domainSliceLen-1 && k == 0 && unicode.IsLetter(v) == false && unicode.IsDigit(v) == false {
+				return false
+			} else if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false && v != '.' && v != '_' && v != '-' {
+				return false
+			} else if i == domainSliceLen-1 && unicode.IsLetter(v) == false {
+				return false
+			}
+		}
+	}
+
+	return true
 }
 
 // ip地址
 func ip(str string) bool {
-	rule := "^((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)$"
-	return regexp.MustCompile(rule).MatchString(str)
+	if net.ParseIP(str) == nil {
+		return false
+	}
+	return true
 }
 
 // 小写字母
 func lower(str string) bool {
-	rule := "^[a-z]*$"
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsLower(v) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // 大写字母
 func upper(str string) bool {
-	rule := `^[a-z0-9A-Z\p{Han}]+(_[a-z0-9A-Z\p{Han}]+)*$`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsUpper(v) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // 大小写字母
 func letter(str string) bool {
-	rule := `^[a-zA-Z]*$`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsLetter(v) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // 整数(含0)
 func intRule(str string) bool {
-	rule := `^(-?[1-9]\d*|0)$`
-	return regexp.MustCompile(rule).MatchString(str)
+	_, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		return false
+	}
+	return true
 }
 
-// 正整数(含0)
+// >=0的整数
 func uintRule(str string) bool {
-	rule := `^([1-9]\d*|0)$`
-	return regexp.MustCompile(rule).MatchString(str)
+	_, err := strconv.ParseUint(str, 10, 64)
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 // 负整数
 func nint(str string) bool {
-	rule := `^-[1-9]\d*$`
-	return regexp.MustCompile(rule).MatchString(str)
+	i, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		return false
+	}
+	if i >= 0 {
+		return false
+	}
+	return true
 }
 
 // 小数(含0)
 func floatRule(str string) bool {
-	if str == "0" {
-		return true
+	_, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		return false
 	}
-	rule := `^(?:[1-9][0-9]*(?:\.[0-9]+)?|0\.[0-9]+)$`
-	return regexp.MustCompile(rule).MatchString(str)
+	return true
 }
 
 // 正小数(含0)
 func pfloat(str string) bool {
-	rule := `^\d+(\.\d+)?$`
-	return regexp.MustCompile(rule).MatchString(str)
+	i, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		return false
+	}
+	if i < 0 {
+		return false
+	}
+	return true
 }
 
 // 负小数
 func nfloat(str string) bool {
-	rule := `^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$`
-	return regexp.MustCompile(rule).MatchString(str)
+	i, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		return false
+	}
+	if i >= 0 {
+		return false
+	}
+	return true
 }
 
 // 小写字母和数字
 func lowerAndDigit(str string) bool {
-	rule := `^[a-z0-9]*$`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsLower(v) == false && unicode.IsDigit(v) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // 大写字母和数字
 func upperAndDigit(str string) bool {
-	rule := `^[A-Z0-9]*$`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsUpper(v) == false && unicode.IsDigit(v) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // 字母和数字
 func letterAndDigit(str string) bool {
-	rule := `^[a-zA-Z0-9]*$`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // 中国大陆地区座机号码
 func chineseTel(str string) bool {
-	rule := `^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$`
-	return regexp.MustCompile(rule).MatchString(str)
+	telSlice := strings.Split(str, "-")
+	if len(telSlice) != 2 {
+		return false
+	}
+	regionCode, err := strconv.Atoi(telSlice[0])
+	if err != nil {
+		return false
+	}
+	if regionCode < 10 || regionCode > 999 {
+		return false
+	}
+
+	code, err := strconv.Atoi(telSlice[1])
+	if err != nil {
+		return false
+	}
+	if code < 1000000 || code > 99999999 {
+		return false
+	}
+	return true
 }
 
 // 中国大陆地区手机号码
 func chineseMobile(str string) bool {
-	rule := `^1(3|4|5|7|8)\d{9}$`
-	return regexp.MustCompile(rule).MatchString(str)
+	_, err := strconv.Atoi(str)
+	if err != nil {
+		return false
+	}
+	if len(str) != 11 {
+		return false
+	}
+	prefix := str[0:3]
+	// 移动
+	if prefix != "139" &&
+		prefix != "138" &&
+		prefix != "137" &&
+		prefix != "136" &&
+		prefix != "135" &&
+		prefix != "134" &&
+		prefix != "147" &&
+		prefix != "150" &&
+		prefix != "151" &&
+		prefix != "152" &&
+		prefix != "157" &&
+		prefix != "158" &&
+		prefix != "159" &&
+		prefix != "165" &&
+		prefix != "178" &&
+		prefix != "182" &&
+		prefix != "183" &&
+		prefix != "184" &&
+		prefix != "187" &&
+		prefix != "188" &&
+		prefix != "198" &&
+		// 联通
+		prefix != "130" &&
+		prefix != "131" &&
+		prefix != "132" &&
+		prefix != "155" &&
+		prefix != "156" &&
+		prefix != "166" &&
+		prefix != "167" &&
+		prefix != "185" &&
+		prefix != "186" &&
+		prefix != "145" &&
+		prefix != "175" &&
+		prefix != "176" &&
+		// 电信
+		prefix != "133" &&
+		prefix != "153" &&
+		prefix != "162" &&
+		prefix != "177" &&
+		prefix != "173" &&
+		prefix != "180" &&
+		prefix != "181" &&
+		prefix != "189" &&
+		prefix != "191" &&
+		prefix != "199" &&
+		// 虚拟运营商
+		prefix != "170" && prefix != "171" {
+		return false
+	}
+	suffix := str[3:]
+	if suffix == "00000000" {
+		return false
+	}
+	return true
 }
 
 // 中文
 func chinese(str string) bool {
-	rule := `^[\p{Han}]+$`
-	return regexp.MustCompile(rule).MatchString(str)
+	for _, v := range str {
+		if unicode.Is(unicode.Scripts["Han"], v) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // JSON类型

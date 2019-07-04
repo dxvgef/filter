@@ -14,11 +14,9 @@ type stringObject struct {
 	err      error  // 结果错识信息
 	name     string // 变量名
 	rawValue string // 原始类型的值
-	int      int    // int类型的值
-
 }
 
-func Value(value string, name ...string) *stringObject {
+func FromString(value string, name ...string) *stringObject {
 	var obj stringObject
 	obj.rawValue = value
 
@@ -231,12 +229,11 @@ func (obj *stringObject) IsChineseMobile(customError ...string) *stringObject {
 	if obj.err != nil {
 		return obj
 	}
-	v, err := strconv.Atoi(obj.rawValue)
+	_, err := strconv.Atoi(obj.rawValue)
 	if err != nil {
 		obj.err = obj.setError("格式不正确", customError...)
 		return obj
 	}
-	obj.int = v
 	if len(obj.rawValue) != 11 {
 		obj.err = obj.setError("格式不正确", customError...)
 		return obj
@@ -559,62 +556,186 @@ func (obj *stringObject) MustString(def string) string {
 	return obj.rawValue
 }
 
+func (obj *stringObject) Strings(sep string) []string {
+	if obj.err != nil {
+		return nil
+	}
+	value := strings.Split(obj.rawValue, sep)
+	return value
+}
+
 func (obj *stringObject) Int() (int, error) {
 	if obj.err != nil {
 		return 0, obj.err
 	}
-	if obj.int != 0 {
-		return obj.int, nil
-	}
-	var err error
-	obj.int, err = strconv.Atoi(obj.rawValue)
+	value, err := strconv.Atoi(obj.rawValue)
 	if err != nil {
 		return 0, err
 	}
-	return obj.int, nil
+	return value, nil
 }
 
 func (obj *stringObject) MustInt(def int) int {
 	if obj.err != nil {
 		return def
 	}
-	if obj.int != 0 {
-		return obj.int
-	}
-	var err error
-	obj.int, err = strconv.Atoi(obj.rawValue)
+	value, err := strconv.Atoi(obj.rawValue)
 	if err != nil {
 		return def
 	}
-	return obj.int
+	return value
 }
 
-func (obj *stringObject) Int32() (int, error) {
+func (obj *stringObject) Int8() (int8, error) {
 	if obj.err != nil {
 		return 0, obj.err
 	}
-	if obj.int != 0 {
-		return obj.int, nil
-	}
-	var err error
-	obj.int, err = strconv.Atoi(obj.rawValue)
+	value, err := strconv.ParseInt(obj.rawValue, 10, 8)
 	if err != nil {
 		return 0, err
 	}
-	return obj.int, nil
+	return int8(value), nil
 }
 
-func (obj *stringObject) MustInt(def int) int {
+func (obj *stringObject) MustInt8(def int8) int8 {
 	if obj.err != nil {
 		return def
 	}
-	if obj.int != 0 {
-		return obj.int
-	}
-	var err error
-	obj.int, err = strconv.Atoi(obj.rawValue)
+	value, err := strconv.ParseInt(obj.rawValue, 10, 8)
 	if err != nil {
 		return def
 	}
-	return obj.int
+	return int8(value)
+}
+
+func (obj *stringObject) Int16() (int16, error) {
+	if obj.err != nil {
+		return 0, obj.err
+	}
+	value, err := strconv.ParseInt(obj.rawValue, 10, 16)
+	if err != nil {
+		return 0, err
+	}
+	return int16(value), nil
+}
+
+func (obj *stringObject) MustInt16(def int16) int16 {
+	if obj.err != nil {
+		return def
+	}
+	value, err := strconv.ParseInt(obj.rawValue, 10, 16)
+	if err != nil {
+		return def
+	}
+	return int16(value)
+}
+
+func (obj *stringObject) Int32() (int32, error) {
+	if obj.err != nil {
+		return 0, obj.err
+	}
+	value, err := strconv.ParseInt(obj.rawValue, 10, 32)
+	if err != nil {
+		return 0, err
+	}
+	return int32(value), nil
+}
+
+func (obj *stringObject) MustInt32(def int32) int32 {
+	if obj.err != nil {
+		return def
+	}
+	value, err := strconv.ParseInt(obj.rawValue, 10, 32)
+	if err != nil {
+		return def
+	}
+	return int32(value)
+}
+
+func (obj *stringObject) Int64() (int64, error) {
+	if obj.err != nil {
+		return 0, obj.err
+	}
+	value, err := strconv.ParseInt(obj.rawValue, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return value, nil
+}
+
+func (obj *stringObject) MustInt64(def int64) int64 {
+	if obj.err != nil {
+		return def
+	}
+	value, err := strconv.ParseInt(obj.rawValue, 10, 64)
+	if err != nil {
+		return def
+	}
+	return value
+}
+
+func (obj *stringObject) Float32() (float32, error) {
+	if obj.err != nil {
+		return 0, obj.err
+	}
+	value, err := strconv.ParseFloat(obj.rawValue, 32)
+	if err != nil {
+		return 0, err
+	}
+	return float32(value), nil
+}
+
+func (obj *stringObject) MustFloat32(def float32) float32 {
+	if obj.err != nil {
+		return def
+	}
+	value, err := strconv.ParseFloat(obj.rawValue, 32)
+	if err != nil {
+		return def
+	}
+	return float32(value)
+}
+
+func (obj *stringObject) Float64() (float64, error) {
+	if obj.err != nil {
+		return 0, obj.err
+	}
+	value, err := strconv.ParseFloat(obj.rawValue, 64)
+	if err != nil {
+		return 0, err
+	}
+	return value, nil
+}
+
+func (obj *stringObject) MustFloat64(def float64) float64 {
+	if obj.err != nil {
+		return def
+	}
+	value, err := strconv.ParseFloat(obj.rawValue, 64)
+	if err != nil {
+		return def
+	}
+	return value
+}
+
+func (obj *stringObject) Bool() (bool, error) {
+	if obj.err != nil {
+		return false, obj.err
+	}
+	value, err := strconv.ParseBool(obj.rawValue)
+	if err != nil {
+		return false, err
+	}
+	return value, nil
+}
+
+func (obj *stringObject) MustBool(def bool) bool {
+	if obj.err != nil {
+		return def
+	}
+	value, err := strconv.ParseBool(obj.rawValue)
+	if err != nil {
+		return def
+	}
+	return value
 }

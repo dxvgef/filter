@@ -12,13 +12,6 @@ var (
 	Lower    = filter.NewValidator(lower, "只能是小写字母")
 	Upper    = filter.NewValidator(upper, "只能是大写字母")
 	Letter   = filter.NewValidator(letter, "只能是大小写字母")
-	Int      = filter.NewValidator(intRule, "只能是0或整数")
-	Uint     = filter.NewValidator(uintRule, "只能是0或正整数")
-	Nint     = filter.NewValidator(nint, "只能是负整数")
-	Float    = filter.NewValidator(floatRule, "只能是0或小数")
-	Pfloat   = filter.NewValidator(pfloat, "只能是0或正小数")
-	Nfloat   = filter.NewValidator(nfloat, "只能是负小数")
-	JSON     = filter.NewValidator(jsonRule, "不是有效的JSON字符串")
 
 	HasLower       = filter.NewValidator(hasLower, "必须含有至少一个小写字母")
 	HasUpper       = filter.NewValidator(hasUpper, "必须含有至少一个大写字母")
@@ -36,6 +29,15 @@ var (
 	ChineseTel          = filter.NewValidator(chineseTel, "只能是中国大陆地区的电话号码")
 	ChineseMobile       = filter.NewValidator(chineseMobile, "只能是中国大陆地区的手机号码")
 	ChineseIdentityCard = filter.NewValidator(chineseIdentityCard, "只能是中国大陆地区的身份证号码")
+
+	JSON = filter.NewValidator(jsonRule, "不是有效的JSON字符串")
+
+	Int    = filter.NewValidator(intRule, "只能是0或整数")
+	Uint   = filter.NewValidator(uintRule, "只能是0或正整数")
+	Nint   = filter.NewValidator(nint, "只能是负整数")
+	Float  = filter.NewValidator(floatRule, "只能是0或小数")
+	Pfloat = filter.NewValidator(pfloat, "只能是0或正小数")
+	Nfloat = filter.NewValidator(nfloat, "只能是负小数")
 )
 
 // 内置修剪器变量名

@@ -96,9 +96,9 @@ log.Println("年龄", reqData.age)
 - `HasUpper` 存在大写字母
 - `HasDigit` 存在数字
 - `HasSymbol` 存在符号
-- `IsStrings` 存在于[]string
-- `Contains` 存在指定字符串
 - `HasPrefix` 存在指定的前缀字符串
+- `InStrings` 存在于[]string
+- `Contains` 存在指定字符串
 
 ## 类型转换
 - `String` 转为string类型，并返回error

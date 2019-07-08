@@ -1,5 +1,5 @@
 # filter
-golang开发的字符串过滤器，由 **数据来源->数据格式化->数据验证->数据类型转换** 四个部份组成。
+golang开发的数据过滤器，由 **数据输入->数据清洗->数据验证->类型转换->结果输出** 四个部份组成。
 
 - 自定义错误消息
 - 过滤结果自动赋值到指定变量
@@ -52,13 +52,13 @@ log.Println("密码", reqData.password)
 log.Println("年龄", reqData.age)
 ```
 
-## 数据来源
+## 数据输入
 **`FromString(str, name)`**
 要过滤的数据来源，目前仅支持字符串
 第一个参数str为来源参数值<br>
 第二个参数为名，用于拼接默认错误消息
 
-## 数据格式化
+## 数据清洗
 - `Trim()` 去除前后空格
 - `RemoveSpace` 去除所有空格
 - `ReplaceAll` 替换所有
@@ -100,7 +100,7 @@ log.Println("年龄", reqData.age)
 - `Contains` 存在指定字符串
 - `HasPrefix` 存在指定的前缀字符串
 
-## 数据类型转换
+## 类型转换
 - `String` 转为string类型，并返回error
 - `MustString` 转为string类型，如果失败则返回默认值
 - `Strings` 按指定分隔符，转为[]string类型
@@ -120,3 +120,8 @@ log.Println("年龄", reqData.age)
 - `MustFloat64` 转为float64类型，如果失败则返回默认值
 - `Bool` 转为bool类型，并返回error
 - `MustBool` 转为bool类型，如果失败则返回默认值
+
+## 结果输出
+除了使用类型转换函数得到过滤后的数据，还可以使用以下函数将过滤结果赋值到指定变量
+- `Set` 将单个过滤结果赋值到变量
+- `MSet` 将多个过滤结果赋值到对应的变量

@@ -1,10 +1,12 @@
 # filter
-golang开发的字符串过滤器
+golang开发的字符串过滤器，由 **数据来源->数据格式化->数据验证->数据类型转换** 四个部份组成。
 
-包含 **数据来源->数据格式化->数据验证->数据类型转换** 四个部份组成。
+- 自定义错误消息
+- 过滤结果自动赋值到指定变量
+- 批量过滤多个数据，自动赋值到对应变量
 
 ## 基本示例
-单项数据过滤，并返回值
+单项数据过滤，并返回结果
 ```Go
 password, err := FromString("123", "密码").Trim().MinLength(6).MaxLength(32).String()
 if err != nil {
@@ -14,7 +16,7 @@ if err != nil {
 log.Println(password)
 ```
 
-单项数据过滤，并自动赋值
+单项数据过滤，并自动赋值到变量
 ```Go
 var password string
 err := Set(
@@ -27,18 +29,18 @@ if err != nil {
 }
 ```
 
-多项数据过滤，并自动赋值
+多项数据过滤，并自动赋值到对应变量
 ```Go
-var ReqData struct {
+var reqData struct {
     password string
     age      int16
 }
 err := MSet(
-    El(&ReqData.password,
+    El(&reqData.password,
         FromString("Abc123-", "密码").
             MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
     ),
-    El(&ReqData.age,
+    El(&reqData.age,
         FromString("3", "年龄").
             IsDigit().MinInteger(18)),
 )
@@ -46,8 +48,8 @@ if err != nil {
     log.Println(err.Error())
     return
 }
-log.Println("密码", ReqData.password)
-log.Println("年龄", ReqData.age)
+log.Println("密码", reqData.password)
+log.Println("年龄", reqData.age)
 ```
 
 ## 数据来源
@@ -65,6 +67,7 @@ log.Println("年龄", ReqData.age)
 - `CamelCaseToSnakeCase` 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
 
 ## 数据验证
+所有数据验证函数，都可以传入自定义错误消息，例如MinLength(""自定义错误消息")
 - `MinLength 最小长度` 最小长度
 - `MinUTF8Length` UTF8编码最小长度
 - `MaxLength` 最大长度

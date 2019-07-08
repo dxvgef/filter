@@ -1,8 +1,119 @@
 # filter
-go过滤器，由规则、格式化器、验证器三个主要模块组成
+golang开发的字符串过滤器
 
-## Formatter 格式化器
-(文档待完善)
+包含 **数据来源->数据格式化->数据验证->数据类型转换** 四个部份组成。
 
-## Validator 验证器
-(文档待完善)
+## 基本示例
+单项数据过滤，并返回值
+```Go
+password, err := FromString("123", "密码").Trim().MinLength(6).MaxLength(32).String()
+if err != nil {
+    log.Println(err.Error())
+    return
+}
+log.Println(password)
+```
+
+单项数据过滤，并自动赋值
+```Go
+var password string
+err := Set(
+    &password, FromString("Abc123-", "密码").
+    MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
+)
+if err != nil {
+    log.Println(err.Error())
+    return
+}
+```
+
+多项数据过滤，并自动赋值
+```Go
+var ReqData struct {
+    password string
+    age      int16
+}
+err := MSet(
+    El(&ReqData.password,
+        FromString("Abc123-", "密码").
+            MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
+    ),
+    El(&ReqData.age,
+        FromString("3", "年龄").
+            IsDigit().MinInteger(18)),
+)
+if err != nil {
+    log.Println(err.Error())
+    return
+}
+log.Println("密码", ReqData.password)
+log.Println("年龄", ReqData.age)
+```
+
+## 数据来源
+**`FromString(str, name)`**
+要过滤的数据来源，目前仅支持字符串
+第一个参数str为来源参数值<br>
+第二个参数为名，用于拼接默认错误消息
+
+## 数据格式化
+- `Trim()` 去除前后空格
+- `RemoveSpace` 去除所有空格
+- `ReplaceAll` 替换所有
+- `SnakeCaseToCamelCase` 蛇形转驼峰: hello_world => helloWorld
+- `SnakeCaseToPascalCase` 蛇形转帕斯卡: hello_world => HelloWorld
+- `CamelCaseToSnakeCase` 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
+
+## 数据验证
+- `MinLength 最小长度` 最小长度
+- `MinUTF8Length` UTF8编码最小长度
+- `MaxLength` 最大长度
+- `MaxUTF8Length` UTF8编码最大长度
+- `MinInteger` 最小整数值
+- `MaxInteger` 最大整数值
+- `MinFloat` 最小浮点值
+- `MaxFloat` 最大浮点值
+- `IsLower` 小写字母
+- `IsUpper` 大写字母
+- `IsLetter` 字母
+- `IsDigit` 数字
+- `IsLowerOrDigit` 小写字母或数字
+- `IsUpperOrDigit` 大写字母或数字
+- `IsLetterOrDigit 字母或数字` 字母或数字
+- `IsChinese` 汉字
+- `IsMail` 电邮地址
+- `IsIP` IPv4/v6地址
+- `IsJSON` 有效的JSON格式
+- `IsChineseTel` 中国大陆地区固定电话号码
+- `IsChineseMobile` 中国大陆地区手机号码
+- `IsChineseIDNumber` 中国大陆地区身份证号码
+- `IsUUID` UUID格式
+- `HasLetter` 存在字母
+- `HasLower` 存在小写字母
+- `HasUpper` 存在大写字母
+- `HasDigit` 存在数字
+- `HasSymbol` 存在符号
+- `IsStrings` 存在于[]string
+- `Contains` 存在指定字符串
+- `HasPrefix` 存在指定的前缀字符串
+
+## 数据类型转换
+- `String` 转为string类型，并返回error
+- `MustString` 转为string类型，如果失败则返回默认值
+- `Strings` 按指定分隔符，转为[]string类型
+- `Int` 转为int类型，并返回error
+- `MustInt` 转为int类型，如果失败则返回默认值
+- `Int8` 转为int8类型，并返回error
+- `MustInt8` 转为int8类型，如果失败则返回默认值
+- `Int16` 转为int16类型，并返回error
+- `MustInt16` 转为int16类型，如果失败则返回默认值
+- `Int32` 转为int32类型，并返回error
+- `MustInt32` 转为int32类型，如果失败则返回默认值
+- `Int64` 转为int64类型，并返回error
+- `MustInt64` 转为int64类型，如果失败则返回默认值
+- `Float32` 转为float32类型，并返回errBor
+- `MustFloat32` 转为float8类型，如果失败则返回默认值
+- `Float64` 转为float64类型，并返回error
+- `MustFloat64` 转为float64类型，如果失败则返回默认值
+- `Bool` 转为bool类型，并返回error
+- `MustBool` 转为bool类型，如果失败则返回默认值

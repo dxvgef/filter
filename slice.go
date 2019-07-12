@@ -1,7 +1,6 @@
 package filter
 
 import (
-	"math"
 	"strconv"
 )
 
@@ -81,7 +80,7 @@ func (obj *Object) DenyInts64(i []int64, customError ...string) *Object {
 }
 
 // DenyFloats32 阻止存在于[]float32中的值
-func (obj *Object) DenyFloats32(f []float32, p float64, customError ...string) *Object {
+func (obj *Object) DenyFloats32(f []float32, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -92,7 +91,7 @@ func (obj *Object) DenyFloats32(f []float32, p float64, customError ...string) *
 	}
 	value32 := float32(value)
 	for k := range f {
-		if floatEqual(float64(value32), float64(f[k]), p) == true {
+		if value32 == f[k] {
 			obj.err = obj.setError("不允许的值", customError...)
 			return obj
 		}
@@ -101,7 +100,7 @@ func (obj *Object) DenyFloats32(f []float32, p float64, customError ...string) *
 }
 
 // DenyFloats64 阻止存在于[]float64中的值
-func (obj *Object) DenyInFloats64(f []float64, p float64, customError ...string) *Object {
+func (obj *Object) DenyInFloats64(f []float64, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -114,14 +113,10 @@ func (obj *Object) DenyInFloats64(f []float64, p float64, customError ...string)
 		}
 	}
 	for k := range f {
-		if floatEqual(obj.f64, f[k], p) == true {
+		if obj.f64 == f[k] {
 			obj.err = obj.setError("不允许的值", customError...)
 			return obj
 		}
 	}
 	return obj
-}
-
-func floatEqual(f1, f2, p float64) bool {
-	return math.Dim(f1, f2) < p
 }

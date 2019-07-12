@@ -85,20 +85,6 @@ func (obj *Object) HasSymbol(customError ...string) *Object {
 	return obj
 }
 
-// InStrings 存在于[]string
-func (obj *Object) InStrings(slice []string, customError ...string) *Object {
-	if obj.err != nil {
-		return obj
-	}
-	for k := range slice {
-		if slice[k] == obj.rawValue {
-			obj.err = obj.setError("不允许的值", customError...)
-			return obj
-		}
-	}
-	return obj
-}
-
 // Contains 存在指定字符串
 func (obj *Object) Contains(sub string, customError ...string) *Object {
 	if obj.err != nil {

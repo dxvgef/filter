@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-// InStrings 存在于[]string
+// InStrings 检查string是否存在于[]string中
 func (obj *Object) InStrings(slice []string, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
@@ -19,8 +19,8 @@ func (obj *Object) InStrings(slice []string, customError ...string) *Object {
 	return obj
 }
 
-// InInt 检查int值在一个int slice中是否存在
-func (obj *Object) InInt(i []int, customError ...string) *Object {
+// InInts 检查int是否存在一个[]int中
+func (obj *Object) InInts(i []int, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -38,8 +38,28 @@ func (obj *Object) InInt(i []int, customError ...string) *Object {
 	return obj
 }
 
-// InInt64 检查int64值在一个int64 slice中是否存在
-func (obj *Object) InInt64(i []int64, customError ...string) *Object {
+// InInts32 检查int32是否存在一个[]int32中
+func (obj *Object) InInts32(i []int32, customError ...string) *Object {
+	if obj.err != nil {
+		return obj
+	}
+	value64, err := strconv.ParseInt(obj.rawValue, 10, 32)
+	if err != nil {
+		obj.err = obj.setError(err.Error(), customError...)
+		return obj
+	}
+	value32 := int32(value64)
+	for k := range i {
+		if value32 == i[k] {
+			obj.err = obj.setError("不允许的值", customError...)
+			return obj
+		}
+	}
+	return obj
+}
+
+// InInts64 检查int64是否存在一个[]int64中
+func (obj *Object) InInts64(i []int64, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -60,8 +80,8 @@ func (obj *Object) InInt64(i []int64, customError ...string) *Object {
 	return obj
 }
 
-// InFloat32 检查float32值在一个float32 slice中是否存在
-func (obj *Object) InFloat32(f []float32, p float64, customError ...string) *Object {
+// InFloats32 检查float32是否丰在一个[]float32中
+func (obj *Object) InFloats32(f []float32, p float64, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -80,8 +100,8 @@ func (obj *Object) InFloat32(f []float32, p float64, customError ...string) *Obj
 	return obj
 }
 
-// InFloat64 检查float64值在一个float64 slice中是否存在
-func (obj *Object) InFloat64(f []float64, p float64, customError ...string) *Object {
+// InFloats64 检查float64是否存在[]float64中
+func (obj *Object) InFloats64(f []float64, p float64, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}

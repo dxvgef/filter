@@ -97,8 +97,13 @@ log.Println("年龄", reqData.age)
 - `HasDigit` 存在数字
 - `HasSymbol` 存在符号
 - `HasPrefix` 存在指定的前缀字符串
-- `InStrings` 存在于[]string
 - `Contains` 存在指定字符串
+- `InStrings` 存在于[]string
+- `InInts` 存在于[]int
+- `InInts32` 存在于[]int32
+- `InInts64` 存在于[]int64
+- `InFloats32` 存在于[]float32
+- `InFloats64` 存在于[]float64
 
 ## 类型转换
 - `String` 转为string类型，并返回error

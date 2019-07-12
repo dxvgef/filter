@@ -90,6 +90,8 @@ log.Println("年龄", reqData.age)
 - `IsChineseTel` 中国大陆地区固定电话号码
 - `IsChineseMobile` 中国大陆地区手机号码
 - `IsChineseIDNumber` 中国大陆地区身份证号码
+- `IsSQLobject` SQL对象名(库、表、字段)
+- `IsSQLobjects` SQL对象名集合
 - `IsUUID` UUID格式
 - `HasLetter` 存在字母
 - `HasLower` 存在小写字母

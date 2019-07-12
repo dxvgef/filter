@@ -98,12 +98,12 @@ log.Println("年龄", reqData.age)
 - `HasSymbol` 存在符号
 - `HasPrefix` 存在指定的前缀字符串
 - `Contains` 存在指定字符串
-- `InStrings` 存在于[]string
-- `InInts` 存在于[]int
-- `InInts32` 存在于[]int32
-- `InInts64` 存在于[]int64
-- `InFloats32` 存在于[]float32
-- `InFloats64` 存在于[]float64
+- `DenyStrings` 阻止存在于[]string中的值
+- `DenyInts` 阻止存在于[]int中的值
+- `DenyInts32` 阻止存在于[]int32中的值
+- `DenyInts64` 阻止存在于[]int64中的值
+- `DenyFloats32` 阻止存在于[]float32中的值
+- `DenyFloats64` 阻止存在于[]float64中的值
 
 ## 类型转换
 - `String` 转为string类型，并返回error

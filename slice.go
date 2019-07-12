@@ -5,8 +5,8 @@ import (
 	"strconv"
 )
 
-// InStrings 检查string是否存在于[]string中
-func (obj *Object) InStrings(slice []string, customError ...string) *Object {
+// DenyStrings 阻止存在于[]string中的值
+func (obj *Object) DenyStrings(slice []string, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -19,8 +19,8 @@ func (obj *Object) InStrings(slice []string, customError ...string) *Object {
 	return obj
 }
 
-// InInts 检查int是否存在一个[]int中
-func (obj *Object) InInts(i []int, customError ...string) *Object {
+// DenyInts 阻止存在于[]int中的值
+func (obj *Object) DenyInts(i []int, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -38,8 +38,8 @@ func (obj *Object) InInts(i []int, customError ...string) *Object {
 	return obj
 }
 
-// InInts32 检查int32是否存在一个[]int32中
-func (obj *Object) InInts32(i []int32, customError ...string) *Object {
+// DenyInts32 阻止存在于[]int32中的值
+func (obj *Object) DenyInts32(i []int32, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -58,8 +58,8 @@ func (obj *Object) InInts32(i []int32, customError ...string) *Object {
 	return obj
 }
 
-// InInts64 检查int64是否存在一个[]int64中
-func (obj *Object) InInts64(i []int64, customError ...string) *Object {
+// DenyInts64 阻止存在于[]int64中的值
+func (obj *Object) DenyInts64(i []int64, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -80,8 +80,8 @@ func (obj *Object) InInts64(i []int64, customError ...string) *Object {
 	return obj
 }
 
-// InFloats32 检查float32是否丰在一个[]float32中
-func (obj *Object) InFloats32(f []float32, p float64, customError ...string) *Object {
+// DenyFloats32 阻止存在于[]float32中的值
+func (obj *Object) DenyFloats32(f []float32, p float64, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}
@@ -100,8 +100,8 @@ func (obj *Object) InFloats32(f []float32, p float64, customError ...string) *Ob
 	return obj
 }
 
-// InFloats64 检查float64是否存在[]float64中
-func (obj *Object) InFloats64(f []float64, p float64, customError ...string) *Object {
+// DenyFloats64 阻止存在于[]float64中的值
+func (obj *Object) DenyInFloats64(f []float64, p float64, customError ...string) *Object {
 	if obj.err != nil {
 		return obj
 	}

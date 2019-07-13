@@ -42,5 +42,6 @@ func (obj *Object) IsSQLobjects(sep string, customError ...string) *Object {
 			return obj
 		}
 	}
+	obj.sep = sep
 	return obj
 }

@@ -8,6 +8,9 @@ import (
 // String 转为string类型
 func (obj *Object) String() (string, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return "", obj.requiredError
+		}
 		return "", obj.err
 	}
 	return obj.rawValue, nil
@@ -22,9 +25,21 @@ func (obj *Object) MustString(def string) string {
 }
 
 // Strings 转为[]string类型，sep为分隔符
-func (obj *Object) Strings(sep string) []string {
+func (obj *Object) Strings(sep string) ([]string, error) {
+	value := strings.Split(obj.rawValue, sep)
 	if obj.err != nil {
-		return nil
+		if obj.required == true && (obj.rawValue == "" || value[0] == "") {
+			return []string{}, obj.requiredError
+		}
+		return []string{}, obj.err
+	}
+	return value, nil
+}
+
+// MustStrings 转为[]string类型，sep为分隔符，如果出错则返回默认值
+func (obj *Object) MustStrings(sep string, def []string) []string {
+	if obj.err != nil {
+		return def
 	}
 	value := strings.Split(obj.rawValue, sep)
 	return value
@@ -33,6 +48,9 @@ func (obj *Object) Strings(sep string) []string {
 // Int 转为int类型
 func (obj *Object) Int() (int, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return 0, obj.requiredError
+		}
 		return 0, obj.err
 	}
 	value, err := strconv.Atoi(obj.rawValue)
@@ -57,6 +75,9 @@ func (obj *Object) MustInt(def int) int {
 // Int8 转为int8类型
 func (obj *Object) Int8() (int8, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return 0, obj.requiredError
+		}
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 8)
@@ -81,6 +102,9 @@ func (obj *Object) MustInt8(def int8) int8 {
 // Int16 转为int16类型
 func (obj *Object) Int16() (int16, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return 0, obj.requiredError
+		}
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 16)
@@ -105,6 +129,9 @@ func (obj *Object) MustInt16(def int16) int16 {
 // Int32 转为int32类型
 func (obj *Object) Int32() (int32, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return 0, obj.requiredError
+		}
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 32)
@@ -129,6 +156,9 @@ func (obj *Object) MustInt32(def int32) int32 {
 // Int64 转为int64类型
 func (obj *Object) Int64() (int64, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return 0, obj.requiredError
+		}
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 64)
@@ -153,6 +183,9 @@ func (obj *Object) MustInt64(def int64) int64 {
 // Float32 转为float32类型
 func (obj *Object) Float32() (float32, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return 0, obj.requiredError
+		}
 		return 0, obj.err
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 32)
@@ -177,6 +210,9 @@ func (obj *Object) MustFloat32(def float32) float32 {
 // Float64 转为float64类型
 func (obj *Object) Float64() (float64, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return 0, obj.requiredError
+		}
 		return 0, obj.err
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 64)
@@ -201,6 +237,9 @@ func (obj *Object) MustFloat64(def float64) float64 {
 // Bool 转为bool类型
 func (obj *Object) Bool() (bool, error) {
 	if obj.err != nil {
+		if obj.required == true && obj.rawValue == "" {
+			return false, obj.requiredError
+		}
 		return false, obj.err
 	}
 	value, err := strconv.ParseBool(obj.rawValue)

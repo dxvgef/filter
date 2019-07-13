@@ -10,11 +10,14 @@ import (
 )
 
 type Object struct {
-	err      error   // 结果错识信息
-	name     string  // 变量名
-	rawValue string  // 原始类型的值
-	i64      int64   // int64类型的值
-	f64      float64 // float64类型的值
+	err           error   // 结果错识信息
+	name          string  // 变量名
+	rawValue      string  // 原始类型的值
+	i64           int64   // int64类型的值
+	f64           float64 // float64类型的值
+	sep           string  // slice分隔符
+	required      bool    // 必须存在有效的值
+	requiredError error   // 必须存在的错误提示
 }
 
 func FromString(value string, name ...string) *Object {
@@ -27,11 +30,18 @@ func FromString(value string, name ...string) *Object {
 	return &obj
 }
 
-func (obj *Object) setError(msg string, customMessage ...string) error {
-	if len(customMessage) > 0 {
-		return errors.New(customMessage[0])
+func (obj *Object) setError(msg string, customError ...string) error {
+	if len(customError) > 0 {
+		return errors.New(customError[0])
 	}
 	return errors.New(obj.name + msg)
+}
+
+// Required 必须存在有效的值
+func (obj *Object) Required(customError ...string) *Object {
+	obj.required = true
+	obj.requiredError = obj.setError("不能为空", customError...)
+	return obj
 }
 
 // IsLower 小写字母

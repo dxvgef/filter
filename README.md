@@ -38,7 +38,7 @@ var reqData struct {
 err := MSet(
     El(&reqData.password,
         FromString("Abc123-", "密码").
-            MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
+            Required().MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
     ),
     El(&reqData.age,
         FromString("3", "年龄").
@@ -68,7 +68,8 @@ log.Println("年龄", reqData.age)
 
 ## 数据验证
 所有数据验证函数，都可以传入自定义错误消息，例如MinLength(""自定义错误消息")
-- `MinLength 最小长度` 最小长度
+- `Required` 必须有值
+- `MinLength` 最小长度
 - `MinUTF8Length` UTF8编码最小长度
 - `MaxLength` 最大长度
 - `MaxUTF8Length` UTF8编码最大长度
@@ -82,7 +83,7 @@ log.Println("年龄", reqData.age)
 - `IsDigit` 数字
 - `IsLowerOrDigit` 小写字母或数字
 - `IsUpperOrDigit` 大写字母或数字
-- `IsLetterOrDigit 字母或数字` 字母或数字
+- `IsLetterOrDigit` 字母或数字
 - `IsChinese` 汉字
 - `IsMail` 电邮地址
 - `IsIP` IPv4/v6地址
@@ -111,6 +112,7 @@ log.Println("年龄", reqData.age)
 - `String` 转为string类型，并返回error
 - `MustString` 转为string类型，如果失败则返回默认值
 - `Strings` 按指定分隔符，转为[]string类型
+- `MustStrings` 按指定分隔符，转为[]string类型，如果失败则返回默认值
 - `Int` 转为int类型，并返回error
 - `MustInt` 转为int类型，如果失败则返回默认值
 - `Int8` 转为int8类型，并返回error

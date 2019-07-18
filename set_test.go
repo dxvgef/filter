@@ -38,7 +38,7 @@ func TestMSet(t *testing.T) {
 		),
 		El(&ReqData.age,
 			FromString("3", "年龄").
-				IsDigit().MinInteger(18)),
+				Silent().IsDigit().MinInteger(18)),
 	)
 	if err != nil {
 		t.Log(err.Error())

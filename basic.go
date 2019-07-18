@@ -19,6 +19,7 @@ type Object struct {
 	sep           string  // slice分隔符
 	required      bool    // 必须存在有效的值
 	requiredError error   // 必须存在的错误提示
+	silent        bool    // 静默，如果出错则忽略错误，也不赋值，仅对Set函数有效
 }
 
 func FromString(value string, name ...string) *Object {
@@ -42,6 +43,12 @@ func (obj *Object) setError(msg string, customError ...string) error {
 func (obj *Object) Required(customError ...string) *Object {
 	obj.required = true
 	obj.requiredError = obj.setError("不能为空", customError...)
+	return obj
+}
+
+// Silent 忽略错误，仅对Set函数有效，如果出错则不赋值，也不返回错误
+func (obj *Object) Silent() *Object {
+	obj.silent = true
 	return obj
 }
 

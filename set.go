@@ -24,6 +24,9 @@ var El = func(target interface{}, source *Object) element {
 // Set 将过滤结果赋值到指定对象
 func Set(target interface{}, source *Object) error {
 	if source.err != nil {
+		if source.silent == true {
+			return nil
+		}
 		if source.required == true && source.rawValue == "" {
 			return source.requiredError
 		}
@@ -32,10 +35,16 @@ func Set(target interface{}, source *Object) error {
 
 	ptrOf := reflect.ValueOf(target)
 	if ptrOf.Kind() != reflect.Ptr {
+		if source.silent == true {
+			return nil
+		}
 		return errors.New("必须传入" + ptrOf.Kind().String() + "的指针")
 	}
 
 	if ptrOf.Elem().CanSet() == false {
+		if source.silent == true {
+			return nil
+		}
 		return errors.New("无法赋值到传入的变量")
 	}
 
@@ -46,32 +55,53 @@ func Set(target interface{}, source *Object) error {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		v, err := strconv.ParseInt(source.rawValue, 10, 64)
 		if err != nil {
+			if source.silent == true {
+				return nil
+			}
 			return errors.New("无法将值转换为int类型")
 		}
 		if ptrOf.Elem().OverflowInt(v) == true {
+			if source.silent == true {
+				return nil
+			}
 			return errors.New("无法赋值给传入的参数类型")
 		}
 		ptrOf.Elem().SetInt(v)
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 		v, err := strconv.ParseUint(source.rawValue, 10, 64)
 		if err != nil {
+			if source.silent == true {
+				return nil
+			}
 			return errors.New("无法将值转换为uint类型")
 		}
 		if ptrOf.Elem().OverflowUint(v) == true {
+			if source.silent == true {
+				return nil
+			}
 			return errors.New("无法赋值给传入的参数类型")
 		}
 		ptrOf.Elem().SetUint(v)
 	case reflect.Float32, reflect.Float64:
 		v, err := strconv.ParseFloat(source.rawValue, 10)
 		if err != nil {
+			if source.silent == true {
+				return nil
+			}
 			return errors.New("无法将值转换为float类型")
 		}
 		if ptrOf.Elem().OverflowFloat(v) == true {
+			if source.silent == true {
+				return nil
+			}
 			return errors.New("无法赋值给传入的参数类型")
 		}
 	case reflect.Bool:
 		v, err := strconv.ParseBool(source.rawValue)
 		if err != nil {
+			if source.silent == true {
+				return nil
+			}
 			return errors.New("无法将值转换为bool类型")
 		}
 		ptrOf.Elem().SetBool(v)
@@ -80,11 +110,17 @@ func Set(target interface{}, source *Object) error {
 		switch sliceType {
 		case "[]string":
 			if source.sep == "" {
+				if source.silent == true {
+					return nil
+				}
 				return errors.New("无法赋值到传入的变量，分隔符sep参数未定义")
 			}
 			ptrOf.Elem().Set(reflect.ValueOf(strings.Split(source.rawValue, source.sep)))
 		}
 	default:
+		if source.silent == true {
+			return nil
+		}
 		return errors.New("无法赋值到传入的变量，不是预期的值类型")
 	}
 

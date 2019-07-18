@@ -69,7 +69,7 @@ log.Println("年龄", reqData.age)
 ## 数据验证
 所有数据验证函数，都可以传入自定义错误消息，例如MinLength(""自定义错误消息")
 - `Required` 必须有值（允许""之外的零值）
-- `Silent` 静默，使用此函数，如果过滤过程中发生错误不返回任何提示，也不赋值，仅对Set()函数有效
+- `Silent` 静默处理，使用此函数，如果过滤过程中发生错误不返回任何提示，也不赋值，仅对`El`和Set`函数有效
 - `MinLength` 最小长度
 - `MinUTF8Length` UTF8编码最小长度
 - `MaxLength` 最大长度

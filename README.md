@@ -8,7 +8,10 @@ golang开发的数据过滤器，由 **数据输入->数据清洗->数据验证-
 ## 基本示例
 单项数据过滤，并返回结果
 ```Go
-password, err := FromString("123", "密码").Trim().MinLength(6).MaxLength(32).String()
+password, err := filter.FromString("123", "密码").
+	Trim().
+	MinLength(6).MaxLength(32).
+	String()
 if err != nil {
     log.Println(err.Error())
     return
@@ -19,8 +22,7 @@ log.Println(password)
 单项数据过滤，并自动赋值到变量
 ```Go
 var password string
-err := Set(
-    &password, FromString("Abc123-", "密码").
+err := filter.Set(&password, filter.FromString("Abc123-", "密码").
     MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
 )
 if err != nil {
@@ -35,14 +37,12 @@ var reqData struct {
     password string
     age      int16
 }
-err := MSet(
-    El(&reqData.password,
-        FromString("Abc123-", "密码").
-            Required().MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
+err := filter.MSet(
+    filter.El(&reqData.password, filter.FromString("Abc123-", "密码").
+        Required().MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
     ),
-    El(&reqData.age,
-        FromString("3", "年龄").
-            IsDigit().MinInteger(18)),
+    filter.El(&reqData.age, filter.FromString("3", "年龄").
+        IsDigit().MinInteger(18)),
 )
 if err != nil {
     log.Println(err.Error())

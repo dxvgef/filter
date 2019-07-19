@@ -7,7 +7,7 @@ import (
 
 // MinLength 最小长度
 func (obj *Object) MinLength(min int, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if len(obj.rawValue) < min {
@@ -18,7 +18,7 @@ func (obj *Object) MinLength(min int, customError ...string) *Object {
 
 // MinUTF8Length UTF8编码最小长度
 func (obj *Object) MinUTF8Length(min int, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if utf8.RuneCountInString(obj.rawValue) < min {
@@ -29,7 +29,7 @@ func (obj *Object) MinUTF8Length(min int, customError ...string) *Object {
 
 // MaxLength 最大长度
 func (obj *Object) MaxLength(max int, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if len(obj.rawValue) > max {
@@ -40,7 +40,7 @@ func (obj *Object) MaxLength(max int, customError ...string) *Object {
 
 // MaxUTF8Length UTF8编码最大长度
 func (obj *Object) MaxUTF8Length(max int, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if utf8.RuneCountInString(obj.rawValue) > max {

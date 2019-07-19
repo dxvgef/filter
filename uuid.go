@@ -29,7 +29,7 @@ func xtob(x1, x2 byte) (byte, bool) {
 
 // IsUUID UUID格式
 func (obj *Object) IsUUID(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 

@@ -6,6 +6,7 @@ import (
 )
 
 func isSQLobject(value string) bool {
+
 	for _, v := range value {
 		if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false && v != '-' && v != '_' {
 			return false
@@ -16,7 +17,7 @@ func isSQLobject(value string) bool {
 
 // IsSQLobject SQL对象（库名、表名、字段名）
 func (obj *Object) IsSQLobject(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if isSQLobject(obj.rawValue) == false {
@@ -28,7 +29,7 @@ func (obj *Object) IsSQLobject(customError ...string) *Object {
 
 // IsSQLobjects SQL对象集合（库名、表名、字段名）
 func (obj *Object) IsSQLobjects(sep string, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	values := strings.Split(obj.rawValue, sep)

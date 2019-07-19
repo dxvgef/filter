@@ -7,39 +7,36 @@ import (
 
 // String 转为string类型
 func (obj *Object) String() (string, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return "", obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return "", obj.err
 	}
 	return obj.rawValue, nil
 }
 
-// MustString 转为string类型，如果出错则返回默认值
-func (obj *Object) MustString(def string) string {
-	if obj.err != nil {
-		return def
+// DefaultString 转为string类型，如果出错则只返回默认值
+func (obj *Object) DefaultString(defaultValue string) string {
+	if obj.err != nil || obj.rawValue == "" {
+		return defaultValue
 	}
 	return obj.rawValue
 }
 
 // Strings 转为[]string类型，sep为分隔符
 func (obj *Object) Strings(sep string) ([]string, error) {
+	if obj.err != nil || obj.rawValue == "" {
+		return []string{}, obj.err
+	}
 	value := strings.Split(obj.rawValue, sep)
-	if obj.err != nil {
-		if obj.required == true && (obj.rawValue == "" || value[0] == "") {
-			return []string{}, obj.requiredError
-		}
+	if value[0] == "" {
 		return []string{}, obj.err
 	}
 	return value, nil
 }
 
-// MustStrings 转为[]string类型，sep为分隔符，如果出错则返回默认值
-func (obj *Object) MustStrings(sep string, def []string) []string {
+// DefaultStrings 转为[]string类型，sep为分隔符，如果出错则只返回默认值
+func (obj *Object) DefaultStrings(sep string, defaultValue []string) []string {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value := strings.Split(obj.rawValue, sep)
 	return value
@@ -47,10 +44,7 @@ func (obj *Object) MustStrings(sep string, def []string) []string {
 
 // Int 转为int类型
 func (obj *Object) Int() (int, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return 0, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return 0, obj.err
 	}
 	value, err := strconv.Atoi(obj.rawValue)
@@ -60,24 +54,21 @@ func (obj *Object) Int() (int, error) {
 	return value, nil
 }
 
-// MustInt 转为int类型，如果出错则返回默认值
-func (obj *Object) MustInt(def int) int {
+// DefaultInt 转为int类型，如果出错则只返回默认值
+func (obj *Object) DefaultInt(defaultValue int) int {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.Atoi(obj.rawValue)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return value
 }
 
 // Int8 转为int8类型
 func (obj *Object) Int8() (int8, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return 0, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 8)
@@ -87,24 +78,21 @@ func (obj *Object) Int8() (int8, error) {
 	return int8(value), nil
 }
 
-// MustInt8 转为int8类型，如果出错则返回默认值
-func (obj *Object) MustInt8(def int8) int8 {
+// DefaultInt8 转为int8类型，如果出错则只返回默认值
+func (obj *Object) DefaultInt8(defaultValue int8) int8 {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 8)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return int8(value)
 }
 
 // Int16 转为int16类型
 func (obj *Object) Int16() (int16, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return 0, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 16)
@@ -114,24 +102,21 @@ func (obj *Object) Int16() (int16, error) {
 	return int16(value), nil
 }
 
-// Int16 转为int16类型，如果出错则返回默认值
-func (obj *Object) MustInt16(def int16) int16 {
+// DefaultInt16 转为int16类型，如果出错则只返回默认值
+func (obj *Object) DefaultInt16(defaultValue int16) int16 {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 16)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return int16(value)
 }
 
 // Int32 转为int32类型
 func (obj *Object) Int32() (int32, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return 0, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 32)
@@ -141,24 +126,21 @@ func (obj *Object) Int32() (int32, error) {
 	return int32(value), nil
 }
 
-// Int32 转为int32类型，如果出错则返回默认值
-func (obj *Object) MustInt32(def int32) int32 {
+// DefaultInt32 转为int32类型，如果出错则只返回默认值
+func (obj *Object) DefaultInt32(defaultValue int32) int32 {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 32)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return int32(value)
 }
 
 // Int64 转为int64类型
 func (obj *Object) Int64() (int64, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return 0, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return 0, obj.err
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 64)
@@ -168,24 +150,21 @@ func (obj *Object) Int64() (int64, error) {
 	return value, nil
 }
 
-// Int64 转为int64类型，如果出错则返回默认值
-func (obj *Object) MustInt64(def int64) int64 {
+// DefaultInt64 转为int64类型，如果出错则只返回默认值
+func (obj *Object) DefaultInt64(defaultValue int64) int64 {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.ParseInt(obj.rawValue, 10, 64)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return value
 }
 
 // Float32 转为float32类型
 func (obj *Object) Float32() (float32, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return 0, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return 0, obj.err
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 32)
@@ -195,24 +174,21 @@ func (obj *Object) Float32() (float32, error) {
 	return float32(value), nil
 }
 
-// Float32 转为float32类型，如果出错则返回默认值
-func (obj *Object) MustFloat32(def float32) float32 {
+// DefaultFloat32 转为float32类型，如果出错则只返回默认值
+func (obj *Object) DefaultFloat32(defaultValue float32) float32 {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 32)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return float32(value)
 }
 
 // Float64 转为float64类型
 func (obj *Object) Float64() (float64, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return 0, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return 0, obj.err
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 64)
@@ -222,24 +198,21 @@ func (obj *Object) Float64() (float64, error) {
 	return value, nil
 }
 
-// Float64 转为float64类型，如果出错则返回默认值
-func (obj *Object) MustFloat64(def float64) float64 {
+// DefaultFloat64 转为float64类型，如果出错则只返回默认值
+func (obj *Object) DefaultFloat64(defaultValue float64) float64 {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 64)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return value
 }
 
 // Bool 转为bool类型
 func (obj *Object) Bool() (bool, error) {
-	if obj.err != nil {
-		if obj.required == true && obj.rawValue == "" {
-			return false, obj.requiredError
-		}
+	if obj.err != nil || obj.rawValue == "" {
 		return false, obj.err
 	}
 	value, err := strconv.ParseBool(obj.rawValue)
@@ -249,14 +222,14 @@ func (obj *Object) Bool() (bool, error) {
 	return value, nil
 }
 
-// Bool 转为bool类型，如果出错则返回默认值
-func (obj *Object) MustBool(def bool) bool {
+// DefaultBool 转为bool类型，如果出错则只返回默认值
+func (obj *Object) DefaultBool(defaultValue bool) bool {
 	if obj.err != nil {
-		return def
+		return defaultValue
 	}
 	value, err := strconv.ParseBool(obj.rawValue)
 	if err != nil {
-		return def
+		return defaultValue
 	}
 	return value
 }

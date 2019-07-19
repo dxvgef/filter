@@ -11,15 +11,14 @@ import (
 )
 
 type Object struct {
-	err           error   // 结果错识信息
-	name          string  // 变量名
-	rawValue      string  // 原始类型的值
-	i64           int64   // int64类型的值
-	f64           float64 // float64类型的值
-	sep           string  // slice分隔符
-	required      bool    // 必须存在有效的值
-	requiredError error   // 必须存在的错误提示
-	silent        bool    // 静默，如果出错则忽略错误，也不赋值，仅对Set函数有效
+	err          error       // 结果错识信息
+	name         string      // 变量名
+	rawValue     string      // 原始类型的值
+	i64          int64       // int64类型的值
+	f64          float64     // float64类型的值
+	sep          string      // slice分隔符
+	silent       bool        // 静默处理，如果出错则不返回错误，仅对Set和MSet函数有效
+	defaultValue interface{} // 出现错误时静默返回值，用此值对目标变量target进行赋值
 }
 
 func FromString(value string, name ...string) *Object {
@@ -39,22 +38,33 @@ func (obj *Object) setError(msg string, customError ...string) error {
 	return errors.New(obj.name + msg)
 }
 
-// Required 必须存在有效的值
+// Required 必须有值（允许""之外的零值）。如果不使用此规则，当参数值为""时，数据验证默认不生效
 func (obj *Object) Required(customError ...string) *Object {
-	obj.required = true
-	obj.requiredError = obj.setError("不能为空", customError...)
+	if obj.err != nil {
+		return obj
+	}
+	if obj.rawValue == "" {
+		obj.err = obj.setError("不能为空", customError...)
+		return obj
+	}
 	return obj
 }
 
-// Silent 忽略错误，仅对Set函数有效，如果出错则不赋值，也不返回错误
+// Silent 启用静默模式。如果过滤过程中发生错误，不返回错误，只适用于`El`和`Set`方法
 func (obj *Object) Silent() *Object {
 	obj.silent = true
 	return obj
 }
 
+// Default 默认值。如果过滤发生错误，则默认值去赋值到变量，只适用于`El`和`Set`方法
+func (obj *Object) Default(value interface{}) *Object {
+	obj.defaultValue = value
+	return obj
+}
+
 // IsLower 小写字母
 func (obj *Object) IsLower(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -68,7 +78,7 @@ func (obj *Object) IsLower(customError ...string) *Object {
 
 // IsUpper 大写字母
 func (obj *Object) IsUpper(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -82,7 +92,7 @@ func (obj *Object) IsUpper(customError ...string) *Object {
 
 // IsLetter 大小写字母
 func (obj *Object) IsLetter(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -96,7 +106,7 @@ func (obj *Object) IsLetter(customError ...string) *Object {
 
 // IsDigit 数字
 func (obj *Object) IsDigit(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -110,7 +120,7 @@ func (obj *Object) IsDigit(customError ...string) *Object {
 
 // IsLowerOrDigit 小写字母或数字
 func (obj *Object) IsLowerOrDigit(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -124,7 +134,7 @@ func (obj *Object) IsLowerOrDigit(customError ...string) *Object {
 
 // IsUpperOrDigit 大写字母或数字
 func (obj *Object) IsUpperOrDigit(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -138,7 +148,7 @@ func (obj *Object) IsUpperOrDigit(customError ...string) *Object {
 
 // IsLetterOrDigit 字母或数字
 func (obj *Object) IsLetterOrDigit(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -152,7 +162,7 @@ func (obj *Object) IsLetterOrDigit(customError ...string) *Object {
 
 // IsChinese 汉字
 func (obj *Object) IsChinese(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for _, v := range obj.rawValue {
@@ -166,7 +176,7 @@ func (obj *Object) IsChinese(customError ...string) *Object {
 
 // IsChineseTel 中国大陆地区手机号码
 func (obj *Object) IsChineseTel(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	telSlice := strings.Split(obj.rawValue, "-")
@@ -198,7 +208,7 @@ func (obj *Object) IsChineseTel(customError ...string) *Object {
 
 // IsMail 电邮地址
 func (obj *Object) IsMail(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	emailSlice := strings.Split(obj.rawValue, "@")
@@ -247,7 +257,7 @@ func (obj *Object) IsMail(customError ...string) *Object {
 
 // IsIP IPv4/v6地址
 func (obj *Object) IsIP(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if net.ParseIP(obj.rawValue) == nil {
@@ -260,7 +270,7 @@ func (obj *Object) IsIP(customError ...string) *Object {
 
 // IsJSON 有效的JSON格式
 func (obj *Object) IsJSON(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 
@@ -274,14 +284,14 @@ func (obj *Object) IsJSON(customError ...string) *Object {
 
 // IsTimestamp 有效的Unix时间戳
 func (obj *Object) IsTimestamp(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if obj.i64 == 0 {
 		var err error
 		obj.i64, err = strconv.ParseInt(obj.rawValue, 10, 64)
 		if err != nil {
-			obj.err = err
+			obj.err = obj.setError("不是有效的Unix时间戳", customError...)
 			return obj
 		}
 	}
@@ -294,7 +304,7 @@ func (obj *Object) IsTimestamp(customError ...string) *Object {
 
 // IsChineseIDNumber 中国大陆地区身份证号码
 func (obj *Object) IsChineseIDNumber(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	var idV int

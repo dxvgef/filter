@@ -4,7 +4,7 @@ import "strconv"
 
 // IsChineseMobile 中国大陆地区手机号码
 func (obj *Object) IsChineseMobile(customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	_, err := strconv.Atoi(obj.rawValue)

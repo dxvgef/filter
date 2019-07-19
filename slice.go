@@ -6,7 +6,7 @@ import (
 
 // DenyStrings 阻止存在于[]string中的值
 func (obj *Object) DenyStrings(slice []string, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	for k := range slice {
@@ -20,7 +20,7 @@ func (obj *Object) DenyStrings(slice []string, customError ...string) *Object {
 
 // DenyInts 阻止存在于[]int中的值
 func (obj *Object) DenyInts(i []int, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	value, err := strconv.Atoi(obj.rawValue)
@@ -39,7 +39,7 @@ func (obj *Object) DenyInts(i []int, customError ...string) *Object {
 
 // DenyInts32 阻止存在于[]int32中的值
 func (obj *Object) DenyInts32(i []int32, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	value64, err := strconv.ParseInt(obj.rawValue, 10, 32)
@@ -59,7 +59,7 @@ func (obj *Object) DenyInts32(i []int32, customError ...string) *Object {
 
 // DenyInts64 阻止存在于[]int64中的值
 func (obj *Object) DenyInts64(i []int64, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if obj.i64 == 0 {
@@ -81,7 +81,7 @@ func (obj *Object) DenyInts64(i []int64, customError ...string) *Object {
 
 // DenyFloats32 阻止存在于[]float32中的值
 func (obj *Object) DenyFloats32(f []float32, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 32)
@@ -101,7 +101,7 @@ func (obj *Object) DenyFloats32(f []float32, customError ...string) *Object {
 
 // DenyFloats64 阻止存在于[]float64中的值
 func (obj *Object) DenyInFloats64(f []float64, customError ...string) *Object {
-	if obj.err != nil {
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if obj.f64 == 0 {

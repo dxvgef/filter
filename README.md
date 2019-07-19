@@ -68,8 +68,7 @@ log.Println("年龄", reqData.age)
 
 ## 数据验证
 所有数据验证函数，都可以传入自定义错误消息，例如MinLength(""自定义错误消息")
-- `Required` 必须有值（允许""之外的零值）
-- `Silent` 静默处理，使用此函数，如果过滤过程中发生错误不返回任何提示，也不赋值，仅对`El`和Set`函数有效
+- `Required` 必须有值（允许""之外的零值）。如果不使用此规则，当参数值为""时，数据验证默认不生效
 - `MinLength` 最小长度
 - `MinUTF8Length` UTF8编码最小长度
 - `MaxLength` 最大长度
@@ -112,28 +111,30 @@ log.Println("年龄", reqData.age)
 
 ## 类型转换
 - `String` 转为string类型，并返回error
-- `MustString` 转为string类型，如果失败则返回默认值
+- `DefaultString` 转为string类型，如果出现错误则只返回默认值
 - `Strings` 按指定分隔符，转为[]string类型
-- `MustStrings` 按指定分隔符，转为[]string类型，如果失败则返回默认值
+- `DefaultStrings` 按指定分隔符，转为[]string类型，如果出现错误则只返回默认值
 - `Int` 转为int类型，并返回error
-- `MustInt` 转为int类型，如果失败则返回默认值
+- `DefaultInt` 转为int类型，如果出现错误则只返回默认值
 - `Int8` 转为int8类型，并返回error
-- `MustInt8` 转为int8类型，如果失败则返回默认值
+- `DefaultInt8` 转为int8类型，如果出现错误则只返回默认值
 - `Int16` 转为int16类型，并返回error
-- `MustInt16` 转为int16类型，如果失败则返回默认值
+- `DefaultInt16` 转为int16类型，如果出现错误则只返回默认值
 - `Int32` 转为int32类型，并返回error
-- `MustInt32` 转为int32类型，如果失败则返回默认值
+- `DefaultInt32` 转为int32类型，如果出现错误则只返回默认值
 - `Int64` 转为int64类型，并返回error
-- `MustInt64` 转为int64类型，如果失败则返回默认值
+- `DefaultInt64` 转为int64类型，如果出现错误则只返回默认值
 - `Float32` 转为float32类型，并返回errBor
-- `MustFloat32` 转为float8类型，如果失败则返回默认值
+- `DefaultFloat32` 转为float8类型，如果出现错误则只返回默认值
 - `Float64` 转为float64类型，并返回error
-- `MustFloat64` 转为float64类型，如果失败则返回默认值
+- `DefaultFloat64` 转为float64类型，如果出现错误则只返回默认值
 - `Bool` 转为bool类型，并返回error
-- `MustBool` 转为bool类型，如果失败则返回默认值
+- `DefaultBool` 转为bool类型，如果出现错误则只返回默认值
 
 ## 结果输出
 除了使用类型转换函数得到过滤后的数据，还可以使用以下函数将过滤结果赋值到指定变量
 - `Set` 将单个过滤结果赋值到变量
 - `MSet` 将多个过滤结果赋值到对应的变量
 - `El` 用于创建`MSet`函数的`Element`入参类型
+- `Silent` 静默模式。如果过滤过程中发生错误，不会返回任何错误，只适用于`El`和`Set`方法
+- `Default` 默认值。如果过滤过程中发生错误，用默认值进行赋值，只适用于`El`和`Set`方法

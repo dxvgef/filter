@@ -46,41 +46,38 @@ func Set(target interface{}, source *Object) error {
 
 	targetTypeOf := targetValueOf.Elem().Type().Kind()
 
-	if source.err == nil && source.defaultValue == nil {
-		err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
-		if err != nil {
-			if source.silent == true {
-				return nil
+	if source.err != nil || source.defaultValue != nil {
+		var err error
+		if source.err != nil && source.defaultValue == nil {
+			err = source.err
+		}
+		if source.err != nil && source.defaultValue != nil {
+			err = setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue)
+		}
+
+		if source.err == nil && source.defaultValue != nil {
+			err = setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
+			if err != nil {
+				err = setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue)
 			}
-			return errors.New(source.name + err.Error())
 		}
-	} else if source.err == nil && source.defaultValue != nil {
-		err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
-		if err == nil {
-			return nil
-		}
-		err = setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue)
+		// 把错误都收起来,最后在判断是否silent
 		if err != nil {
 			if source.silent == true {
 				return nil
 			}
 			return err
 		}
-	} else if source.err != nil && source.defaultValue == nil {
+		return nil
+	}
+	// 默认err和defaultValue都等于nil
+	err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
+	if err != nil {
 		if source.silent == true {
 			return nil
 		}
-		return source.err
-	} else if source.err != nil && source.defaultValue != nil {
-		err := setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue)
-		if err != nil {
-			if source.silent == true {
-				return nil
-			}
-			return err
-		}
+		return errors.New(source.name + err.Error())
 	}
-
 	return nil
 }
 

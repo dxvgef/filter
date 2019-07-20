@@ -23,7 +23,7 @@ var El = func(target interface{}, source *Object) element {
 
 // Set 将过滤结果赋值到指定对象
 func Set(target interface{}, source *Object) error {
-	if source.err != nil && source.silent == true && source.defaultValue == nil {
+	if (source.err != nil && source.silent == true && source.defaultValue == nil) || (source.rawValue == "" && source.defaultValue == nil) {
 		return nil
 	}
 

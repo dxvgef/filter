@@ -27,6 +27,7 @@ func TestGetValue(t *testing.T) {
 func TestRequired(t *testing.T) {
 	age, err := FromString(" ", "年龄").
 		RemoveSpace().
+		Required().
 		MinInteger(1).Int64()
 	if err != nil {
 		t.Log(err.Error())
@@ -43,8 +44,8 @@ func TestSet(t *testing.T) {
 		other    int
 	}
 	err := Set(
-		&ReqData.username, FromString("dxvgef", "账号").
-			RemoveSpace().
+		&ReqData.username, FromString("", "账号").
+			RemoveSpace().Required().
 			MinLength(3).MaxLength(32),
 	)
 	if err != nil {

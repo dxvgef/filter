@@ -23,11 +23,10 @@ var El = func(target interface{}, source *Object) element {
 
 // Set 将过滤结果赋值到指定对象
 func Set(target interface{}, source *Object) error {
-	if (source.err != nil && source.silent == true && source.defaultValue == nil) || (source.rawValue == "" && source.defaultValue == nil) {
-		return nil
+	if source.err != nil && source.silent == false && source.defaultValue == nil && source.rawValue == "" {
+		return source.err
 	}
-
-	// log.Println(source.err, source.silent, source.defaultValue)
+	source.err = nil
 
 	targetValueOf := reflect.ValueOf(target)
 	if targetValueOf.Kind() != reflect.Ptr {
@@ -36,42 +35,15 @@ func Set(target interface{}, source *Object) error {
 		}
 		return errors.New(source.name + "过滤规则的target参数必须传入指针类型")
 	}
-
 	if targetValueOf.Elem().CanSet() == false {
 		if source.silent == true {
 			return nil
 		}
 		return errors.New(source.name + "过滤规则无法更改目标变量的值")
 	}
-
 	targetTypeOf := targetValueOf.Elem().Type().Kind()
 
-	if source.err == nil && source.defaultValue == nil {
-		err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
-		if err != nil {
-			if source.silent == true {
-				return nil
-			}
-			return errors.New(source.name + err.Error())
-		}
-	} else if source.err == nil && source.defaultValue != nil {
-		err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
-		if err == nil {
-			return nil
-		}
-		err = setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue)
-		if err != nil {
-			if source.silent == true {
-				return nil
-			}
-			return err
-		}
-	} else if source.err != nil && source.defaultValue == nil {
-		if source.silent == true {
-			return nil
-		}
-		return source.err
-	} else if source.err != nil && source.defaultValue != nil {
+	if source.defaultValue != nil && source.rawValue == "" {
 		err := setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue)
 		if err != nil {
 			if source.silent == true {
@@ -79,6 +51,19 @@ func Set(target interface{}, source *Object) error {
 			}
 			return err
 		}
+		return nil
+	}
+
+	if source.rawValue == "" {
+		return nil
+	}
+
+	err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
+	if err != nil {
+		if source.silent == true {
+			return nil
+		}
+		return errors.New(source.name + err.Error())
 	}
 
 	return nil

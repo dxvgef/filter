@@ -44,7 +44,7 @@ func TestSet(t *testing.T) {
 		other    int
 	}
 	err := Set(
-		&ReqData.username, FromString("", "账号").
+		&ReqData.username, FromString("dxvgef", "账号").
 			RemoveSpace().Required().
 			MinLength(3).MaxLength(32),
 	)
@@ -71,11 +71,10 @@ func TestSet(t *testing.T) {
 	}
 
 	err = Set(
-		&ReqData.other, FromString("aaa", "其它").Silent().Default(20),
+		&ReqData.other, FromString("25", "其它").MinInteger(18).Default(20),
 	)
 	if err != nil {
 		t.Log(err.Error())
-		return
 	}
 	t.Log("账号", ReqData.username)
 	t.Log("密码", ReqData.password)
@@ -101,9 +100,9 @@ func TestMSet(t *testing.T) {
 				MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
 		),
 		El(&ReqData.age,
-			FromString("", "年龄").
+			FromString("27", "年龄").
 				RemoveSpace().Required().
-				IsDigit().MinInteger(18)),
+				MinInteger(18).MaxInteger(25)),
 	)
 	if err != nil {
 		t.Log(err.Error())

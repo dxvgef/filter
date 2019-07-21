@@ -23,10 +23,14 @@ var El = func(target interface{}, source *Object) element {
 
 // Set 将过滤结果赋值到指定对象
 func Set(target interface{}, source *Object) error {
-	if source.err != nil && source.silent == false && source.defaultValue == nil && source.rawValue == "" {
+	if source.err != nil && source.defaultValue == nil {
+		if source.silent == true {
+			return nil
+		}
 		return source.err
 	}
-	source.err = nil
+
+	// source.err = nil
 
 	targetValueOf := reflect.ValueOf(target)
 	if targetValueOf.Kind() != reflect.Ptr {
@@ -43,9 +47,8 @@ func Set(target interface{}, source *Object) error {
 	}
 	targetTypeOf := targetValueOf.Elem().Type().Kind()
 
-	if source.defaultValue != nil && source.rawValue == "" {
-		err := setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue)
-		if err != nil {
+	if source.err != nil && source.defaultValue != nil {
+		if err := setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue); err != nil {
 			if source.silent == true {
 				return nil
 			}
@@ -54,16 +57,13 @@ func Set(target interface{}, source *Object) error {
 		return nil
 	}
 
-	if source.rawValue == "" {
-		return nil
-	}
-
-	err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep)
-	if err != nil {
-		if source.silent == true {
-			return nil
+	if source.err == nil && source.rawValue != "" {
+		if err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep); err != nil {
+			if source.silent == true {
+				return nil
+			}
+			return errors.New(source.name + err.Error())
 		}
-		return errors.New(source.name + err.Error())
 	}
 
 	return nil

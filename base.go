@@ -62,6 +62,17 @@ func (obj *Object) Default(value interface{}) *Object {
 	return obj
 }
 
+// IsBool 布尔值
+func (obj *Object) IsBool(customError ...string) *Object {
+	if obj.err != nil || obj.rawValue == "" {
+		return obj
+	}
+	if _, err := strconv.ParseBool(obj.rawValue); err != nil {
+		obj.err = obj.setError("必须是布尔值", customError...)
+	}
+	return obj
+}
+
 // IsLower 小写字母
 func (obj *Object) IsLower(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {

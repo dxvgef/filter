@@ -114,7 +114,7 @@ func setRawValue(targetTypeOf reflect.Kind, targetValueOf reflect.Value, value s
 	case reflect.Bool:
 		v, err := strconv.ParseBool(value)
 		if err != nil {
-			return errors.New("不是有效的布尔值")
+			return errors.New("必须是布尔值")
 		}
 		targetValueOf.Elem().SetBool(v)
 	case reflect.Slice:

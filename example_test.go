@@ -86,7 +86,7 @@ func TestMSet(t *testing.T) {
 	var ReqData struct {
 		username string
 		password string
-		age      int16
+		columns  []string
 	}
 	err := MSet(
 		El(&ReqData.username,
@@ -99,10 +99,9 @@ func TestMSet(t *testing.T) {
 				Required().
 				MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
 		),
-		El(&ReqData.age,
-			FromString("27", "年龄").
-				RemoveSpace().Required().
-				MinInteger(18).MaxInteger(25)),
+		El(&ReqData.columns,
+			FromString("abc,def,ghi", "字段").
+				RemoveSpace().Required().Separator(",")),
 	)
 	if err != nil {
 		t.Log(err.Error())
@@ -110,7 +109,7 @@ func TestMSet(t *testing.T) {
 	}
 	t.Log("账号", ReqData.username)
 	t.Log("密码", ReqData.password)
-	t.Log("年龄", ReqData.age)
+	t.Log("字段", ReqData.columns)
 }
 
 func BenchmarkBasic(b *testing.B) {

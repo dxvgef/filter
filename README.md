@@ -65,6 +65,7 @@ log.Println("年龄", reqData.age)
 - `SnakeCaseToCamelCase` 蛇形转驼峰: hello_world => helloWorld
 - `SnakeCaseToPascalCase` 蛇形转帕斯卡: hello_world => HelloWorld
 - `CamelCaseToSnakeCase` 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
+- `Separator` 指定Slice类型的分隔符
 
 ## 数据验证
 所有数据验证函数，都可以传入自定义错误消息，例如MinLength(""自定义错误消息")

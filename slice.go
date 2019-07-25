@@ -4,6 +4,15 @@ import (
 	"strconv"
 )
 
+// Separator 指定slice类型的分隔符
+func (obj *Object) Separator(sep string) *Object {
+	if obj.err != nil || obj.rawValue == "" {
+		return obj
+	}
+	obj.sep = sep
+	return obj
+}
+
 // DenyStrings 阻止存在于[]string中的值
 func (obj *Object) DenyStrings(slice []string, customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {

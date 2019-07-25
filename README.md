@@ -78,6 +78,7 @@ log.Println("年龄", reqData.age)
 - `MaxInteger` 最大整数值
 - `MinFloat` 最小浮点值
 - `MaxFloat` 最大浮点值
+- `IsBool` 布尔值
 - `IsLower` 小写字母
 - `IsUpper` 大写字母
 - `IsLetter` 字母
@@ -103,12 +104,18 @@ log.Println("年龄", reqData.age)
 - `HasSymbol` 存在符号
 - `HasPrefix` 存在指定的前缀字符串
 - `Contains` 存在指定字符串
-- `DenyStrings` 阻止存在于[]string中的值
-- `DenyInts` 阻止存在于[]int中的值
-- `DenyInts32` 阻止存在于[]int32中的值
-- `DenyInts64` 阻止存在于[]int64中的值
-- `DenyFloats32` 阻止存在于[]float32中的值
-- `DenyFloats64` 阻止存在于[]float64中的值
+- `AllowStrings` 仅允许[]string中的值
+- `AllowInts` 仅允许[]int中的值
+- `AllowInts32` 仅允许[]int32中的值
+- `AllowInts64` 仅允许[]int64中的值
+- `AllowFloats32` 仅允许[]float32中的值
+- `AllowFloats64` 仅允许[]float64中的值
+- `DenyStrings` 阻止[]string中的值
+- `DenyInts` 阻止[]int中的值
+- `DenyInts32` 阻止[]int32中的值
+- `DenyInts64` 阻止[]int64中的值
+- `DenyFloats32` 阻止[]float32中的值
+- `DenyFloats64` 阻止[]float64中的值
 
 ## 类型转换
 - `String` 转为string类型，并返回error

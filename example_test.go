@@ -100,8 +100,8 @@ func TestMSet(t *testing.T) {
 				MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
 		),
 		El(&ReqData.columns,
-			FromString("abc,def,ghi", "字段").
-				RemoveSpace().Required().Separator(",")),
+			FromString("abc", "字段").
+				RemoveSpace().AllowStrings([]string{"abc", "def"}).Separator(",")),
 	)
 	if err != nil {
 		t.Log(err.Error())

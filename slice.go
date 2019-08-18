@@ -21,11 +21,11 @@ func (obj *Object) AllowStrings(slice []string, customError ...string) *Object {
 		return obj
 	}
 	for k := range slice {
-		if slice[k] != obj.rawValue {
-			obj.err = obj.setError("的值不在允许的范围", customError...)
+		if slice[k] == obj.rawValue {
 			return obj
 		}
 	}
+	obj.err = obj.setError("的值不在允许的范围", customError...)
 	return obj
 }
 
@@ -40,11 +40,11 @@ func (obj *Object) AllowInts(i []int, customError ...string) *Object {
 		return obj
 	}
 	for k := range i {
-		if value != i[k] {
-			obj.err = obj.setError("的值不在允许的范围", customError...)
+		if value == i[k] {
 			return obj
 		}
 	}
+	obj.err = obj.setError("的值不在允许的范围", customError...)
 	return obj
 }
 
@@ -60,11 +60,11 @@ func (obj *Object) AllowInts32(i []int32, customError ...string) *Object {
 	}
 	value32 := int32(value64)
 	for k := range i {
-		if value32 != i[k] {
-			obj.err = obj.setError("的值不在允许的范围", customError...)
+		if value32 == i[k] {
 			return obj
 		}
 	}
+	obj.err = obj.setError("的值不在允许的范围", customError...)
 	return obj
 }
 
@@ -82,11 +82,11 @@ func (obj *Object) AllowInts64(i []int64, customError ...string) *Object {
 		}
 	}
 	for k := range i {
-		if obj.i64 != i[k] {
-			obj.err = obj.setError("的值不在允许的范围", customError...)
+		if obj.i64 == i[k] {
 			return obj
 		}
 	}
+	obj.err = obj.setError("的值不在允许的范围", customError...)
 	return obj
 }
 
@@ -102,11 +102,11 @@ func (obj *Object) AllowFloats32(f []float32, customError ...string) *Object {
 	}
 	value32 := float32(value)
 	for k := range f {
-		if value32 != f[k] {
-			obj.err = obj.setError("的值不在允许的范围", customError...)
+		if value32 == f[k] {
 			return obj
 		}
 	}
+	obj.err = obj.setError("的值不在允许的范围", customError...)
 	return obj
 }
 
@@ -124,11 +124,11 @@ func (obj *Object) AllowInFloats64(f []float64, customError ...string) *Object {
 		}
 	}
 	for k := range f {
-		if obj.f64 != f[k] {
-			obj.err = obj.setError("的值被阻止", customError...)
+		if obj.f64 == f[k] {
 			return obj
 		}
 	}
+	obj.err = obj.setError("的值不在允许的范围", customError...)
 	return obj
 }
 

@@ -12,7 +12,7 @@ func (obj *Object) HasLetter(customError ...string) *Object {
 	}
 
 	for _, v := range obj.rawValue {
-		if unicode.IsLetter(v) == true {
+		if unicode.IsLetter(v) {
 			return obj
 		}
 	}
@@ -28,7 +28,7 @@ func (obj *Object) HasLower(customError ...string) *Object {
 	}
 
 	for _, v := range obj.rawValue {
-		if unicode.IsLower(v) == true {
+		if unicode.IsLower(v) {
 			return obj
 		}
 	}
@@ -44,7 +44,7 @@ func (obj *Object) HasUpper(customError ...string) *Object {
 	}
 
 	for _, v := range obj.rawValue {
-		if unicode.IsUpper(v) == true {
+		if unicode.IsUpper(v) {
 			return obj
 		}
 	}
@@ -60,7 +60,7 @@ func (obj *Object) HasDigit(customError ...string) *Object {
 	}
 
 	for _, v := range obj.rawValue {
-		if unicode.IsDigit(v) == true {
+		if unicode.IsDigit(v) {
 			return obj
 		}
 	}
@@ -76,7 +76,7 @@ func (obj *Object) HasSymbol(customError ...string) *Object {
 	}
 
 	for _, v := range obj.rawValue {
-		if unicode.IsDigit(v) == false && unicode.IsLetter(v) == false && unicode.Is(unicode.Han, v) == false {
+		if !unicode.IsDigit(v) && !unicode.IsLetter(v) && !unicode.Is(unicode.Han, v) {
 			return obj
 		}
 	}
@@ -90,7 +90,7 @@ func (obj *Object) Contains(sub string, customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
-	if strings.Contains(obj.rawValue, sub) == false {
+	if !strings.Contains(obj.rawValue, sub) {
 		obj.err = obj.setError("不允许的值", customError...)
 		return obj
 	}
@@ -102,7 +102,7 @@ func (obj *Object) HasPrefix(sub string, customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
-	if strings.HasPrefix(obj.rawValue, sub) == false {
+	if !strings.HasPrefix(obj.rawValue, sub) {
 		obj.err = obj.setError("不允许的值", customError...)
 		return obj
 	}

@@ -78,6 +78,6 @@ func (obj *Object) CamelCaseToSnakeCase() *Object {
 		}
 		result = append(result, char)
 	}
-	obj.rawValue = strings.ToLower(string(result[:]))
+	obj.rawValue = strings.ToLower(string(result))
 	return obj
 }

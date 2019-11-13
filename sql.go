@@ -8,7 +8,7 @@ import (
 func isSQLobject(value string) bool {
 
 	for _, v := range value {
-		if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false && v != '-' && v != '_' {
+		if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '-' && v != '_' {
 			return false
 		}
 	}
@@ -20,7 +20,7 @@ func (obj *Object) IsSQLobject(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
-	if isSQLobject(obj.rawValue) == false {
+	if !isSQLobject(obj.rawValue) {
 		obj.err = obj.setError("必须是字母、数字或-_符号", customError...)
 		return obj
 	}
@@ -38,7 +38,7 @@ func (obj *Object) IsSQLobjects(sep string, customError ...string) *Object {
 		return obj
 	}
 	for _, v := range values {
-		if isSQLobject(v) == false {
+		if !isSQLobject(v) {
 			obj.err = obj.setError("必须是字母、数字或-_符号", customError...)
 			return obj
 		}

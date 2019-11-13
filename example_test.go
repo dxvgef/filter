@@ -3,6 +3,14 @@ package filter
 import "testing"
 
 func TestGetValue(t *testing.T) {
+	arr, err := FromString("aa", "数组").
+		RemoveSpace().Required().
+		Strings(",")
+	if err != nil {
+		t.Log(err.Error())
+		return
+	}
+	t.Log(arr)
 	username, err := FromString("dxvgef", "账号").
 		RemoveSpace().
 		MinLength(3).MaxLength(32).

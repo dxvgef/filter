@@ -42,7 +42,7 @@ func (obj *Object) IsUUID(customError ...string) *Object {
 
 	// urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	case 36 + 9:
-		if strings.ToLower(str[:9]) != "urn:uuid:" {
+		if strings.EqualFold(strings.ToLower(str[:9]), "urn:uuid:") {
 			obj.err = obj.setError("格式不正确", customError...)
 			return obj
 		}

@@ -79,7 +79,7 @@ func (obj *Object) IsLower(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.IsLower(v) == false {
+		if !unicode.IsLower(v) {
 			obj.err = obj.setError("必须是小写字母", customError...)
 			return obj
 		}
@@ -93,7 +93,7 @@ func (obj *Object) IsUpper(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.IsUpper(v) == false {
+		if !unicode.IsUpper(v) {
 			obj.err = obj.setError("必须是大写字母", customError...)
 			return obj
 		}
@@ -107,7 +107,7 @@ func (obj *Object) IsLetter(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.IsLetter(v) == false {
+		if !unicode.IsLetter(v) {
 			obj.err = obj.setError("必须是字母", customError...)
 			return obj
 		}
@@ -121,7 +121,7 @@ func (obj *Object) IsDigit(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.IsDigit(v) == false {
+		if !unicode.IsDigit(v) {
 			obj.err = obj.setError("必须是数字", customError...)
 			return obj
 		}
@@ -135,7 +135,7 @@ func (obj *Object) IsLowerOrDigit(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.IsLower(v) == false && unicode.IsDigit(v) == false {
+		if !unicode.IsLower(v) && !unicode.IsDigit(v) {
 			obj.err = obj.setError("必须是小写字母或数字", customError...)
 			return obj
 		}
@@ -149,7 +149,7 @@ func (obj *Object) IsUpperOrDigit(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.IsUpper(v) == false && unicode.IsDigit(v) == false {
+		if !unicode.IsUpper(v) && !unicode.IsDigit(v) {
 			obj.err = obj.setError("必须是大写字母或数字", customError...)
 			return obj
 		}
@@ -163,7 +163,7 @@ func (obj *Object) IsLetterOrDigit(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false {
+		if !unicode.IsLetter(v) && !unicode.IsDigit(v) {
 			obj.err = obj.setError("必须是字母或数字", customError...)
 			return obj
 		}
@@ -177,7 +177,7 @@ func (obj *Object) IsChinese(customError ...string) *Object {
 		return obj
 	}
 	for _, v := range obj.rawValue {
-		if unicode.Is(unicode.Scripts["Han"], v) == false {
+		if !unicode.Is(unicode.Scripts["Han"], v) {
 			obj.err = obj.setError("必须是汉字", customError...)
 			return obj
 		}
@@ -233,10 +233,10 @@ func (obj *Object) IsMail(customError ...string) *Object {
 	}
 
 	for k, v := range emailSlice[0] {
-		if k == 0 && unicode.IsLetter(v) == false && unicode.IsDigit(v) == false {
+		if k == 0 && !unicode.IsLetter(v) && !unicode.IsDigit(v) {
 			obj.err = obj.setError("格式不正确", customError...)
 			return obj
-		} else if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false && v != '@' && v != '.' && v != '_' && v != '-' {
+		} else if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '@' && v != '.' && v != '_' && v != '-' {
 			obj.err = obj.setError("格式不正确", customError...)
 			return obj
 		}
@@ -250,13 +250,14 @@ func (obj *Object) IsMail(customError ...string) *Object {
 	domainSliceLen := len(domainSlice)
 	for i := 0; i < domainSliceLen; i++ {
 		for k, v := range domainSlice[i] {
-			if i != domainSliceLen-1 && k == 0 && unicode.IsLetter(v) == false && unicode.IsDigit(v) == false {
+			// nolint
+			if i != domainSliceLen-1 && k == 0 && !unicode.IsLetter(v) && !unicode.IsDigit(v) {
 				obj.err = obj.setError("格式不正确", customError...)
 				return obj
-			} else if unicode.IsLetter(v) == false && unicode.IsDigit(v) == false && v != '.' && v != '_' && v != '-' {
+			} else if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '.' && v != '_' && v != '-' {
 				obj.err = obj.setError("格式不正确", customError...)
 				return obj
-			} else if i == domainSliceLen-1 && unicode.IsLetter(v) == false {
+			} else if i == domainSliceLen-1 && !unicode.IsLetter(v) {
 				obj.err = obj.setError("格式不正确", customError...)
 				return obj
 			}
@@ -333,7 +334,10 @@ func (obj *Object) IsChineseIDNumber(customError ...string) *Object {
 	id := obj.rawValue[:17]
 	arr := make([]int, 17)
 	for i := 0; i < 17; i++ {
-		arr[i], _ = strconv.Atoi(string(id[i]))
+		arr[i], obj.err = strconv.Atoi(string(id[i]))
+		if obj.err != nil {
+			return obj
+		}
 	}
 	wi := [17]int{7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2}
 	var res int

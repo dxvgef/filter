@@ -24,7 +24,7 @@ var El = func(target interface{}, source *Object) element {
 // Set 将过滤结果赋值到指定对象
 func Set(target interface{}, source *Object) error {
 	if source.err != nil && source.defaultValue == nil {
-		if source.silent == true {
+		if source.silent {
 			return nil
 		}
 		return source.err
@@ -34,13 +34,13 @@ func Set(target interface{}, source *Object) error {
 
 	targetValueOf := reflect.ValueOf(target)
 	if targetValueOf.Kind() != reflect.Ptr {
-		if source.silent == true {
+		if source.silent {
 			return nil
 		}
 		return errors.New(source.name + "过滤规则的target参数必须传入指针类型")
 	}
-	if targetValueOf.Elem().CanSet() == false {
-		if source.silent == true {
+	if !targetValueOf.Elem().CanSet() {
+		if source.silent {
 			return nil
 		}
 		return errors.New(source.name + "过滤规则无法更改目标变量的值")
@@ -49,7 +49,7 @@ func Set(target interface{}, source *Object) error {
 
 	if source.err != nil && source.defaultValue != nil {
 		if err := setDefaultValue(targetTypeOf, targetValueOf, source.defaultValue); err != nil {
-			if source.silent == true {
+			if source.silent {
 				return nil
 			}
 			return err
@@ -59,7 +59,7 @@ func Set(target interface{}, source *Object) error {
 
 	if source.err == nil && source.rawValue != "" {
 		if err := setRawValue(targetTypeOf, targetValueOf, source.rawValue, source.sep); err != nil {
-			if source.silent == true {
+			if source.silent {
 				return nil
 			}
 			return errors.New(source.name + err.Error())
@@ -90,7 +90,7 @@ func setRawValue(targetTypeOf reflect.Kind, targetValueOf reflect.Value, value s
 		if err != nil {
 			return errors.New("必须是整数")
 		}
-		if targetValueOf.Elem().OverflowInt(v) == true {
+		if targetValueOf.Elem().OverflowInt(v) {
 			return errors.New("不能用" + targetTypeOf.String() + "类型赋值")
 		}
 		targetValueOf.Elem().SetInt(v)
@@ -99,7 +99,7 @@ func setRawValue(targetTypeOf reflect.Kind, targetValueOf reflect.Value, value s
 		if err != nil {
 			return errors.New("必须是无符号整数")
 		}
-		if targetValueOf.Elem().OverflowUint(v) == true {
+		if targetValueOf.Elem().OverflowUint(v) {
 			return errors.New("不能用" + targetTypeOf.String() + "类型赋值")
 		}
 		targetValueOf.Elem().SetUint(v)
@@ -108,7 +108,7 @@ func setRawValue(targetTypeOf reflect.Kind, targetValueOf reflect.Value, value s
 		if err != nil {
 			return errors.New("必须是小数")
 		}
-		if targetValueOf.Elem().OverflowFloat(v) == true {
+		if targetValueOf.Elem().OverflowFloat(v) {
 			return errors.New("不能用" + targetTypeOf.String() + "类型赋值")
 		}
 	case reflect.Bool:
@@ -119,8 +119,7 @@ func setRawValue(targetTypeOf reflect.Kind, targetValueOf reflect.Value, value s
 		targetValueOf.Elem().SetBool(v)
 	case reflect.Slice:
 		sliceType := targetValueOf.Elem().Type().String()
-		switch sliceType {
-		case "[]string":
+		if sliceType == "[]string" {
 			if sep == "" {
 				return errors.New("过滤规则的分隔符参数(sep)未定义")
 			}

@@ -6,7 +6,6 @@ import (
 	"net"
 	"strconv"
 	"strings"
-	"time"
 	"unicode"
 )
 
@@ -289,26 +288,6 @@ func (obj *Object) IsJSON(customError ...string) *Object {
 	var js json.RawMessage
 	if json.Unmarshal([]byte(obj.rawValue), &js) != nil {
 		obj.err = obj.setError("格式不正确", customError...)
-		return obj
-	}
-	return obj
-}
-
-// IsTimestamp 有效的Unix时间戳
-func (obj *Object) IsTimestamp(customError ...string) *Object {
-	if obj.err != nil || obj.rawValue == "" {
-		return obj
-	}
-	if obj.i64 == 0 {
-		var err error
-		obj.i64, err = strconv.ParseInt(obj.rawValue, 10, 64)
-		if err != nil {
-			obj.err = obj.setError("不是有效的Unix时间戳", customError...)
-			return obj
-		}
-	}
-	if time.Unix(obj.i64, 0) == time.Unix(0, 0) {
-		obj.err = obj.setError("不是有效的Unix时间戳", customError...)
 		return obj
 	}
 	return obj

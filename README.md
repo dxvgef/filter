@@ -104,24 +104,19 @@ log.Println("年龄", reqData.age)
 - `HasSymbol` 存在符号
 - `HasPrefix` 存在指定的前缀字符串
 - `Contains` 存在指定字符串
-- `EnumStrings` 仅允许[]string中的值
-- `EnumInts` 仅允许[]int中的值
-- `EnumInts32` 仅允许[]int32中的值
-- `EnumInts64` 仅允许[]int64中的值
-- `EnumFloats32` 仅允许[]float32中的值
-- `EnumFloats64` 仅允许[]float64中的值
-- `AllowStrings` 仅允许[]string中存在的值
-- `AllowInts` 仅允许[]int中存在的值
-- `AllowInts32` 仅允许[]int32中存在的值
-- `AllowInts64` 仅允许[]int64中存在的值
-- `AllowFloats32` 仅允许[]float32中存在的值
-- `AllowFloats64` 仅允许[]float64中存在的值
-- `DenyStrings` 阻止[]string中的值
-- `DenyInts` 阻止[]int中的值
-- `DenyInts32` 阻止[]int32中的值
-- `DenyInts64` 阻止[]int64中的值
-- `DenyFloats32` 阻止[]float32中的值
-- `DenyFloats64` 阻止[]float64中的值
+- `InString` 值存在于指定的string中
+- `EnumString` 仅允许[]string中的值
+- `EnumInt` 仅允许[]int中的值
+- `EnumInt32` 仅允许[]int32中的值
+- `EnumInt64` 仅允许[]int64中的值
+- `EnumFloat32` 仅允许[]float32中的值
+- `EnumFloat64` 仅允许[]float64中的值
+- `DenyString` 阻止[]string中的值
+- `DenyInt` 阻止[]int中的值
+- `DenyInt32` 阻止[]int32中的值
+- `DenyInt64` 阻止[]int64中的值
+- `DenyFloat32` 阻止[]float32中的值
+- `DenyFloat64` 阻止[]float64中的值
 
 ## 类型转换
 - `String` 转为string类型，并返回error

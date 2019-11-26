@@ -90,7 +90,6 @@ log.Println("年龄", reqData.age)
 - `IsMail` 电邮地址
 - `IsIP` IPv4/v6地址
 - `IsJSON` 有效的JSON格式
-- `IsTimestamp` 有效的Unix时间戳
 - `IsChineseTel` 中国大陆地区固定电话号码
 - `IsChineseMobile` 中国大陆地区手机号码
 - `IsChineseIDNumber` 中国大陆地区身份证号码

@@ -3,33 +3,32 @@ package filter
 import "testing"
 
 func TestGetValue(t *testing.T) {
-	arr, err := FromString("aa", "数组").
-		RemoveSpace().Required().
-		Strings(",")
+	arr, err := FromString("ac", "数组").
+		EnumStrings([]string{"ac"}).String()
 	if err != nil {
 		t.Log(err.Error())
 		return
 	}
 	t.Log(arr)
-	username, err := FromString("dxvgef", "账号").
-		RemoveSpace().
-		MinLength(3).MaxLength(32).
-		String()
-	if err != nil {
-		t.Log(err.Error())
-		return
-	}
-	t.Log(username)
-
-	password := FromString("Abc", "密码").
-		Trim().
-		MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol().
-		DefaultString("默认值")
-	if err != nil {
-		t.Log(err.Error())
-		return
-	}
-	t.Log(password)
+	// username, err := FromString("dxvgef", "账号").
+	// 	RemoveSpace().
+	// 	MinLength(3).MaxLength(32).
+	// 	String()
+	// if err != nil {
+	// 	t.Log(err.Error())
+	// 	return
+	// }
+	// t.Log(username)
+	//
+	// password := FromString("Abc", "密码").
+	// 	Trim().
+	// 	MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol().
+	// 	DefaultString("默认值")
+	// if err != nil {
+	// 	t.Log(err.Error())
+	// 	return
+	// }
+	// t.Log(password)
 }
 
 func TestRequired(t *testing.T) {
@@ -109,7 +108,7 @@ func TestMSet(t *testing.T) {
 		),
 		El(&ReqData.columns,
 			FromString("abc", "字段").
-				RemoveSpace().AllowStrings([]string{"abc", "def"}).Separator(",")),
+				RemoveSpace().EnumStrings([]string{"abc", "def"}).Separator(",")),
 	)
 	if err != nil {
 		t.Log(err.Error())

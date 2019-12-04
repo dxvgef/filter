@@ -15,12 +15,8 @@ func TestGetValue(t *testing.T) {
 
 	password := FromString("Abc", "密码").
 		Trim().
-		MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol().
+		MinLength(6).MaxLength(32).MustHasLetter().MustHasUpper().MustHasDigit().MustHasSymbol().
 		DefaultString("默认值")
-	if err != nil {
-		t.Log(err.Error())
-		return
-	}
 	t.Log(password)
 }
 
@@ -55,7 +51,7 @@ func TestSet(t *testing.T) {
 
 	err = Set(
 		&ReqData.password, FromString("Abc123-", "密码").
-			MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
+			MinLength(6).MaxLength(32).MustHasLetter().MustHasUpper().MustHasDigit().MustHasSymbol(),
 	)
 	if err != nil {
 		t.Log(err.Error())
@@ -97,7 +93,7 @@ func TestMSet(t *testing.T) {
 		El(&ReqData.password,
 			FromString("Abc123-", "密码").
 				Required().
-				MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
+				MinLength(6).MaxLength(32).MustHasLetter().MustHasUpper().MustHasDigit().MustHasSymbol(),
 		),
 		El(&ReqData.columns,
 			FromString("abc", "字段").
@@ -116,7 +112,7 @@ func BenchmarkBasic(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		FromString("Abc123", "密码").
 			Trim().
-			MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol().
+			MinLength(6).MaxLength(32).MustHasLetter().MustHasUpper().MustHasDigit().MustHasSymbol().
 			String()
 	}
 }

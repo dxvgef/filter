@@ -70,6 +70,7 @@ log.Println("年龄", reqData.age)
 ## 数据验证
 所有数据验证函数，都可以传入自定义错误消息，例如MinLength(""自定义错误消息")
 - `Required` 必须有值（允许""之外的零值）。如果不使用此规则，当参数值为""时，数据验证默认不生效
+
 - `MinLength` 最小长度
 - `MinUTF8Length` UTF8编码最小长度
 - `MaxLength` 最大长度
@@ -78,38 +79,44 @@ log.Println("年龄", reqData.age)
 - `MaxInteger` 最大整数值
 - `MinFloat` 最小浮点值
 - `MaxFloat` 最大浮点值
-- `IsBool` 布尔值
-- `IsLower` 小写字母
-- `IsUpper` 大写字母
-- `IsLetter` 字母
-- `IsDigit` 数字，不能包含有任何符号或其它字符
-- `IsLowerOrDigit` 小写字母或数字
-- `IsUpperOrDigit` 大写字母或数字
-- `IsLetterOrDigit` 字母或数字
-- `IsChinese` 汉字
-- `IsMail` 电邮地址
-- `IsIP` IPv4/v6地址
-- `IsJSON` 有效的JSON格式
-- `IsChineseTel` 中国大陆地区固定电话号码
-- `IsChineseMobile` 中国大陆地区手机号码
-- `IsChineseIDNumber` 中国大陆地区身份证号码
-- `IsSQLobject` SQL对象名(库、表、字段)
-- `IsSQLobjects` SQL对象名集合
-- `IsUUID` UUID格式
-- `HasLetter` 存在字母
-- `HasLower` 存在小写字母
-- `HasUpper` 存在大写字母
-- `HasDigit` 存在数字
-- `HasSymbol` 存在符号
-- `HasPrefix` 存在指定的前缀字符串
-- `Contains` 存在指定字符串
-- `InString` 值存在于指定的string中
+
+- `IsBool` 是布尔值
+- `IsLower` 是小写字母
+- `IsUpper` 是大写字母
+- `IsLetter` 是字母
+- `IsDigit` 是数字，不能包含有任何符号或其它字符
+- `IsLowerOrDigit` 是小写字母或数字
+- `IsUpperOrDigit` 是大写字母或数字
+- `IsLetterOrDigit` 是字母或数字
+- `IsChinese` 是汉字
+- `IsMail` 是电邮地址
+- `IsIP` 蝇IPv4/v6地址
+- `IsJSON` 是有效的JSON格式
+- `IsChineseTel` 是中国大陆地区固定电话号码
+- `IsChineseMobile` 是中国大陆地区手机号码
+- `IsChineseIDNumber` 是中国大陆地区身份证号码
+- `IsSQLobject` 是SQL对象名(库、表、字段)
+- `IsSQLobjects` 是SQL对象名集合
+- `IsUUID` 是UUID格式
+
+- `MustHasLetter` 必须包含字母
+- `MustHasLower` 必须包含小写字母
+- `MustHasUpper` 必须包含大写字母
+- `MustHasDigit` 必须包含数字
+- `MustHasSymbol` 必须包含符号
+- `MustHasPrefix` 必须包含指定的前缀字符串
+- `MustHasSuffix` 必须包含指定的后缀字符串
+- `MustHasString` 必须包含指定的字符串
+
+- `InString` 必须存在于指定的字符串中
+
 - `EnumString` 仅允许[]string中的值
 - `EnumInt` 仅允许[]int中的值
 - `EnumInt32` 仅允许[]int32中的值
 - `EnumInt64` 仅允许[]int64中的值
 - `EnumFloat32` 仅允许[]float32中的值
 - `EnumFloat64` 仅允许[]float64中的值
+
 - `DenyString` 阻止[]string中的值
 - `DenyInt` 阻止[]int中的值
 - `DenyInt32` 阻止[]int32中的值
@@ -143,6 +150,6 @@ log.Println("年龄", reqData.age)
 除了使用类型转换函数得到过滤后的数据，还可以使用以下函数将过滤结果赋值到指定变量
 - `Set` 将单个过滤结果赋值到变量
 - `MSet` 将多个过滤结果赋值到对应的变量
-- `El` 用于创建`MSet`函数的`Element`入参类型
+  - `El` 用于创建`MSet`函数的`Element`入参类型
 - `Silent` 静默模式。如果过滤过程中发生错误，不会返回任何错误，只适用于`El`和`Set`方法
 - `Default` 默认值。如果过滤过程中发生错误，用默认值进行赋值，只适用于`El`和`Set`方法

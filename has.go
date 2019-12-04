@@ -5,8 +5,8 @@ import (
 	"unicode"
 )
 
-// HasLetter 存在字母
-func (obj *Object) HasLetter(customError ...string) *Object {
+// 必须包含字母(不区分大小写)
+func (obj *Object) MustHasLetter(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
@@ -21,8 +21,8 @@ func (obj *Object) HasLetter(customError ...string) *Object {
 	return obj
 }
 
-// HasLower 存在小写字母
-func (obj *Object) HasLower(customError ...string) *Object {
+// 必须包含小写字母
+func (obj *Object) MustHasLower(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
@@ -37,8 +37,8 @@ func (obj *Object) HasLower(customError ...string) *Object {
 	return obj
 }
 
-// HasLower 存在大写字母
-func (obj *Object) HasUpper(customError ...string) *Object {
+// 必须包含大写字母
+func (obj *Object) MustHasUpper(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
@@ -53,8 +53,8 @@ func (obj *Object) HasUpper(customError ...string) *Object {
 	return obj
 }
 
-// HasDigit 存在数字
-func (obj *Object) HasDigit(customError ...string) *Object {
+// 必须包含数字
+func (obj *Object) MustHasDigit(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
@@ -69,8 +69,8 @@ func (obj *Object) HasDigit(customError ...string) *Object {
 	return obj
 }
 
-// HasSymbol 存在符号
-func (obj *Object) HasSymbol(customError ...string) *Object {
+// 必须包含符号
+func (obj *Object) MustHasSymbol(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
@@ -85,24 +85,36 @@ func (obj *Object) HasSymbol(customError ...string) *Object {
 	return obj
 }
 
-// Contains 存在指定字符串
-func (obj *Object) Contains(sub string, customError ...string) *Object {
+// 必须包含特定的字符串
+func (obj *Object) MustHasString(sub string, customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	if !strings.Contains(obj.rawValue, sub) {
+		obj.err = obj.setError("必须包含特定的字符串", customError...)
+		return obj
+	}
+	return obj
+}
+
+// 必须包含指定的前缀字符串
+func (obj *Object) MustHasPrefix(sub string, customError ...string) *Object {
+	if obj.err != nil || obj.rawValue == "" {
+		return obj
+	}
+	if !strings.HasPrefix(obj.rawValue, sub) {
 		obj.err = obj.setError("不允许的值", customError...)
 		return obj
 	}
 	return obj
 }
 
-// HasPrefix 存在指定的前缀字符串
-func (obj *Object) HasPrefix(sub string, customError ...string) *Object {
+// 必须包含指定的后缀字符串
+func (obj *Object) MustHasSuffix(sub string, customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
-	if !strings.HasPrefix(obj.rawValue, sub) {
+	if !strings.HasSuffix(obj.rawValue, sub) {
 		obj.err = obj.setError("不允许的值", customError...)
 		return obj
 	}

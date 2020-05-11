@@ -13,6 +13,8 @@ type Object struct {
 	err          error       // 结果错识信息
 	name         string      // 变量名
 	rawValue     string      // 原始类型的值
+	require      bool        // 必须有值
+	requireErr   string      // 必须有值的错误提示
 	i64          int64       // int64类型的值
 	f64          float64     // float64类型的值
 	sep          string      // slice分隔符
@@ -39,6 +41,10 @@ func (obj *Object) setError(customError ...string) error {
 
 // Required 必须有值（允许""之外的零值）。如果不使用此规则，当参数值为""时，数据验证默认不生效
 func (obj *Object) Required(customError ...string) *Object {
+	obj.require = true
+	if len(customError) > 0 {
+		obj.requireErr = customError[0]
+	}
 	if obj.err != nil {
 		return obj
 	}
@@ -284,7 +290,6 @@ func (obj *Object) IsJSON(customError ...string) *Object {
 	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
-
 	var js json.RawMessage
 	if json.Unmarshal([]byte(obj.rawValue), &js) != nil {
 		obj.err = obj.setError(customError...)
@@ -295,11 +300,7 @@ func (obj *Object) IsJSON(customError ...string) *Object {
 
 // IsChineseIDNumber 中国大陆地区身份证号码
 func (obj *Object) IsChineseIDNumber(customError ...string) *Object {
-	if obj.err != nil {
-		return obj
-	}
-	if obj.rawValue == "" {
-		obj.err = obj.setError(customError...)
+	if obj.err != nil || obj.rawValue == "" {
 		return obj
 	}
 	var idV int
@@ -346,6 +347,6 @@ func (obj *Object) IsChineseIDNumber(customError ...string) *Object {
 }
 
 // Error 返回检查结果中的错误
-func (obj *Object) Error() error {
+func (obj *Object) Error(customError ...string) error {
 	return obj.err
 }

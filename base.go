@@ -13,13 +13,13 @@ type Object struct {
 	err          error       // 结果错识信息
 	name         string      // 变量名
 	rawValue     string      // 原始类型的值
-	require      bool        // 必须有值
 	requireErr   string      // 必须有值的错误提示
+	sep          string      // slice分隔符
+	defaultValue interface{} // 出现错误时静默返回值，用此值对目标变量target进行赋值
 	i64          int64       // int64类型的值
 	f64          float64     // float64类型的值
-	sep          string      // slice分隔符
+	require      bool        // 必须有值
 	silent       bool        // 静默处理，如果出错则不返回错误，仅对Set和MSet函数有效
-	defaultValue interface{} // 出现错误时静默返回值，用此值对目标变量target进行赋值
 }
 
 func FromString(value string, name ...string) *Object {
@@ -33,7 +33,7 @@ func FromString(value string, name ...string) *Object {
 }
 
 func (obj *Object) setError(customError ...string) error {
-	if len(customError) > 0 {
+	if len(customError) > 0 && customError[0] != "" {
 		return errors.New(customError[0])
 	}
 	return errors.New(obj.name + "格式不正确")
@@ -41,15 +41,23 @@ func (obj *Object) setError(customError ...string) error {
 
 // Required 必须有值（允许""之外的零值）。如果不使用此规则，当参数值为""时，数据验证默认不生效
 func (obj *Object) Required(customError ...string) *Object {
+	if obj.err != nil {
+		return obj
+	}
 	obj.require = true
-	if len(customError) > 0 {
+	if len(customError) > 0 && customError[0] != "" {
 		obj.requireErr = customError[0]
 	}
+	return obj.required()
+}
+
+// required Required的内部函数
+func (obj *Object) required() *Object {
 	if obj.err != nil {
 		return obj
 	}
 	if obj.rawValue == "" {
-		obj.err = obj.setError(customError...)
+		obj.err = obj.setError(obj.requireErr)
 		return obj
 	}
 	return obj

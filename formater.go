@@ -10,11 +10,8 @@ func (obj *Object) Trim() *Object {
 		return obj
 	}
 	obj.rawValue = strings.TrimSpace(obj.rawValue)
-	if obj.require {
-		if obj.requireErr == "" {
-			return obj.Required()
-		}
-		return obj.Required(obj.requireErr)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
 	}
 	return obj
 }
@@ -25,11 +22,8 @@ func (obj *Object) RemoveSpace() *Object {
 		return obj
 	}
 	obj.rawValue = strings.ReplaceAll(obj.rawValue, " ", "")
-	if obj.require {
-		if obj.requireErr == "" {
-			return obj.Required()
-		}
-		return obj.Required(obj.requireErr)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
 	}
 	return obj
 }
@@ -43,11 +37,8 @@ func (obj *Object) ReplaceAll(old, new string) *Object {
 	for i := 0; i < count; i++ {
 		obj.rawValue = strings.ReplaceAll(obj.rawValue, old, new)
 	}
-	if obj.require {
-		if obj.requireErr == "" {
-			return obj.Required()
-		}
-		return obj.Required(obj.requireErr)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
 	}
 	return obj
 }

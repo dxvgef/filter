@@ -1,6 +1,8 @@
 package filter
 
-import "strings"
+import (
+	"strings"
+)
 
 // Trim 去除前后空格
 func (obj *Object) Trim() *Object {

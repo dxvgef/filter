@@ -24,7 +24,7 @@ func (obj *Object) InString(allow string, customError ...string) *Object {
 	value := strings.Split(obj.rawValue, "")
 	for k := range value {
 		if !strings.Contains(allow, value[k]) {
-			obj.err = obj.setError("的值不在允许的范围", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -42,7 +42,7 @@ func (obj *Object) EnumString(slice []string, customError ...string) *Object {
 			return obj
 		}
 	}
-	obj.err = obj.setError("的值不在允许的范围", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -53,7 +53,7 @@ func (obj *Object) EnumInt(i []int, customError ...string) *Object {
 	}
 	value, err := strconv.Atoi(obj.rawValue)
 	if err != nil {
-		obj.err = obj.setError(err.Error(), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	for k := range i {
@@ -61,7 +61,7 @@ func (obj *Object) EnumInt(i []int, customError ...string) *Object {
 			return obj
 		}
 	}
-	obj.err = obj.setError("的值不在允许的范围", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -72,7 +72,7 @@ func (obj *Object) EnumInt32(i []int32, customError ...string) *Object {
 	}
 	value64, err := strconv.ParseInt(obj.rawValue, 10, 32)
 	if err != nil {
-		obj.err = obj.setError(err.Error(), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	value32 := int32(value64)
@@ -81,7 +81,7 @@ func (obj *Object) EnumInt32(i []int32, customError ...string) *Object {
 			return obj
 		}
 	}
-	obj.err = obj.setError("的值不在允许的范围", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -94,7 +94,7 @@ func (obj *Object) EnumInt64(i []int64, customError ...string) *Object {
 		var err error
 		obj.i64, err = strconv.ParseInt(obj.rawValue, 10, 64)
 		if err != nil {
-			obj.err = obj.setError(err.Error(), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -103,7 +103,7 @@ func (obj *Object) EnumInt64(i []int64, customError ...string) *Object {
 			return obj
 		}
 	}
-	obj.err = obj.setError("的值不在允许的范围", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -114,7 +114,7 @@ func (obj *Object) EnumFloat32(f []float32, customError ...string) *Object {
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 32)
 	if err != nil {
-		obj.err = obj.setError(err.Error(), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	value32 := float32(value)
@@ -123,7 +123,7 @@ func (obj *Object) EnumFloat32(f []float32, customError ...string) *Object {
 			return obj
 		}
 	}
-	obj.err = obj.setError("的值不在允许的范围", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -136,7 +136,7 @@ func (obj *Object) EnumFloat64(f []float64, customError ...string) *Object {
 		var err error
 		obj.f64, err = strconv.ParseFloat(obj.rawValue, 64)
 		if err != nil {
-			obj.err = obj.setError(err.Error(), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -145,7 +145,7 @@ func (obj *Object) EnumFloat64(f []float64, customError ...string) *Object {
 			return obj
 		}
 	}
-	obj.err = obj.setError("的值不在允许的范围", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -158,7 +158,7 @@ func (obj *Object) DenyString(slice []string, customError ...string) *Object {
 	}
 	for k := range slice {
 		if slice[k] == obj.rawValue {
-			obj.err = obj.setError("的值被阻止", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -172,12 +172,12 @@ func (obj *Object) DenyInt(i []int, customError ...string) *Object {
 	}
 	value, err := strconv.Atoi(obj.rawValue)
 	if err != nil {
-		obj.err = obj.setError(err.Error(), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	for k := range i {
 		if value == i[k] {
-			obj.err = obj.setError("的值被阻止", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -191,13 +191,13 @@ func (obj *Object) DenyInt32(i []int32, customError ...string) *Object {
 	}
 	value64, err := strconv.ParseInt(obj.rawValue, 10, 32)
 	if err != nil {
-		obj.err = obj.setError(err.Error(), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	value32 := int32(value64)
 	for k := range i {
 		if value32 == i[k] {
-			obj.err = obj.setError("的值被阻止", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -213,13 +213,13 @@ func (obj *Object) DenyInt64(i []int64, customError ...string) *Object {
 		var err error
 		obj.i64, err = strconv.ParseInt(obj.rawValue, 10, 64)
 		if err != nil {
-			obj.err = obj.setError(err.Error(), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
 	for k := range i {
 		if obj.i64 == i[k] {
-			obj.err = obj.setError("的值被阻止", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -233,13 +233,13 @@ func (obj *Object) DenyFloat32(f []float32, customError ...string) *Object {
 	}
 	value, err := strconv.ParseFloat(obj.rawValue, 32)
 	if err != nil {
-		obj.err = obj.setError(err.Error(), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	value32 := float32(value)
 	for k := range f {
 		if value32 == f[k] {
-			obj.err = obj.setError("的值被阻止", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -255,13 +255,13 @@ func (obj *Object) DenyInFloat64(f []float64, customError ...string) *Object {
 		var err error
 		obj.f64, err = strconv.ParseFloat(obj.rawValue, 64)
 		if err != nil {
-			obj.err = obj.setError(err.Error(), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
 	for k := range f {
 		if obj.f64 == f[k] {
-			obj.err = obj.setError("的值被阻止", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}

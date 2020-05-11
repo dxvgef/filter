@@ -17,7 +17,7 @@ func (obj *Object) MustHasLetter(customError ...string) *Object {
 		}
 	}
 
-	obj.err = obj.setError("必须包含字母", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -33,7 +33,7 @@ func (obj *Object) MustHasLower(customError ...string) *Object {
 		}
 	}
 
-	obj.err = obj.setError("必须包含小写字母", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -49,7 +49,7 @@ func (obj *Object) MustHasUpper(customError ...string) *Object {
 		}
 	}
 
-	obj.err = obj.setError("必须包含大写字母", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -65,7 +65,7 @@ func (obj *Object) MustHasDigit(customError ...string) *Object {
 		}
 	}
 
-	obj.err = obj.setError("必须包含数字", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -81,7 +81,7 @@ func (obj *Object) MustHasSymbol(customError ...string) *Object {
 		}
 	}
 
-	obj.err = obj.setError("必须包含符号", customError...)
+	obj.err = obj.setError(customError...)
 	return obj
 }
 
@@ -91,7 +91,7 @@ func (obj *Object) MustHasString(sub string, customError ...string) *Object {
 		return obj
 	}
 	if !strings.Contains(obj.rawValue, sub) {
-		obj.err = obj.setError("必须包含特定的字符串", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -103,7 +103,7 @@ func (obj *Object) MustHasPrefix(sub string, customError ...string) *Object {
 		return obj
 	}
 	if !strings.HasPrefix(obj.rawValue, sub) {
-		obj.err = obj.setError("不允许的值", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -115,7 +115,7 @@ func (obj *Object) MustHasSuffix(sub string, customError ...string) *Object {
 		return obj
 	}
 	if !strings.HasSuffix(obj.rawValue, sub) {
-		obj.err = obj.setError("不允许的值", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj

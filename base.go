@@ -30,11 +30,11 @@ func FromString(value string, name ...string) *Object {
 	return &obj
 }
 
-func (obj *Object) setError(msg string, customError ...string) error {
+func (obj *Object) setError(customError ...string) error {
 	if len(customError) > 0 {
 		return errors.New(customError[0])
 	}
-	return errors.New(obj.name + msg)
+	return errors.New(obj.name + "格式不正确")
 }
 
 // Required 必须有值（允许""之外的零值）。如果不使用此规则，当参数值为""时，数据验证默认不生效
@@ -43,7 +43,7 @@ func (obj *Object) Required(customError ...string) *Object {
 		return obj
 	}
 	if obj.rawValue == "" {
-		obj.err = obj.setError("不能为空", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -67,7 +67,7 @@ func (obj *Object) IsBool(customError ...string) *Object {
 		return obj
 	}
 	if _, err := strconv.ParseBool(obj.rawValue); err != nil {
-		obj.err = obj.setError("必须是布尔值", customError...)
+		obj.err = obj.setError(customError...)
 	}
 	return obj
 }
@@ -79,7 +79,7 @@ func (obj *Object) IsLower(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.IsLower(v) {
-			obj.err = obj.setError("必须是小写字母", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -93,7 +93,7 @@ func (obj *Object) IsUpper(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.IsUpper(v) {
-			obj.err = obj.setError("必须是大写字母", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -107,7 +107,7 @@ func (obj *Object) IsLetter(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.IsLetter(v) {
-			obj.err = obj.setError("必须是字母", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -121,7 +121,7 @@ func (obj *Object) IsDigit(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.IsDigit(v) {
-			obj.err = obj.setError("必须是数字", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -135,7 +135,7 @@ func (obj *Object) IsLowerOrDigit(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.IsLower(v) && !unicode.IsDigit(v) {
-			obj.err = obj.setError("必须是小写字母或数字", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -149,7 +149,7 @@ func (obj *Object) IsUpperOrDigit(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.IsUpper(v) && !unicode.IsDigit(v) {
-			obj.err = obj.setError("必须是大写字母或数字", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -163,7 +163,7 @@ func (obj *Object) IsLetterOrDigit(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.IsLetter(v) && !unicode.IsDigit(v) {
-			obj.err = obj.setError("必须是字母或数字", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -177,7 +177,7 @@ func (obj *Object) IsChinese(customError ...string) *Object {
 	}
 	for _, v := range obj.rawValue {
 		if !unicode.Is(unicode.Scripts["Han"], v) {
-			obj.err = obj.setError("必须是汉字", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -191,26 +191,26 @@ func (obj *Object) IsChineseTel(customError ...string) *Object {
 	}
 	telSlice := strings.Split(obj.rawValue, "-")
 	if len(telSlice) != 2 {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	regionCode, err := strconv.Atoi(telSlice[0])
 	if err != nil {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	if regionCode < 10 || regionCode > 999 {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 
 	code, err := strconv.Atoi(telSlice[1])
 	if err != nil {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	if code < 1000000 || code > 99999999 {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -223,27 +223,27 @@ func (obj *Object) IsMail(customError ...string) *Object {
 	}
 	emailSlice := strings.Split(obj.rawValue, "@")
 	if len(emailSlice) != 2 {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	if emailSlice[0] == "" || emailSlice[1] == "" {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 
 	for k, v := range emailSlice[0] {
 		if k == 0 && !unicode.IsLetter(v) && !unicode.IsDigit(v) {
-			obj.err = obj.setError("格式不正确", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		} else if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '@' && v != '.' && v != '_' && v != '-' {
-			obj.err = obj.setError("格式不正确", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
 
 	domainSlice := strings.Split(emailSlice[1], ".")
 	if len(domainSlice) < 2 {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	domainSliceLen := len(domainSlice)
@@ -251,13 +251,13 @@ func (obj *Object) IsMail(customError ...string) *Object {
 		for k, v := range domainSlice[i] {
 			// nolint
 			if i != domainSliceLen-1 && k == 0 && !unicode.IsLetter(v) && !unicode.IsDigit(v) {
-				obj.err = obj.setError("格式不正确", customError...)
+				obj.err = obj.setError(customError...)
 				return obj
 			} else if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '.' && v != '_' && v != '-' {
-				obj.err = obj.setError("格式不正确", customError...)
+				obj.err = obj.setError(customError...)
 				return obj
 			} else if i == domainSliceLen-1 && !unicode.IsLetter(v) {
-				obj.err = obj.setError("格式不正确", customError...)
+				obj.err = obj.setError(customError...)
 				return obj
 			}
 		}
@@ -272,7 +272,7 @@ func (obj *Object) IsIP(customError ...string) *Object {
 		return obj
 	}
 	if net.ParseIP(obj.rawValue) == nil {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 
@@ -287,7 +287,7 @@ func (obj *Object) IsJSON(customError ...string) *Object {
 
 	var js json.RawMessage
 	if json.Unmarshal([]byte(obj.rawValue), &js) != nil {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -295,7 +295,11 @@ func (obj *Object) IsJSON(customError ...string) *Object {
 
 // IsChineseIDNumber 中国大陆地区身份证号码
 func (obj *Object) IsChineseIDNumber(customError ...string) *Object {
-	if obj.err != nil || obj.rawValue == "" {
+	if obj.err != nil {
+		return obj
+	}
+	if obj.rawValue == "" {
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	var idV int
@@ -304,7 +308,7 @@ func (obj *Object) IsChineseIDNumber(customError ...string) *Object {
 	} else {
 		var err error
 		if idV, err = strconv.Atoi(obj.rawValue[17:]); err != nil {
-			obj.err = obj.setError("格式不正确", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
@@ -334,9 +338,14 @@ func (obj *Object) IsChineseIDNumber(customError ...string) *Object {
 		}
 	}
 	if temp != idV {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 
 	return obj
+}
+
+// Error 返回检查结果中的错误
+func (obj *Object) Error() error {
+	return obj.err
 }

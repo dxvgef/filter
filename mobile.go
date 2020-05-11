@@ -5,16 +5,16 @@ import "strconv"
 // nolint:gocyclo
 // IsChineseMobile 中国大陆地区手机号码
 func (obj *Object) IsChineseMobile(customError ...string) *Object {
-	if obj.err != nil || obj.rawValue == "" {
+	if obj.err != nil {
 		return obj
 	}
 	_, err := strconv.Atoi(obj.rawValue)
 	if err != nil {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	if len(obj.rawValue) != 11 {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	prefix := obj.rawValue[0:3]
@@ -66,12 +66,12 @@ func (obj *Object) IsChineseMobile(customError ...string) *Object {
 		prefix != "199" &&
 		// 虚拟运营商
 		prefix != "170" && prefix != "171" {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	suffix := obj.rawValue[3:]
 	if suffix == "00000000" {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj

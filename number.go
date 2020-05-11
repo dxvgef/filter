@@ -1,7 +1,6 @@
 package filter
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -14,12 +13,12 @@ func (obj *Object) MinInteger(min int64, customError ...string) *Object {
 		var err error
 		obj.i64, err = strconv.ParseInt(obj.rawValue, 10, 64)
 		if err != nil {
-			obj.err = obj.setError("检查失败，不能小于"+strconv.FormatInt(min, 10), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
 	if obj.i64 < min {
-		obj.err = obj.setError("不能小于"+strconv.FormatInt(min, 10), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -34,12 +33,12 @@ func (obj *Object) MaxInteger(max int64, customError ...string) *Object {
 		var err error
 		obj.i64, err = strconv.ParseInt(obj.rawValue, 10, 64)
 		if err != nil {
-			obj.err = obj.setError("检查失败，不能大于"+strconv.FormatInt(max, 10), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
 	if obj.i64 > max {
-		obj.err = obj.setError("不能大于"+strconv.FormatInt(max, 10), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -54,13 +53,13 @@ func (obj *Object) MinFloat(min float64, customError ...string) *Object {
 		var err error
 		obj.f64, err = strconv.ParseFloat(obj.rawValue, 64)
 		if err != nil {
-			obj.err = obj.setError("检查失败，不能小于"+fmt.Sprint(min), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
 
 	if obj.f64 < min {
-		obj.err = obj.setError("不能小于"+fmt.Sprint(min), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj
@@ -75,12 +74,12 @@ func (obj *Object) MaxFloat(max float64, customError ...string) *Object {
 		var err error
 		obj.f64, err = strconv.ParseFloat(obj.rawValue, 64)
 		if err != nil {
-			obj.err = obj.setError("检查失败，不能大于"+fmt.Sprint(max), customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 	}
 	if obj.f64 > max {
-		obj.err = obj.setError("不能大于"+fmt.Sprint(max), customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	return obj

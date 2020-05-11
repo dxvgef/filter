@@ -1,6 +1,16 @@
 package filter
 
-import "testing"
+import (
+	"testing"
+)
+
+func TestError(t *testing.T) {
+	t.Log(FromString("    ", "账号").
+		RemoveSpace().
+		IsChineseMobile().
+		Error(),
+	)
+}
 
 func TestGetValue(t *testing.T) {
 	username, err := FromString("dxvgef", "账号").

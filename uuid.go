@@ -43,7 +43,7 @@ func (obj *Object) IsUUID(customError ...string) *Object {
 	// urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	case 36 + 9:
 		if strings.EqualFold(strings.ToLower(str[:9]), "urn:uuid:") {
-			obj.err = obj.setError("格式不正确", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 		str = str[9:]
@@ -58,19 +58,19 @@ func (obj *Object) IsUUID(customError ...string) *Object {
 		for i := range uuid {
 			uuid[i], ok = xtob(str[i*2], str[i*2+1])
 			if !ok {
-				obj.err = obj.setError("格式不正确", customError...)
+				obj.err = obj.setError(customError...)
 				return obj
 			}
 		}
 		return obj
 	default:
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	// s is now at least 36 bytes long
 	// it must be of the form  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	if str[8] != '-' || str[13] != '-' || str[18] != '-' || str[23] != '-' {
-		obj.err = obj.setError("格式不正确", customError...)
+		obj.err = obj.setError(customError...)
 		return obj
 	}
 	for i, x := range [16]int{
@@ -81,7 +81,7 @@ func (obj *Object) IsUUID(customError ...string) *Object {
 		24, 26, 28, 30, 32, 34} {
 		v, ok := xtob(str[x], str[x+1])
 		if !ok {
-			obj.err = obj.setError("格式不正确", customError...)
+			obj.err = obj.setError(customError...)
 			return obj
 		}
 		uuid[i] = v

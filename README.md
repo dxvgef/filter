@@ -6,7 +6,16 @@ golang开发的数据过滤器，由 **数据输入->数据清洗->数据验证-
 - 批量过滤多个数据，自动赋值到对应变量
 
 ## 基本示例
-单项数据过滤，并返回结果
+单项数据检查，并返回检查结果
+```Go
+err := filter.FromString("123", "密码").
+	Trim().
+	MinLength(6).MaxLength(32).
+	Error()
+log.Println(err.Error())
+```
+
+单项数据过滤，并返回字符串类型的值和结果
 ```Go
 password, err := filter.FromString("123", "密码").
 	Trim().
@@ -153,3 +162,4 @@ log.Println("年龄", reqData.age)
   - `El` 用于创建`MSet`函数的`Element`入参类型
 - `Silent` 静默模式。如果过滤过程中发生错误，不会返回任何错误，只适用于`El`和`Set`方法
 - `Default` 默认值。如果过滤过程中发生错误，用默认值进行赋值，只适用于`El`和`Set`方法
+- `Error`` 过滤结果，返回`error`类型

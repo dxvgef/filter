@@ -118,12 +118,3 @@ func TestMSet(t *testing.T) {
 	t.Log("密码", ReqData.password)
 	t.Log("字段", ReqData.columns)
 }
-
-func BenchmarkBasic(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		FromString("Abc123", "密码").
-			Trim().
-			MinLength(6).MaxLength(32).MustHasLetter().MustHasUpper().MustHasDigit().MustHasSymbol().
-			String()
-	}
-}

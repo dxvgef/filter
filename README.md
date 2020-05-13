@@ -1,13 +1,16 @@
 # filter
-golang开发的数据过滤器，由 **数据输入->数据清洗->数据验证->类型转换->结果输出** 四个部份组成。
+
+golang开发的数据过滤器，由 **数据输入->数据清洗->数据验证->类型转换->结果输出** 几个部份组成。
 
 - 自定义错误消息
 - 过滤结果自动赋值到指定变量
 - 批量过滤多个数据，自动赋值到对应变量
 
 ## 基本示例
+
 单项数据检查，并返回检查结果
-```Go
+
+```go
 err := filter.FromString("123", "密码").
 	Trim().
 	MinLength(6).MaxLength(32).
@@ -16,7 +19,8 @@ log.Println(err.Error())
 ```
 
 单项数据过滤，并返回字符串类型的值和结果
-```Go
+
+```go
 password, err := filter.FromString("123", "密码").
 	Trim().
 	MinLength(6).MaxLength(32).
@@ -29,7 +33,8 @@ log.Println(password)
 ```
 
 单项数据过滤，并自动赋值到变量
-```Go
+
+```go
 var password string
 err := filter.Set(&password, filter.FromString("Abc123-", "密码").
     MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
@@ -41,7 +46,8 @@ if err != nil {
 ```
 
 多项数据过滤，并自动赋值到对应变量
-```Go
+
+```go
 var reqData struct {
     password string
     age      int16
@@ -62,12 +68,14 @@ log.Println("年龄", reqData.age)
 ```
 
 ## 数据输入
+
 **`FromString(str, name)`**
 要过滤的数据来源，目前仅支持字符串
 第一个参数str为来源参数值<br>
 第二个参数为名，用于拼接默认错误消息
 
 ## 数据清洗
+
 - `Trim()` 去除前后空格
 - `RemoveSpace` 去除所有空格
 - `ReplaceAll` 替换所有
@@ -77,7 +85,9 @@ log.Println("年龄", reqData.age)
 - `Separator` 指定Slice类型的分隔符
 
 ## 数据验证
+
 所有数据验证函数，都可以传入自定义错误消息，例如MinLength(""自定义错误消息")
+
 - `Required` 必须有值（允许""之外的零值）。如果不使用此规则，当参数值为""时，数据验证默认不生效
 
 - `MinLength` 最小长度
@@ -134,6 +144,7 @@ log.Println("年龄", reqData.age)
 - `DenyFloat64` 阻止[]float64中的值
 
 ## 类型转换
+
 - `String` 转为string类型，并返回error
 - `DefaultString` 转为string类型，如果出现错误则只返回默认值
 - `Strings` 按指定分隔符，转为[]string类型
@@ -156,7 +167,9 @@ log.Println("年龄", reqData.age)
 - `DefaultBool` 转为bool类型，如果出现错误则只返回默认值
 
 ## 结果输出
+
 除了使用类型转换函数得到过滤后的数据，还可以使用以下函数将过滤结果赋值到指定变量
+
 - `Set` 将单个过滤结果赋值到变量
 - `MSet` 将多个过滤结果赋值到对应的变量
   - `El` 用于创建`MSet`函数的`Element`入参类型

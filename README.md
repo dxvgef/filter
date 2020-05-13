@@ -15,7 +15,6 @@ err := filter.FromString("123", "密码").
 	Trim().
 	MinLength(6).MaxLength(32).
 	Error()
-log.Println(err.Error())
 ```
 
 单项数据过滤，并返回字符串类型的值和结果
@@ -25,11 +24,6 @@ password, err := filter.FromString("123", "密码").
 	Trim().
 	MinLength(6).MaxLength(32).
 	String()
-if err != nil {
-    log.Println(err.Error())
-    return
-}
-log.Println(password)
 ```
 
 单项数据过滤，并自动赋值到变量
@@ -39,10 +33,6 @@ var password string
 err := filter.Set(&password, filter.FromString("Abc123-", "密码").
     MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
 )
-if err != nil {
-    log.Println(err.Error())
-    return
-}
 ```
 
 多项数据过滤，并自动赋值到对应变量
@@ -59,10 +49,6 @@ err := filter.MSet(
     filter.El(&reqData.age, filter.FromString("3", "年龄").
         IsDigit().MinInteger(18)),
 )
-if err != nil {
-    log.Println(err.Error())
-    return
-}
 log.Println("密码", reqData.password)
 log.Println("年龄", reqData.age)
 ```
@@ -72,7 +58,7 @@ log.Println("年龄", reqData.age)
 **`FromString(str, name)`**
 要过滤的数据来源，目前仅支持字符串
 第一个参数str为来源参数值<br>
-第二个参数为名，用于拼接默认错误消息
+第二个参数为数据的名称，用于拼接错误消息
 
 ## 数据清洗
 
@@ -82,7 +68,7 @@ log.Println("年龄", reqData.age)
 - `SnakeCaseToCamelCase` 蛇形转驼峰: hello_world => helloWorld
 - `SnakeCaseToPascalCase` 蛇形转帕斯卡: hello_world => HelloWorld
 - `CamelCaseToSnakeCase` 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
-- `Separator` 指定Slice类型的分隔符
+- `Separator` 指定Slice类型的分隔符，配合`Strings`类型转换方法使用
 
 ## 数据验证
 
@@ -147,8 +133,8 @@ log.Println("年龄", reqData.age)
 
 - `String` 转为string类型，并返回error
 - `DefaultString` 转为string类型，如果出现错误则只返回默认值
-- `Strings` 按指定分隔符，转为[]string类型
-- `DefaultStrings` 按指定分隔符，转为[]string类型，如果出现错误则只返回默认值
+- `Strings` 转为[]string类型，使用`Separator`方法指定元素分隔符
+- `DefaultStrings` 转为[]string类型，如果出现错误则只返回默认值，使用`Separator`方法指定元素分隔符
 - `Int` 转为int类型，并返回error
 - `DefaultInt` 转为int类型，如果出现错误则只返回默认值
 - `Int8` 转为int8类型，并返回error

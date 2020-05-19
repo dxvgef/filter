@@ -1,8 +1,199 @@
 package filter
 
 import (
+	"encoding/base64"
+	"html"
+	"net/url"
 	"strings"
 )
+
+// base64 std编码
+func (obj *Object) Base64StdEncode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = base64.StdEncoding.EncodeToString(strToBytes(obj.rawValue))
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// base64 std解码
+func (obj *Object) Base64StdDecode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	bs, err := base64.StdEncoding.DecodeString(obj.rawValue)
+	if err != nil {
+		obj.err = err
+		return obj
+	}
+	obj.rawValue = bytesToStr(bs)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// base64 RawStd编码
+func (obj *Object) Base64RawStdEncode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = base64.RawStdEncoding.EncodeToString(strToBytes(obj.rawValue))
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// base64 RawStd解码
+func (obj *Object) Base64RawStdDecode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	bs, err := base64.RawStdEncoding.DecodeString(obj.rawValue)
+	if err != nil {
+		obj.err = err
+		return obj
+	}
+	obj.rawValue = bytesToStr(bs)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// base64 URL编码
+func (obj *Object) Base64URLEncode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = base64.URLEncoding.EncodeToString(strToBytes(obj.rawValue))
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// base64 URL解码
+func (obj *Object) Base64URLDecode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	bs, err := base64.URLEncoding.DecodeString(obj.rawValue)
+	if err != nil {
+		obj.err = err
+		return obj
+	}
+	obj.rawValue = bytesToStr(bs)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// base64 RawURL编码
+func (obj *Object) Base64RawURLEncode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = base64.RawURLEncoding.EncodeToString(strToBytes(obj.rawValue))
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// base64 RawURL解码
+func (obj *Object) Base64RawURLDecode() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	bs, err := base64.RawURLEncoding.DecodeString(obj.rawValue)
+	if err != nil {
+		obj.err = err
+		return obj
+	}
+	obj.rawValue = bytesToStr(bs)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// 与html.UnescapeString相同
+func (obj *Object) UnescapeHTML() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = html.UnescapeString(obj.rawValue)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// 与html.EscapeString相同
+func (obj *Object) EscapeHTML() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = html.EscapeString(obj.rawValue)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// 与url.PathUnescape相同
+func (obj *Object) UnescapeURLPath() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue, obj.err = url.PathUnescape(obj.rawValue)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// 与url.PathEscape相同
+func (obj *Object) EscapeURLPath() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = url.PathEscape(obj.rawValue)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// 与url.QueryUnescape相同
+func (obj *Object) UnescapeURLQuery() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue, obj.err = url.QueryUnescape(obj.rawValue)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
+
+// 与url.QueryEscape相同
+func (obj *Object) EscapeURLQuery() *Object {
+	if obj.rawValue == "" {
+		return obj
+	}
+	obj.rawValue = url.QueryEscape(obj.rawValue)
+	if obj.require && obj.rawValue == "" {
+		return obj.required()
+	}
+	return obj
+}
 
 // Trim 去除前后空格
 func (obj *Object) Trim() *Object {

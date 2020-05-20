@@ -124,7 +124,7 @@ func (obj *Object) Base64RawURLDecode() *Object {
 }
 
 // 与html.UnescapeString相同
-func (obj *Object) UnescapeHTML() *Object {
+func (obj *Object) HTMLUnescape() *Object {
 	if obj.rawValue == "" {
 		return obj
 	}
@@ -136,7 +136,7 @@ func (obj *Object) UnescapeHTML() *Object {
 }
 
 // 与html.EscapeString相同
-func (obj *Object) EscapeHTML() *Object {
+func (obj *Object) HTMLEscape() *Object {
 	if obj.rawValue == "" {
 		return obj
 	}
@@ -148,7 +148,7 @@ func (obj *Object) EscapeHTML() *Object {
 }
 
 // 与url.PathUnescape相同
-func (obj *Object) UnescapeURLPath() *Object {
+func (obj *Object) URLPathUnescape() *Object {
 	if obj.rawValue == "" {
 		return obj
 	}
@@ -160,7 +160,7 @@ func (obj *Object) UnescapeURLPath() *Object {
 }
 
 // 与url.PathEscape相同
-func (obj *Object) EscapeURLPath() *Object {
+func (obj *Object) URLPathEscape() *Object {
 	if obj.rawValue == "" {
 		return obj
 	}
@@ -172,7 +172,7 @@ func (obj *Object) EscapeURLPath() *Object {
 }
 
 // 与url.QueryUnescape相同
-func (obj *Object) UnescapeURLQuery() *Object {
+func (obj *Object) URLQueryUnescape() *Object {
 	if obj.rawValue == "" {
 		return obj
 	}
@@ -184,7 +184,7 @@ func (obj *Object) UnescapeURLQuery() *Object {
 }
 
 // 与url.QueryEscape相同
-func (obj *Object) EscapeURLQuery() *Object {
+func (obj *Object) URLQueryEscape() *Object {
 	if obj.rawValue == "" {
 		return obj
 	}

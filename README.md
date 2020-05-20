@@ -68,12 +68,12 @@ log.Println("年龄", reqData.age)
 - `SnakeCaseToCamelCase` 蛇形转驼峰: hello_world => helloWorld
 - `SnakeCaseToPascalCase` 蛇形转帕斯卡: hello_world => HelloWorld
 - `CamelCaseToSnakeCase` 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
-- `EscapeHTML` 编码成HTML中显示的字符
-- `UnescapeHTML` EscapeHTML的解码函数
-- `EscapeURLPath` 编码成能作为URL路径传输的字符
-- `UnescapeURLPath` EscapeURLPath的解码函数
-- `EscapeURLQuery` 编码成能作为URL查询参数传输的字符
-- `UnescapeURLQuery` EscapeURLQuery的解码函数
+- `HTMLEscape` 编码成HTML中显示的字符
+- `HTMLUnescape` HTMLEscape的解码函数
+- `URLPathEscape` 编码成能作为URL路径传输的字符
+- `URLPathUnescape` URLPathEscape的解码函数
+- `URLQueryEscape` 编码成能作为URL查询参数传输的字符
+- `URLQueryUnescape` URLQueryEscape的解码函数
 - `Base64StdEncode` Base64 std 编码
 - `Base64StdDecode` Base64 std 解码
 - `Base64RawStdEncode` Base64 raw std 编码

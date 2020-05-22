@@ -65,6 +65,8 @@ log.Println("年龄", reqData.age)
 - `Trim()` 去除前后空格
 - `RemoveSpace` 去除所有空格
 - `ReplaceAll` 替换所有
+- `ToUpper` 字母转为大写
+- `ToLower` 字母转为小写
 - `SnakeCaseToCamelCase` 蛇形转驼峰: hello_world => helloWorld
 - `SnakeCaseToPascalCase` 蛇形转帕斯卡: hello_world => HelloWorld
 - `CamelCaseToSnakeCase` 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world

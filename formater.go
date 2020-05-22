@@ -7,21 +7,36 @@ import (
 	"strings"
 )
 
+// 字母转为大写
+func (obj *Object) ToUpper() *Object {
+	if obj.rawValue == "" || obj.err != nil {
+		return obj
+	}
+	obj.rawValue = strings.ToUpper(obj.rawValue)
+	return obj
+}
+
+// 字母转为小写
+func (obj *Object) ToLower() *Object {
+	if obj.rawValue == "" || obj.err != nil {
+		return obj
+	}
+	obj.rawValue = strings.ToLower(obj.rawValue)
+	return obj
+}
+
 // base64 std编码
 func (obj *Object) Base64StdEncode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = base64.StdEncoding.EncodeToString(strToBytes(obj.rawValue))
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // base64 std解码
 func (obj *Object) Base64StdDecode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	bs, err := base64.StdEncoding.DecodeString(obj.rawValue)
@@ -38,19 +53,16 @@ func (obj *Object) Base64StdDecode() *Object {
 
 // base64 RawStd编码
 func (obj *Object) Base64RawStdEncode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = base64.RawStdEncoding.EncodeToString(strToBytes(obj.rawValue))
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // base64 RawStd解码
 func (obj *Object) Base64RawStdDecode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	bs, err := base64.RawStdEncoding.DecodeString(obj.rawValue)
@@ -67,19 +79,16 @@ func (obj *Object) Base64RawStdDecode() *Object {
 
 // base64 URL编码
 func (obj *Object) Base64URLEncode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = base64.URLEncoding.EncodeToString(strToBytes(obj.rawValue))
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // base64 URL解码
 func (obj *Object) Base64URLDecode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	bs, err := base64.URLEncoding.DecodeString(obj.rawValue)
@@ -96,19 +105,16 @@ func (obj *Object) Base64URLDecode() *Object {
 
 // base64 RawURL编码
 func (obj *Object) Base64RawURLEncode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = base64.RawURLEncoding.EncodeToString(strToBytes(obj.rawValue))
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // base64 RawURL解码
 func (obj *Object) Base64RawURLDecode() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	bs, err := base64.RawURLEncoding.DecodeString(obj.rawValue)
@@ -125,31 +131,25 @@ func (obj *Object) Base64RawURLDecode() *Object {
 
 // 与html.UnescapeString相同
 func (obj *Object) HTMLUnescape() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = html.UnescapeString(obj.rawValue)
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // 与html.EscapeString相同
 func (obj *Object) HTMLEscape() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = html.EscapeString(obj.rawValue)
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // 与url.PathUnescape相同
 func (obj *Object) URLPathUnescape() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue, obj.err = url.PathUnescape(obj.rawValue)
@@ -161,19 +161,16 @@ func (obj *Object) URLPathUnescape() *Object {
 
 // 与url.PathEscape相同
 func (obj *Object) URLPathEscape() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = url.PathEscape(obj.rawValue)
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // 与url.QueryUnescape相同
 func (obj *Object) URLQueryUnescape() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue, obj.err = url.QueryUnescape(obj.rawValue)
@@ -185,19 +182,16 @@ func (obj *Object) URLQueryUnescape() *Object {
 
 // 与url.QueryEscape相同
 func (obj *Object) URLQueryEscape() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = url.QueryEscape(obj.rawValue)
-	if obj.require && obj.rawValue == "" {
-		return obj.required()
-	}
 	return obj
 }
 
 // Trim 去除前后空格
 func (obj *Object) Trim() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = strings.TrimSpace(obj.rawValue)
@@ -209,7 +203,7 @@ func (obj *Object) Trim() *Object {
 
 // 去除所有的空格
 func (obj *Object) RemoveSpace() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	obj.rawValue = strings.ReplaceAll(obj.rawValue, " ", "")
@@ -221,7 +215,7 @@ func (obj *Object) RemoveSpace() *Object {
 
 // ReplaceAll 替换所有
 func (obj *Object) ReplaceAll(old, new string) *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	count := strings.Count(obj.rawValue, old)
@@ -236,7 +230,7 @@ func (obj *Object) ReplaceAll(old, new string) *Object {
 
 // SnakeCaseToCamelCase 蛇形转驼峰: hello_world => helloWorld
 func (obj *Object) SnakeCaseToCamelCase() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	slice := strings.Split(obj.rawValue, "_")
@@ -251,7 +245,7 @@ func (obj *Object) SnakeCaseToCamelCase() *Object {
 
 // SnakeCaseToPascalCase 蛇形转帕斯卡: hello_world => HelloWorld
 func (obj *Object) SnakeCaseToPascalCase() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	slice := strings.Split(obj.rawValue, "_")
@@ -264,7 +258,7 @@ func (obj *Object) SnakeCaseToPascalCase() *Object {
 
 // CamelCaseToSnakeCase 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
 func (obj *Object) CamelCaseToSnakeCase() *Object {
-	if obj.rawValue == "" {
+	if obj.rawValue == "" || obj.err != nil {
 		return obj
 	}
 	strLen := len(obj.rawValue)

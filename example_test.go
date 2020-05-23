@@ -5,10 +5,9 @@ import (
 )
 
 func TestError(t *testing.T) {
-	t.Log(FromString("    ", "账号").
+	t.Log(FromString("哈哈", "账号").
 		Required().
-		RemoveSpace().
-		IsChineseMobile().
+		IsURL().
 		Error(),
 	)
 }

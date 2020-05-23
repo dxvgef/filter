@@ -120,7 +120,6 @@ log.Println("年龄", reqData.age)
 - `IsSQLobjects` 是SQL对象名集合
 - `IsUUID` 是UUID格式
 - `IsURL` 是URL格式
-- `IsRequestURI` 是Request URI格式
 
 - `MustHasLetter` 必须包含字母
 - `MustHasLower` 必须包含小写字母

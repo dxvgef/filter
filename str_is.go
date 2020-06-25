@@ -11,10 +11,10 @@ import (
 
 // Equal 与指定的字符串相等
 func (self *Str) Equal(str string, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if self.value != str {
+	if self.currentValue != str {
 		self.err = self.wrapError("", customError...)
 	}
 	return self
@@ -22,10 +22,10 @@ func (self *Str) Equal(str string, customError ...string) StrType {
 
 // IsBool 布尔值
 func (self *Str) IsBool(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if _, err := strconv.ParseBool(self.value); err != nil {
+	if _, err := strconv.ParseBool(self.currentValue); err != nil {
 		self.err = self.wrapError("", customError...)
 	}
 	return self
@@ -33,10 +33,10 @@ func (self *Str) IsBool(customError ...string) StrType {
 
 // IsLower 小写字母
 func (self *Str) IsLower(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.IsLower(v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -47,10 +47,10 @@ func (self *Str) IsLower(customError ...string) StrType {
 
 // IsUpper 大写字母
 func (self *Str) IsUpper(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.IsUpper(v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -61,10 +61,10 @@ func (self *Str) IsUpper(customError ...string) StrType {
 
 // IsLetter 大小写字母
 func (self *Str) IsLetter(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.IsLetter(v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -75,10 +75,10 @@ func (self *Str) IsLetter(customError ...string) StrType {
 
 // IsDigit 无符号数字
 func (self *Str) IsDigit(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.IsDigit(v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -89,10 +89,10 @@ func (self *Str) IsDigit(customError ...string) StrType {
 
 // IsLowerOrDigit 小写字母或数字
 func (self *Str) IsLowerOrDigit(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.IsLower(v) && !unicode.IsDigit(v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -103,10 +103,10 @@ func (self *Str) IsLowerOrDigit(customError ...string) StrType {
 
 // IsUpperOrDigit 大写字母或数字
 func (self *Str) IsUpperOrDigit(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.IsUpper(v) && !unicode.IsDigit(v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -117,10 +117,10 @@ func (self *Str) IsUpperOrDigit(customError ...string) StrType {
 
 // IsLetterOrDigit 字母或数字
 func (self *Str) IsLetterOrDigit(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.IsLetter(v) && !unicode.IsDigit(v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -131,10 +131,10 @@ func (self *Str) IsLetterOrDigit(customError ...string) StrType {
 
 // IsChinese 汉字
 func (self *Str) IsChinese(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for _, v := range self.value {
+	for _, v := range self.currentValue {
 		if !unicode.Is(unicode.Scripts["Han"], v) {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -145,10 +145,10 @@ func (self *Str) IsChinese(customError ...string) StrType {
 
 // IsChinaTel 中国固定电话号码
 func (self *Str) IsChinaTel(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	telSlice := strings.Split(self.value, "-")
+	telSlice := strings.Split(self.currentValue, "-")
 	if len(telSlice) != 2 {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -177,10 +177,10 @@ func (self *Str) IsChinaTel(customError ...string) StrType {
 
 // IsMail 电邮地址
 func (self *Str) IsMail(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	emailSlice := strings.Split(self.value, "@")
+	emailSlice := strings.Split(self.currentValue, "@")
 	if len(emailSlice) != 2 {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -227,10 +227,10 @@ func (self *Str) IsMail(customError ...string) StrType {
 
 // IsIP IPv4/v6地址
 func (self *Str) IsIP(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if net.ParseIP(self.value) == nil {
+	if net.ParseIP(self.currentValue) == nil {
 		self.err = self.wrapError("", customError...)
 		return self
 	}
@@ -240,11 +240,11 @@ func (self *Str) IsIP(customError ...string) StrType {
 
 // IsJSON JSON格式
 func (self *Str) IsJSON(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	var js json.RawMessage
-	if json.Unmarshal([]byte(self.value), &js) != nil {
+	if json.Unmarshal([]byte(self.currentValue), &js) != nil {
 		self.err = self.wrapError("", customError...)
 		return self
 	}
@@ -253,22 +253,22 @@ func (self *Str) IsJSON(customError ...string) StrType {
 
 // IsChinaIDNumber 中国身份证号码
 func (self *Str) IsChinaIDNumber(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	var idV int
-	if self.value[17:] == "X" {
+	if self.currentValue[17:] == "X" {
 		idV = 88
 	} else {
 		var err error
-		if idV, err = strconv.Atoi(self.value[17:]); err != nil {
+		if idV, err = strconv.Atoi(self.currentValue[17:]); err != nil {
 			self.err = self.wrapError("", customError...)
 			return self
 		}
 	}
 
 	var verify int
-	id := self.value[:17]
+	id := self.currentValue[:17]
 	arr := make([]int, 17)
 	for i := 0; i < 17; i++ {
 		arr[i], self.err = strconv.Atoi(string(id[i]))
@@ -302,10 +302,10 @@ func (self *Str) IsChinaIDNumber(customError ...string) StrType {
 // nolint:gocyclo
 // IsChineseMobile 中国手机号码
 func (self *Str) IsChineseMobile(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if len(self.value) != 11 {
+	if len(self.currentValue) != 11 {
 		self.err = self.wrapError("", customError...)
 		return self
 	}
@@ -313,7 +313,7 @@ func (self *Str) IsChineseMobile(customError ...string) StrType {
 		prefix      uint8
 		prefixValid bool
 	)
-	if prefix64, err := strconv.ParseUint(self.value[0:3], 10, 8); err != nil {
+	if prefix64, err := strconv.ParseUint(self.currentValue[0:3], 10, 8); err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
 	} else {
@@ -329,7 +329,7 @@ func (self *Str) IsChineseMobile(customError ...string) StrType {
 		self.err = self.wrapError("", customError...)
 		return self
 	}
-	if _, err := strconv.ParseUint(self.value[3:], 10, 32); err != nil {
+	if _, err := strconv.ParseUint(self.currentValue[3:], 10, 32); err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
 	}
@@ -347,10 +347,10 @@ func isSqlObject(value string) bool {
 
 // IsSqlObject SQL对象（库名、表名、字段名）
 func (self *Str) IsSqlObject(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if !isSqlObject(self.value) {
+	if !isSqlObject(self.currentValue) {
 		self.err = self.wrapError("", customError...)
 		return self
 	}
@@ -359,10 +359,10 @@ func (self *Str) IsSqlObject(customError ...string) StrType {
 
 // IsSqlObjects SQL对象集合（库名、表名、字段名）
 func (self *Str) IsSqlObjects(sep string, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	values := strings.Split(self.value, sep)
+	values := strings.Split(self.currentValue, sep)
 	if values[0] == "" || values[0] == " " {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -378,10 +378,10 @@ func (self *Str) IsSqlObjects(sep string, customError ...string) StrType {
 
 // IsURL 是有效的URL
 func (self *Str) IsURL(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if _, err := url.ParseRequestURI(self.value); err != nil {
+	if _, err := url.ParseRequestURI(self.currentValue); err != nil {
 		self.err = self.wrapError("", customError...)
 	}
 	return self
@@ -389,11 +389,11 @@ func (self *Str) IsURL(customError ...string) StrType {
 
 // IsUUID UUID格式
 func (self *Str) IsUUID(customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 
-	str := self.value
+	str := self.currentValue
 
 	var uuid [16]byte
 	switch len(str) {

@@ -6,7 +6,7 @@ import (
 
 // SetSeparator 设置过滤器缓存中的分隔符，之后都以此分隔符来拆解value成slice
 func (self *Str) SetSeparator(sep string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	self.sep = sep
@@ -15,11 +15,11 @@ func (self *Str) SetSeparator(sep string) StrType {
 
 // EnumString 仅允许[]string中的值
 func (self *Str) EnumString(slice []string, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	for k := range slice {
-		if slice[k] == self.value {
+		if slice[k] == self.currentValue {
 			return self
 		}
 	}
@@ -29,10 +29,10 @@ func (self *Str) EnumString(slice []string, customError ...string) StrType {
 
 // EnumInt 仅允许[]int中的值
 func (self *Str) EnumInt(i []int, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	value, err := strconv.Atoi(self.value)
+	value, err := strconv.Atoi(self.currentValue)
 	if err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -48,10 +48,10 @@ func (self *Str) EnumInt(i []int, customError ...string) StrType {
 
 // EnumInt32 仅允许[]int32中的值
 func (self *Str) EnumInt32(i []int32, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	value64, err := strconv.ParseInt(self.value, 10, 32)
+	value64, err := strconv.ParseInt(self.currentValue, 10, 32)
 	if err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -68,12 +68,12 @@ func (self *Str) EnumInt32(i []int32, customError ...string) StrType {
 
 // EnumInt64 仅允许[]int64中的值
 func (self *Str) EnumInt64(i []int64, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	if self.int64 == 0 {
 		var err error
-		self.int64, err = strconv.ParseInt(self.value, 10, 64)
+		self.int64, err = strconv.ParseInt(self.currentValue, 10, 64)
 		if err != nil {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -90,10 +90,10 @@ func (self *Str) EnumInt64(i []int64, customError ...string) StrType {
 
 // EnumFloat32 仅允许[]float32中的值
 func (self *Str) EnumFloat32(f []float32, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	value, err := strconv.ParseFloat(self.value, 32)
+	value, err := strconv.ParseFloat(self.currentValue, 32)
 	if err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -110,12 +110,12 @@ func (self *Str) EnumFloat32(f []float32, customError ...string) StrType {
 
 // EnumFloat64 仅允许[]float64中的值
 func (self *Str) EnumFloat64(f []float64, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	if self.float64 == 0 {
 		var err error
-		self.float64, err = strconv.ParseFloat(self.value, 64)
+		self.float64, err = strconv.ParseFloat(self.currentValue, 64)
 		if err != nil {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -134,11 +134,11 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) StrType {
 
 // DenyString 阻止存在于[]string中的值
 func (self *Str) DenyString(slice []string, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	for k := range slice {
-		if slice[k] == self.value {
+		if slice[k] == self.currentValue {
 			self.err = self.wrapError("", customError...)
 			return self
 		}
@@ -148,10 +148,10 @@ func (self *Str) DenyString(slice []string, customError ...string) StrType {
 
 // DenyInt 阻止存在于[]int中的值
 func (self *Str) DenyInt(i []int, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	value, err := strconv.Atoi(self.value)
+	value, err := strconv.Atoi(self.currentValue)
 	if err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -167,10 +167,10 @@ func (self *Str) DenyInt(i []int, customError ...string) StrType {
 
 // DenyInt32 阻止存在于[]int32中的值
 func (self *Str) DenyInt32(i []int32, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	value64, err := strconv.ParseInt(self.value, 10, 32)
+	value64, err := strconv.ParseInt(self.currentValue, 10, 32)
 	if err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -187,12 +187,12 @@ func (self *Str) DenyInt32(i []int32, customError ...string) StrType {
 
 // DenyInt64 阻止存在于[]int64中的值
 func (self *Str) DenyInt64(i []int64, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	if self.int64 == 0 {
 		var err error
-		self.int64, err = strconv.ParseInt(self.value, 10, 64)
+		self.int64, err = strconv.ParseInt(self.currentValue, 10, 64)
 		if err != nil {
 			self.err = self.wrapError("", customError...)
 			return self
@@ -209,10 +209,10 @@ func (self *Str) DenyInt64(i []int64, customError ...string) StrType {
 
 // DenyFloat32 阻止存在于[]float32中的值
 func (self *Str) DenyFloat32(f []float32, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	value, err := strconv.ParseFloat(self.value, 32)
+	value, err := strconv.ParseFloat(self.currentValue, 32)
 	if err != nil {
 		self.err = self.wrapError("", customError...)
 		return self
@@ -229,12 +229,12 @@ func (self *Str) DenyFloat32(f []float32, customError ...string) StrType {
 
 // DenyFloats64 阻止存在于[]float64中的值
 func (self *Str) DenyInFloat64(f []float64, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	if self.float64 == 0 {
 		var err error
-		self.float64, err = strconv.ParseFloat(self.value, 64)
+		self.float64, err = strconv.ParseFloat(self.currentValue, 64)
 		if err != nil {
 			self.err = self.wrapError("", customError...)
 			return self

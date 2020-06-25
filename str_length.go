@@ -4,10 +4,10 @@ import "unicode/utf8"
 
 // MinLength 最小长度
 func (self *Str) MinLength(min int, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if len(self.value) < min {
+	if len(self.currentValue) < min {
 		self.err = self.wrapError("", customError...)
 	}
 	return self
@@ -15,10 +15,10 @@ func (self *Str) MinLength(min int, customError ...string) StrType {
 
 // MinUTF8Length UTF8编码最小长度
 func (self *Str) MinUTF8Length(min int, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if utf8.RuneCountInString(self.value) < min {
+	if utf8.RuneCountInString(self.currentValue) < min {
 		self.err = self.wrapError("", customError...)
 	}
 	return self
@@ -26,10 +26,10 @@ func (self *Str) MinUTF8Length(min int, customError ...string) StrType {
 
 // MaxLength 最大长度
 func (self *Str) MaxLength(max int, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if len(self.value) > max {
+	if len(self.currentValue) > max {
 		self.err = self.wrapError("", customError...)
 	}
 	return self
@@ -37,10 +37,10 @@ func (self *Str) MaxLength(max int, customError ...string) StrType {
 
 // MaxUTF8Length UTF8编码最大长度
 func (self *Str) MaxUTF8Length(max int, customError ...string) StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	if utf8.RuneCountInString(self.value) > max {
+	if utf8.RuneCountInString(self.currentValue) > max {
 		self.err = self.wrapError("", customError...)
 	}
 	return self

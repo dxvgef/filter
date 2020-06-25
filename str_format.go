@@ -6,60 +6,60 @@ import (
 
 // 字母转为大写
 func (self *Str) ToUpper() StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	self.value = strings.ToUpper(self.value)
+	self.currentValue = strings.ToUpper(self.currentValue)
 	return self
 }
 
 // 字母转为小写
 func (self *Str) ToLower() StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	self.value = strings.ToLower(self.value)
+	self.currentValue = strings.ToLower(self.currentValue)
 	return self
 }
 
 // SnakeCaseToCamelCase 蛇形转驼峰: hello_world => helloWorld
 func (self *Str) SnakeCaseToCamelCase() StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	slice := strings.Split(self.value, "_")
+	slice := strings.Split(self.currentValue, "_")
 	for i := range slice {
 		if i > 0 {
 			slice[i] = strings.Title(slice[i])
 		}
 	}
-	self.value = strings.Join(slice, "")
+	self.currentValue = strings.Join(slice, "")
 	return self
 }
 
 // SnakeCaseToPascalCase 蛇形转帕斯卡: hello_world => HelloWorld
 func (self *Str) SnakeCaseToPascalCase() StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	slice := strings.Split(self.value, "_")
+	slice := strings.Split(self.currentValue, "_")
 	for i := range slice {
 		slice[i] = strings.Title(slice[i])
 	}
-	self.value = strings.Join(slice, "")
+	self.currentValue = strings.Join(slice, "")
 	return self
 }
 
 // CamelCaseToSnakeCase 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
 func (self *Str) CamelCaseToSnakeCase() StrType {
-	if self.err != nil || self.value == "" {
+	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	strLen := len(self.value)
+	strLen := len(self.currentValue)
 	result := make([]byte, 0, strLen*2)
 	j := false
 	for i := 0; i < strLen; i++ {
-		char := self.value[i]
+		char := self.currentValue[i]
 		if i > 0 && char >= 'A' && char <= 'Z' && j {
 			result = append(result, '_')
 		}
@@ -68,6 +68,6 @@ func (self *Str) CamelCaseToSnakeCase() StrType {
 		}
 		result = append(result, char)
 	}
-	self.value = strings.ToLower(string(result))
+	self.currentValue = strings.ToLower(string(result))
 	return self
 }

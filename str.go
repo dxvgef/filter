@@ -21,18 +21,19 @@ type StrType interface {
 }
 
 type Str struct {
-	name     string  // 变量名称，用于拼接错误消息
-	rawValue string  // 原始值
-	value    string  // 最终值
-	err      error   // 错误
-	int64    int64   // 转成int64类型的值，用于做数值运算，减少类型转换的次数
-	float64  float64 // 转成float64类型的值，用于做数值运算，减少类型转换的次数
-	require  bool    // 不能为零值
-	sep      string  // 分隔符
+	name         string  // 变量名称，用于拼接错误消息
+	rawValue     string  // 原始值
+	currentValue string  // 当前值
+	defaultValue string  // 默认值
+	err          error   // 错误
+	int64        int64   // 转成int64类型的值，用于做数值运算，减少类型转换的次数
+	float64      float64 // 转成float64类型的值，用于做数值运算，减少类型转换的次数
+	require      bool    // 不能为零值
+	sep          string  // 分隔符
 }
 
 // 输入字符串类型的值
-func InputStr(value string, name ...string) StrType {
+func InputString(value string, name ...string) StrType {
 	var str Str
 	str.rawValue = value
 	if len(name) > 0 {
@@ -58,11 +59,13 @@ func (self *Str) Error() error {
 }
 
 // 封装错误信息
+// nolint:unparam
 func (self *Str) wrapError(err string, custom ...string) error {
 	var body strings.Builder
 	body.WriteString(self.name)
 	body.WriteString(": ")
 
+	// nolint:gocritic
 	if len(custom) > 0 && custom[0] != "" {
 		body.WriteString(custom[0])
 	} else if err != "" {
@@ -71,4 +74,10 @@ func (self *Str) wrapError(err string, custom ...string) error {
 		body.WriteString(defaultError)
 	}
 	return errors.New(body.String())
+}
+
+// 设置默认值，如果出错则使用此值
+func (self *Str) SetDefault(value string) StrType {
+	self.defaultValue = value
+	return self
 }

@@ -8,11 +8,11 @@ func (self *Str) JoinStr(values ...string) StrType {
 		return self
 	}
 	var value strings.Builder
-	value.WriteString(self.value)
+	value.WriteString(self.currentValue)
 	for k := range values {
 		value.WriteString(values[k])
 	}
-	self.value = value.String()
+	self.currentValue = value.String()
 	return self
 }
 
@@ -22,11 +22,11 @@ func (self *Str) JoinBytes(values ...[]byte) StrType {
 		return self
 	}
 	var value strings.Builder
-	value.WriteString(self.value)
+	value.WriteString(self.currentValue)
 	for k := range values {
 		value.Write(values[k])
 	}
-	self.value = value.String()
+	self.currentValue = value.String()
 	return self
 }
 
@@ -36,11 +36,11 @@ func (self *Str) JoinByte(values ...byte) StrType {
 		return self
 	}
 	var value strings.Builder
-	value.WriteString(self.value)
+	value.WriteString(self.currentValue)
 	for k := range values {
 		value.WriteByte(values[k])
 	}
-	self.value = value.String()
+	self.currentValue = value.String()
 	return self
 }
 
@@ -50,10 +50,10 @@ func (self *Str) JoinRune(values ...rune) StrType {
 		return self
 	}
 	var value strings.Builder
-	value.WriteString(self.value)
+	value.WriteString(self.currentValue)
 	for k := range values {
 		value.WriteRune(values[k])
 	}
-	self.value = value.String()
+	self.currentValue = value.String()
 	return self
 }

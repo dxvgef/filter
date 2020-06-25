@@ -1,7 +1,37 @@
 package filter
 
-import "strings"
+import (
+	"unsafe"
+)
 
+// 默认的错误文本
+var defaultError = "数据处理失败"
+
+// 中国手机号码前缀
+var chinaMobilePrefix = []uint8{
+	// 移动
+	139, 138, 137, 136, 135, 134, 147, 150, 151, 152, 157, 158, 159, 165, 178, 182, 183, 184, 187, 188, 198,
+	// 联通
+	130, 131, 132, 155, 156, 166, 167, 185, 186, 145, 175, 176,
+	// 电信
+	133, 153, 162, 177, 173, 180, 181, 189, 191, 199,
+	// 虚拟运营商
+	170, 171,
+}
+
+// []byte转string
+func bytesToStr(value []byte) string {
+	return *(*string)(unsafe.Pointer(&value)) // nolint
+}
+
+// string转[]byte
+func strToBytes(s string) []byte {
+	x := (*[2]uintptr)(unsafe.Pointer(&s)) // nolint
+	h := [3]uintptr{x[0], x[1], x[1]}
+	return *(*[]byte)(unsafe.Pointer(&h)) // nolint
+}
+
+// 用于校验uuid
 var xvalues = [256]byte{
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
@@ -21,71 +51,9 @@ var xvalues = [256]byte{
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 }
 
+// 用于校验uuid
 func xtob(x1, x2 byte) (byte, bool) {
 	b1 := xvalues[x1]
 	b2 := xvalues[x2]
 	return (b1 << 4) | b2, b1 != 255 && b2 != 255
-}
-
-// IsUUID UUID格式
-func (obj *Object) IsUUID(customError ...string) *Object {
-	if obj.err != nil || obj.rawValue == "" {
-		return obj
-	}
-
-	str := obj.rawValue
-
-	var uuid [16]byte
-	switch len(str) {
-	// xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	case 36:
-
-	// urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	case 36 + 9:
-		if strings.EqualFold(strings.ToLower(str[:9]), "urn:uuid:") {
-			obj.err = obj.setError(customError...)
-			return obj
-		}
-		str = str[9:]
-
-	// {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}
-	case 36 + 2:
-		str = str[1:]
-
-	// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-	case 32:
-		var ok bool
-		for i := range uuid {
-			uuid[i], ok = xtob(str[i*2], str[i*2+1])
-			if !ok {
-				obj.err = obj.setError(customError...)
-				return obj
-			}
-		}
-		return obj
-	default:
-		obj.err = obj.setError(customError...)
-		return obj
-	}
-	// s is now at least 36 bytes long
-	// it must be of the form  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	if str[8] != '-' || str[13] != '-' || str[18] != '-' || str[23] != '-' {
-		obj.err = obj.setError(customError...)
-		return obj
-	}
-	for i, x := range [16]int{
-		0, 2, 4, 6,
-		9, 11,
-		14, 16,
-		19, 21,
-		24, 26, 28, 30, 32, 34} {
-		v, ok := xtob(str[x], str[x+1])
-		if !ok {
-			obj.err = obj.setError(customError...)
-			return obj
-		}
-		uuid[i] = v
-	}
-
-	return obj
 }

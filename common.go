@@ -5,7 +5,17 @@ import (
 )
 
 // 默认的错误文本
-var defaultError = "数据处理失败"
+var DefaultErrorText = "数据处理失败"
+
+// 批处理
+func Batch(errs ...error) error {
+	for k := range errs {
+		if errs[k] != nil {
+			return errs[k]
+		}
+	}
+	return nil
+}
 
 // 中国手机号码前缀
 var chinaMobilePrefix = []uint8{

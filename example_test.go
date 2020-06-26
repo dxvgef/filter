@@ -4,9 +4,9 @@ import "testing"
 
 // 检查过滤结果
 func TestCheck(t *testing.T) {
-	err := InputString("输入数据", Config{Name: "数据名称"}).
+	err := InputString("dxvgef", Config{Name: "账号"}).
 		TrimSpace().
-		MinLength(3, "不能小于3个字符").MaxLength(15).
+		MinLength(3, "不能少于3个字符").MaxLength(15).
 		Error()
 	if err != nil {
 		t.Error(err)
@@ -16,9 +16,9 @@ func TestCheck(t *testing.T) {
 // 将过滤结果赋值到变量
 func TestSet(t *testing.T) {
 	var str string
-	err := InputString("dxvgef", Config{Name: "数据名称"}).
+	err := InputString("dxvgef", Config{Name: "账号"}).
 		TrimSpace().
-		MinLength(3, "不能小于3个字符").MaxLength(15).
+		MinLength(3, "不能少于3个字符").MaxLength(15).
 		Set(&str)
 	if err != nil {
 		t.Error(err)
@@ -29,9 +29,9 @@ func TestSet(t *testing.T) {
 
 // 类型转换
 func TestConvert(t *testing.T) {
-	i, err := InputString("123456", Config{Name: "字符串"}).
+	i, err := InputString("18", Config{Name: "年龄"}).
 		TrimSpace().
-		MinLength(3, "不能小于3个字符").MaxLength(15).
+		MinLength(18, "不能小于18岁").
 		Int()
 	if err != nil {
 		t.Error(err)
@@ -43,8 +43,8 @@ func TestConvert(t *testing.T) {
 // 批量处理检查结果
 func TestBatchCheck(t *testing.T) {
 	err := Batch(
-		InputString("dxvgef", Config{Name: "字符串1"}).MinLength(3, "不能小于3个字符").MaxLength(15).Error(),
-		InputString("tsing", Config{Name: "字符串2"}).MinLength(3, "不能小于3个字符").MaxLength(15).Error(),
+		InputString("dxvgef", Config{Name: "账号"}).MinLength(3, "不能少于3个字符").MaxLength(15).Error(),
+		InputString("123456", Config{Name: "密码"}).MinLength(6, "不能少于6个字符").MaxLength(15).Error(),
 	)
 	if err != nil {
 		t.Error(err)
@@ -55,8 +55,8 @@ func TestBatchCheck(t *testing.T) {
 func TestBatchSet(t *testing.T) {
 	var str1, str2 string
 	err := Batch(
-		InputString("dxvgef", Config{Name: "字符串1"}).TrimSpace().MinLength(3, "不能小于3个字符").MaxLength(15).Set(&str1),
-		InputString("tsing", Config{Name: "字符串2"}).TrimSpace().MinLength(3, "不能小于3个字符").MaxLength(15).Set(&str2),
+		InputString("dxvgef", Config{Name: "账号"}).MinLength(3, "不能少于3个字符").MaxLength(15).Error(),
+		InputString("123456", Config{Name: "密码"}).MinLength(6, "不能少于6个字符").MaxLength(15).Error(),
 	)
 	if err != nil {
 		t.Error(err)

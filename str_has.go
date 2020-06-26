@@ -84,7 +84,7 @@ func (self *Str) HasSymbol(customError ...string) StrType {
 }
 
 // 必须包含指定的字符串
-func (self *Str) Contains(sub string, customError ...string) StrType {
+func (self *Str) HasString(sub string, customError ...string) StrType {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -93,11 +93,6 @@ func (self *Str) Contains(sub string, customError ...string) StrType {
 	}
 	self.err = wrapError(self.name, "", customError...)
 	return self
-}
-
-// 等同Contains
-func (self *Str) HasString(sub string, customError ...string) StrType {
-	return self.Contains(sub, customError...)
 }
 
 // 必须包含指定的前缀字符串

@@ -54,7 +54,6 @@ type StrType interface {
 	HasUpper(...string) StrType
 	HasDigit(...string) StrType
 	HasSymbol(...string) StrType
-	Contains(string, ...string) StrType
 	HasString(string, ...string) StrType
 	HasPrefix(string, ...string) StrType
 	HasSuffix(string, ...string) StrType
@@ -105,7 +104,7 @@ type StrType interface {
 	DenyInt32([]int32, ...string) StrType
 	DenyInt64([]int64, ...string) StrType
 	DenyFloat32([]float32, ...string) StrType
-	DenyInFloat64([]float64, ...string) StrType
+	DenyFloat64([]float64, ...string) StrType
 
 	// 输出
 	String() (string, error)

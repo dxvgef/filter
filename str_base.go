@@ -1,7 +1,7 @@
 package filter
 
 // 输入字符串类型的值
-func InputString(value string, config ...Config) StrType {
+func String(value string, config ...Config) StrType {
 	var str Str
 	str.rawValue = value
 	str.currentValue = value

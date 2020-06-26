@@ -1,11 +1,20 @@
 package filter
 
 import (
+	"errors"
+	"strings"
 	"unsafe"
 )
 
 // 默认的错误文本
 var DefaultErrorText = "数据处理失败"
+
+// 配置
+type Config struct {
+	Name      string // 数据名称
+	Require   bool   // 必需(不能为零值)
+	Separator string // 拆分成slice的分隔符
+}
 
 // 批处理
 func Batch(errs ...error) error {
@@ -15,6 +24,24 @@ func Batch(errs ...error) error {
 		}
 	}
 	return nil
+}
+
+// 封装错误信息
+// nolint:unparam
+func wrapError(name, err string, custom ...string) error {
+	var body strings.Builder
+	body.WriteString(name)
+	body.WriteString(": ")
+
+	// nolint:gocritic
+	if len(custom) > 0 && custom[0] != "" {
+		body.WriteString(custom[0])
+	} else if err != "" {
+		body.WriteString(err)
+	} else {
+		body.WriteString(DefaultErrorText)
+	}
+	return errors.New(body.String())
 }
 
 // 中国手机号码前缀

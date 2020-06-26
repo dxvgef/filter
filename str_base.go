@@ -1,31 +1,37 @@
 package filter
 
-import (
-	"errors"
-	"strings"
-)
-
 // 输入字符串类型的值
-func InputString(value string, name ...string) StrType {
+func InputString(value string, config ...Config) StrType {
 	var str Str
 	str.rawValue = value
 	str.currentValue = value
-	if len(name) > 0 {
-		str.name = name[0]
+	if len(config) > 0 {
+		str.name = config[0].Name
+		str.require = config[0].Require
+		str.sep = config[0].Separator
 	}
 	return &str
 }
 
 // 必须有值(不能为零值)
-func (self *Str) Require() StrType {
+func (self *Str) SetRequire() StrType {
 	self.require = true
+	return self
+}
+
+// SetSeparator 设置过滤器缓存中的分隔符，之后都以此分隔符来拆解value成slice
+func (self *Str) SetSeparator(sep string) StrType {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+	self.sep = sep
 	return self
 }
 
 // 检查require
 func (self *Str) checkRequire() {
 	if self.require && self.currentValue == "" {
-		self.err = self.wrapError("不能为空")
+		self.err = wrapError(self.name, "不能为空")
 	}
 }
 
@@ -33,24 +39,6 @@ func (self *Str) checkRequire() {
 func (self *Str) Error() error {
 	self.checkRequire()
 	return self.err
-}
-
-// 封装错误信息
-// nolint:unparam
-func (self *Str) wrapError(err string, custom ...string) error {
-	var body strings.Builder
-	body.WriteString(self.name)
-	body.WriteString(": ")
-
-	// nolint:gocritic
-	if len(custom) > 0 && custom[0] != "" {
-		body.WriteString(custom[0])
-	} else if err != "" {
-		body.WriteString(err)
-	} else {
-		body.WriteString(DefaultErrorText)
-	}
-	return errors.New(body.String())
 }
 
 // // 设置默认值，如果出错则使用此值

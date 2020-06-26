@@ -15,7 +15,7 @@ func (self *Str) HasLetter(customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -31,7 +31,7 @@ func (self *Str) HasLower(customError ...string) StrType {
 		}
 	}
 
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -47,7 +47,7 @@ func (self *Str) HasUpper(customError ...string) StrType {
 		}
 	}
 
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -63,7 +63,7 @@ func (self *Str) HasDigit(customError ...string) StrType {
 		}
 	}
 
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -79,7 +79,7 @@ func (self *Str) HasSymbol(customError ...string) StrType {
 		}
 	}
 
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -91,7 +91,7 @@ func (self *Str) Contains(sub string, customError ...string) StrType {
 	if strings.Contains(self.currentValue, sub) {
 		return self
 	}
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -108,7 +108,7 @@ func (self *Str) HasPrefix(sub string, customError ...string) StrType {
 	if strings.HasPrefix(self.currentValue, sub) {
 		return self
 	}
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -120,6 +120,6 @@ func (self *Str) HasSuffix(sub string, customError ...string) StrType {
 	if strings.HasSuffix(self.currentValue, sub) {
 		return self
 	}
-	self.err = self.wrapError("", customError...)
+	self.err = wrapError(self.name, "", customError...)
 	return self
 }

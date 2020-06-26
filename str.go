@@ -1,22 +1,20 @@
 package filter
 
 type Str struct {
-	name         string  // 变量名称，用于拼接错误消息
-	rawValue     string  // 原始值
-	currentValue string  // 当前值
-	err          error   // 错误
-	int64        int64   // 转成int64类型的值，用于做数值运算，减少类型转换的次数
-	float64      float64 // 转成float64类型的值，用于做数值运算，减少类型转换的次数
-	require      bool    // 不能为零值
-	sep          string  // 分隔符
+	name         string // 变量名称，用于拼接错误消息
+	rawValue     string // 原始值
+	currentValue string // 当前值
+	err          error  // 错误
+	require      bool   // 不能为零值
+	sep          string // 分隔符
 }
 
 type StrType interface {
-	Require() StrType
-	JoinStr(...string) StrType
-	JoinBytes(...[]byte) StrType
-	JoinByte(...byte) StrType
-	JoinRune(...rune) StrType
+	// 设置
+	SetRequire() StrType
+	SetSeparator(string) StrType
+
+	// 清理
 	Trim(string) StrType
 	TrimSpace() StrType
 	TrimLeft(string) StrType
@@ -43,6 +41,14 @@ type StrType interface {
 	URLPathEscape() StrType
 	URLQueryUnescape(...string) StrType
 	URLQueryEscape() StrType
+	JoinStr(...string) StrType
+	JoinBytes(...[]byte) StrType
+	JoinByte(...byte) StrType
+	JoinRune(...rune) StrType
+
+	// 校验
+	Equal(string, ...string) StrType
+
 	HasLetter(...string) StrType
 	HasLower(...string) StrType
 	HasUpper(...string) StrType
@@ -52,7 +58,7 @@ type StrType interface {
 	HasString(string, ...string) StrType
 	HasPrefix(string, ...string) StrType
 	HasSuffix(string, ...string) StrType
-	Equal(string, ...string) StrType
+
 	IsBool(...string) StrType
 	IsLower(...string) StrType
 	IsUpper(...string) StrType
@@ -67,34 +73,41 @@ type StrType interface {
 	IsIP(...string) StrType
 	IsJSON(...string) StrType
 	IsChinaIDNumber(...string) StrType
-	IsChineseMobile(...string) StrType
-	IsSqlObject(...string) StrType
-	IsSqlObjects(string, ...string) StrType
+	IsChinaMobile(...string) StrType
+	IsSQLObject(...string) StrType
+	IsSQLObjects(string, ...string) StrType
 	IsURL(...string) StrType
 	IsUUID(...string) StrType
+
 	MinLength(int, ...string) StrType
 	MinUTF8Length(int, ...string) StrType
 	MaxLength(int, ...string) StrType
 	MaxUTF8Length(int, ...string) StrType
-	UpdateInt64(...string) StrType
-	UpdateFloat64(...string) StrType
+
 	MinInteger(int64, ...string) StrType
 	MaxInteger(int64, ...string) StrType
 	MinFloat(float64, ...string) StrType
 	MaxFloat(float64, ...string) StrType
-	SetSeparator(string) StrType
+
 	EnumString([]string, ...string) StrType
 	EnumInt([]int, ...string) StrType
+	EnumInt8([]int8, ...string) StrType
+	EnumInt16([]int16, ...string) StrType
 	EnumInt32([]int32, ...string) StrType
 	EnumInt64([]int64, ...string) StrType
 	EnumFloat32([]float32, ...string) StrType
 	EnumFloat64([]float64, ...string) StrType
+
 	DenyString([]string, ...string) StrType
 	DenyInt([]int, ...string) StrType
+	DenyInt8([]int8, ...string) StrType
+	DenyInt16([]int16, ...string) StrType
 	DenyInt32([]int32, ...string) StrType
 	DenyInt64([]int64, ...string) StrType
 	DenyFloat32([]float32, ...string) StrType
 	DenyInFloat64([]float64, ...string) StrType
+
+	// 输出
 	String() (string, error)
 	DefaultString(string) string
 	SliceString() ([]string, error)
@@ -151,6 +164,10 @@ type StrType interface {
 	DefaultBool(bool) bool
 	SliceBool() ([]bool, error)
 	DefaultSliceBool([]bool) []bool
-	Assign(interface{}, ...string) error
+
+	// 赋值
+	Set(interface{}, ...string) error
+
+	// 结果
 	Error() error
 }

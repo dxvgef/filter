@@ -1,64 +1,17 @@
 # filter
 
-golang开发的数据过滤器，由 **数据输入->数据清洗->数据验证->类型转换->结果输出** 几个部份组成。
+golang的数据过滤包，由 **数据输入->数据清理->数据校验->类型转换->结果输出** 几个部份组成。
 
-- 自定义错误消息
-- 过滤结果自动赋值到指定变量
-- 批量过滤多个数据，自动赋值到对应变量
-
-## 基本示例
-
-单项数据检查，并返回检查结果
-
-```go
-err := filter.FromString("123", "密码").
-	Trim().
-	MinLength(6).MaxLength(32).
-	Error()
-```
-
-单项数据过滤，并返回字符串类型的值和结果
-
-```go
-password, err := filter.FromString("123", "密码").
-	Trim().
-	MinLength(6).MaxLength(32).
-	String()
-```
-
-单项数据过滤，并自动赋值到变量
-
-```go
-var password string
-err := filter.Set(&password, filter.FromString("Abc123-", "密码").
-    MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
-)
-```
-
-多项数据过滤，并自动赋值到对应变量
-
-```go
-var reqData struct {
-    password string
-    age      int16
-}
-err := filter.MSet(
-    filter.El(&reqData.password, filter.FromString("Abc123-", "密码").
-        Required().MinLength(6).MaxLength(32).HasLetter().HasUpper().HasDigit().HasSymbol(),
-    ),
-    filter.El(&reqData.age, filter.FromString("3", "年龄").
-        IsDigit().MinInteger(18)),
-)
-log.Println("密码", reqData.password)
-log.Println("年龄", reqData.age)
-```
+- 每个步骤都可以自定义错误消息
+- 过滤结果可以自动赋值到变量
+- 支持批量操作，无需逐一检查错误
 
 ## 数据输入
 
-**`FromString(str, name)`**
+**`InputString(str, name)`**
 要过滤的数据来源，目前仅支持字符串
-第一个参数str为来源参数值<br>
-第二个参数为数据的名称，用于拼接错误消息
+第一个参数str为要过滤的字符串<br>
+第二个参数为数据的名称，用于拼接 `{名称}: {错误消息}` 这样的错误消息
 
 ## 数据清洗
 
@@ -84,7 +37,7 @@ log.Println("年龄", reqData.age)
 - `Base64URLDecode` Base64 URL 解码
 - `Base64RawURLEncode` Base64 raw URL 编码
 - `Base64RawURLDecode` Base64 raw URL 解码
-- `Separator` 指定Slice类型的分隔符，配合`Strings`类型转换方法使用
+- `SetSeparator` 指定Slice类型的分隔符，配合`Strings`类型转换方法使用
 
 ## 数据验证
 
@@ -113,24 +66,23 @@ log.Println("年龄", reqData.age)
 - `IsMail` 是电邮地址
 - `IsIP` 蝇IPv4/v6地址
 - `IsJSON` 是有效的JSON格式
-- `IsChineseTel` 是中国大陆地区固定电话号码
-- `IsChineseMobile` 是中国大陆地区手机号码
-- `IsChineseIDNumber` 是中国大陆地区身份证号码
-- `IsSQLobject` 是SQL对象名(库、表、字段)
-- `IsSQLobjects` 是SQL对象名集合
+- `IsChinaTel` 是中国大陆地区固定电话号码
+- `IsChinaMobile` 是中国大陆地区手机号码
+- `IsChinaIDNumber` 是中国大陆地区身份证号码
+- `IsSQLObject` 是SQL对象名(库、表、字段)
+- `IsSQLObjects` 是SQL对象名集合
 - `IsUUID` 是UUID格式
 - `IsURL` 是URL格式
 
-- `MustHasLetter` 必须包含字母
-- `MustHasLower` 必须包含小写字母
-- `MustHasUpper` 必须包含大写字母
-- `MustHasDigit` 必须包含数字
-- `MustHasSymbol` 必须包含符号
-- `MustHasPrefix` 必须包含指定的前缀字符串
-- `MustHasSuffix` 必须包含指定的后缀字符串
-- `MustHasString` 必须包含指定的字符串
-
-- `InString` 必须存在于指定的字符串中
+- `HasLetter` 必须包含字母
+- `HasLower` 必须包含小写字母
+- `HasUpper` 必须包含大写字母
+- `HasDigit` 必须包含数字
+- `HasSymbol` 必须包含符号
+- `HasPrefix` 必须包含指定的前缀字符串
+- `HasSuffix` 必须包含指定的后缀字符串
+- `HasString` 必须包含指定的字符串
+- `Contains` 与 HasString 相同
 
 - `EnumString` 仅允许[]string中的值
 - `EnumInt` 仅允许[]int中的值

@@ -4,7 +4,7 @@ import "reflect"
 
 // 赋值到对象
 // nolint:gocyclo
-func (self *Str) Assign(target interface{}, customError ...string) error {
+func (self *Str) Set(target interface{}, customError ...string) error {
 	self.checkRequire()
 	if self.err != nil {
 		return self.err
@@ -12,19 +12,19 @@ func (self *Str) Assign(target interface{}, customError ...string) error {
 
 	// 检查目标是否为nil
 	if target == nil {
-		self.err = self.wrapError("target cannot be nil", customError...)
+		self.err = wrapError(self.name, "target cannot be nil", customError...)
 		return self.err
 	}
 
 	targetValueOf := reflect.ValueOf(target)
 	// 检查对象是否是指针
 	if targetValueOf.Kind() != reflect.Ptr {
-		self.err = self.wrapError("target must be a pointer", customError...)
+		self.err = wrapError(self.name, "target must be a pointer", customError...)
 		return self.err
 	}
 	// 检查对象是否能赋值
 	if !targetValueOf.Elem().CanSet() {
-		self.err = self.wrapError("cannot set the value of the target", customError...)
+		self.err = wrapError(self.name, "cannot set the value of the target", customError...)
 		return self.err
 	}
 
@@ -39,7 +39,7 @@ func (self *Str) Assign(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowInt(value) {
-			self.err = self.wrapError("Assignment failure", customError...)
+			self.err = wrapError(self.name, "Assignment failure", customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetInt(value)
@@ -49,7 +49,7 @@ func (self *Str) Assign(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowUint(value) {
-			self.err = self.wrapError("Assignment failure", customError...)
+			self.err = wrapError(self.name, "Assignment failure", customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetUint(value)
@@ -59,7 +59,7 @@ func (self *Str) Assign(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowFloat(value) {
-			self.err = self.wrapError("Assignment failure", customError...)
+			self.err = wrapError(self.name, "Assignment failure", customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetFloat(value)
@@ -157,11 +157,11 @@ func (self *Str) Assign(target interface{}, customError ...string) error {
 			}
 			targetValueOf.Elem().Set(reflect.ValueOf(value))
 		default:
-			self.err = self.wrapError("Cannot set " + sliceType + " type of target")
+			self.err = wrapError(self.name, "Cannot set "+sliceType+" type of target")
 			return self.err
 		}
 	default:
-		self.err = self.wrapError("Cannot set " + targetTypeOf.String() + " type of target")
+		self.err = wrapError(self.name, "Cannot set "+targetTypeOf.String()+" type of target")
 		return self.err
 	}
 	return nil

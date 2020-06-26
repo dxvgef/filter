@@ -8,7 +8,7 @@ func (self *Str) MinLength(min int, customError ...string) StrType {
 		return self
 	}
 	if len(self.currentValue) < min {
-		self.err = self.wrapError("", customError...)
+		self.err = wrapError(self.name, "", customError...)
 	}
 	return self
 }
@@ -19,7 +19,7 @@ func (self *Str) MinUTF8Length(min int, customError ...string) StrType {
 		return self
 	}
 	if utf8.RuneCountInString(self.currentValue) < min {
-		self.err = self.wrapError("", customError...)
+		self.err = wrapError(self.name, "", customError...)
 	}
 	return self
 }
@@ -30,7 +30,7 @@ func (self *Str) MaxLength(max int, customError ...string) StrType {
 		return self
 	}
 	if len(self.currentValue) > max {
-		self.err = self.wrapError("", customError...)
+		self.err = wrapError(self.name, "", customError...)
 	}
 	return self
 }
@@ -41,7 +41,7 @@ func (self *Str) MaxUTF8Length(max int, customError ...string) StrType {
 		return self
 	}
 	if utf8.RuneCountInString(self.currentValue) > max {
-		self.err = self.wrapError("", customError...)
+		self.err = wrapError(self.name, "", customError...)
 	}
 	return self
 }

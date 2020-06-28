@@ -21,7 +21,7 @@ type StrType interface {
 	TrimRight(string) StrType
 	TrimPrefix(string) StrType
 	TrimSuffix(string) StrType
-	RemoveSpace(string) StrType
+	RemoveSpace() StrType
 	ToUpper() StrType
 	ToLower() StrType
 	SnakeCaseToCamelCase() StrType

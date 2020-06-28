@@ -57,7 +57,7 @@ func (self *Str) TrimSuffix(sub string) StrType {
 }
 
 // 删除所有空格
-func (self *Str) RemoveSpace(sub string) StrType {
+func (self *Str) RemoveSpace() StrType {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}

@@ -9,13 +9,6 @@ import (
 // 默认的错误文本
 var DefaultErrorText = "数据处理失败"
 
-// 配置
-type Config struct {
-	Name      string // 数据名称
-	Require   bool   // 必需(不能为零值)
-	Separator string // 拆分成slice的分隔符
-}
-
 // 批处理
 func Batch(errs ...error) error {
 	for k := range errs {

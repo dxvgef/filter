@@ -160,8 +160,10 @@ type StrType interface {
 	SliceBool(string) ([]bool, error)
 	DefaultSliceBool(string, []bool) []bool
 
-	// 赋值
+	// 赋值到普通变量
 	Set(interface{}, ...string) error
+	// 赋值到切片变量
+	SetSlice(interface{}, string, ...string) error
 
 	// 结果
 	Error() error

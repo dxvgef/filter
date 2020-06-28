@@ -6,14 +6,9 @@ type Str struct {
 	currentValue string // 当前值
 	err          error  // 错误
 	require      bool   // 不能为零值
-	sep          string // 分隔符
 }
 
 type StrType interface {
-	// 设置
-	SetRequire() StrType
-	SetSeparator(string) StrType
-
 	// 清理
 	Trim(string) StrType
 	TrimSpace() StrType
@@ -47,6 +42,7 @@ type StrType interface {
 	JoinRune(...rune) StrType
 
 	// 校验
+	Require() StrType
 	Equal(string, ...string) StrType
 
 	HasLetter(...string) StrType
@@ -109,60 +105,60 @@ type StrType interface {
 	// 输出
 	String() (string, error)
 	DefaultString(string) string
-	SliceString() ([]string, error)
-	DefaultSliceString([]string) []string
+	SliceString(string) ([]string, error)
+	DefaultSliceString(string, []string) []string
 	Int() (int, error)
 	DefaultInt(int) int
-	SliceInt() ([]int, error)
-	DefaultSliceInt([]int) []int
+	SliceInt(string) ([]int, error)
+	DefaultSliceInt(string, []int) []int
 	Uint() (uint, error)
 	DefaultUint(uint) uint
-	SliceUint() ([]uint, error)
-	DefaultSliceUint([]uint) []uint
+	SliceUint(string) ([]uint, error)
+	DefaultSliceUint(string, []uint) []uint
 	Int8() (int8, error)
 	DefaultInt8(int8) int8
-	SliceInt8() ([]int8, error)
-	DefaultSliceInt8([]int8) []int8
+	SliceInt8(string) ([]int8, error)
+	DefaultSliceInt8(string, []int8) []int8
 	Uint8() (uint8, error)
 	DefaultUint8(uint8) uint8
-	SliceUint8() ([]uint8, error)
-	DefaultSliceUint8([]uint8) []uint8
+	SliceUint8(string) ([]uint8, error)
+	DefaultSliceUint8(string, []uint8) []uint8
 	Int16() (int16, error)
 	DefaultInt16(int16) int16
-	SliceInt16() ([]int16, error)
-	DefaultSliceInt16([]int16) []int16
+	SliceInt16(string) ([]int16, error)
+	DefaultSliceInt16(string, []int16) []int16
 	Uint16() (uint16, error)
 	DefaultUint16(uint16) uint16
-	SliceUint16() ([]uint16, error)
-	DefaultSliceUint16([]uint16) []uint16
+	SliceUint16(string) ([]uint16, error)
+	DefaultSliceUint16(string, []uint16) []uint16
 	Int32() (int32, error)
 	DefaultInt32(int32) int32
-	SliceInt32() ([]int32, error)
-	DefaultSliceInt32([]int32) []int32
+	SliceInt32(string) ([]int32, error)
+	DefaultSliceInt32(string, []int32) []int32
 	Uint32() (uint32, error)
 	DefaultUint32(uint32) uint32
-	SliceUint32() ([]uint32, error)
-	DefaultSliceUint32([]uint32) []uint32
+	SliceUint32(string) ([]uint32, error)
+	DefaultSliceUint32(string, []uint32) []uint32
 	Int64() (int64, error)
 	DefaultInt64(int64) int64
-	SliceInt64() ([]int64, error)
-	DefaultSliceInt64([]int64) []int64
+	SliceInt64(string) ([]int64, error)
+	DefaultSliceInt64(string, []int64) []int64
 	Uint64() (uint64, error)
 	DefaultUint64(uint64) uint64
-	SliceUint64() ([]uint64, error)
-	DefaultSliceUint64([]uint64) []uint64
+	SliceUint64(string) ([]uint64, error)
+	DefaultSliceUint64(string, []uint64) []uint64
 	Float32() (float32, error)
 	DefaultFloat32(float32) float32
-	SliceFloat32() ([]float32, error)
-	DefaultSliceFloat32([]float32) []float32
+	SliceFloat32(string) ([]float32, error)
+	DefaultSliceFloat32(string, []float32) []float32
 	Float64() (float64, error)
 	DefaultFloat64(float64) float64
-	SliceFloat64() ([]float64, error)
-	DefaultSliceFloat64([]float64) []float64
+	SliceFloat64(string) ([]float64, error)
+	DefaultSliceFloat64(string, []float64) []float64
 	Bool() (bool, error)
 	DefaultBool(bool) bool
-	SliceBool() ([]bool, error)
-	DefaultSliceBool([]bool) []bool
+	SliceBool(string) ([]bool, error)
+	DefaultSliceBool(string, []bool) []bool
 
 	// 赋值
 	Set(interface{}, ...string) error

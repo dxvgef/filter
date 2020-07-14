@@ -101,3 +101,13 @@ func TestSliceRequire(t *testing.T) {
 	}
 	t.Log(str, len(str))
 }
+
+// 测试EnumSliceString
+func TestEnumSliceString(t *testing.T) {
+	allow := []string{"a", "b", "c"}
+	err := String("a,c", "账号").Require("不能为空").EnumSliceString(",", allow).Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}

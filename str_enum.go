@@ -166,13 +166,11 @@ func (self *Str) EnumSliceString(sep string, slice []string, customError ...stri
 		return self
 	}
 	for k := range values {
-		for kk := range slice {
-			if slice[kk] == values[k] {
-				return self
-			}
+		if !inStrings(values[k], slice) {
+			self.err = wrapError(self.name, "", customError...)
+			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
 	return self
 }
 
@@ -187,12 +185,34 @@ func (self *Str) EnumSliceInt(sep string, slice []int, customError ...string) St
 		return self
 	}
 	for k := range values {
-		for kk := range slice {
-			if strconv.Itoa(slice[kk]) == values[k] {
-				return self
-			}
+		v, err := strconv.Atoi(values[k])
+		if err != nil {
+			self.err = wrapError(self.name, "", customError...)
+			return self
+		}
+		if !inInt(v, slice) {
+			self.err = wrapError(self.name, "", customError...)
+			return self
 		}
 	}
 	self.err = wrapError(self.name, "", customError...)
 	return self
+}
+
+func inStrings(v string, s []string) bool {
+	for k := range s {
+		if s[k] == v {
+			return true
+		}
+	}
+	return false
+}
+
+func inInt(v int, s []int) bool {
+	for k := range s {
+		if s[k] == v {
+			return true
+		}
+	}
+	return false
 }

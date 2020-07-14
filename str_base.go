@@ -12,8 +12,11 @@ func String(value string, name ...string) StrType {
 }
 
 // 必须有值(不能为零值)
-func (self *Str) Require() StrType {
+func (self *Str) Require(customError ...string) StrType {
 	self.require = true
+	if len(customError) > 0 {
+		self.requireErr = customError[0]
+	}
 	return self
 }
 

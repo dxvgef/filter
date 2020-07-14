@@ -6,6 +6,7 @@ type Str struct {
 	currentValue string // 当前值
 	err          error  // 错误
 	require      bool   // 不能为零值
+	requireErr   string
 }
 
 type StrType interface {
@@ -42,7 +43,7 @@ type StrType interface {
 	JoinRune(...rune) StrType
 
 	// 校验
-	Require() StrType
+	Require(...string) StrType
 	Equal(string, ...string) StrType
 
 	HasLetter(...string) StrType

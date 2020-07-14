@@ -91,3 +91,13 @@ func TestBatchSet(t *testing.T) {
 	}
 	t.Log(str1, str2)
 }
+
+// 测试require和slice组合检查
+func TestSliceRequire(t *testing.T) {
+	str, err := String(",", "账号").Require("不能为空").SliceInt(",")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(str, len(str))
+}

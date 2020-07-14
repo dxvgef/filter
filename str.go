@@ -94,6 +94,9 @@ type StrType interface {
 	EnumFloat32([]float32, ...string) StrType
 	EnumFloat64([]float64, ...string) StrType
 
+	EnumSliceString(string, []string, ...string) StrType
+	EnumSliceInt(string, []int, ...string) StrType
+
 	DenyString([]string, ...string) StrType
 	DenyInt([]int, ...string) StrType
 	DenyInt8([]int8, ...string) StrType

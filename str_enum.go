@@ -154,3 +154,45 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) StrType {
 	self.err = wrapError(self.name, "", customError...)
 	return self
 }
+
+// EnumSliceString 检查[]string中的元素，仅允许指定[]string中的值
+func (self *Str) EnumSliceString(sep string, slice []string, customError ...string) StrType {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+	values, err := self.SliceString(sep)
+	if err != nil {
+		self.err = wrapError(self.name, "", customError...)
+		return self
+	}
+	for k := range values {
+		for kk := range slice {
+			if slice[kk] == values[k] {
+				return self
+			}
+		}
+	}
+	self.err = wrapError(self.name, "", customError...)
+	return self
+}
+
+// EnumSliceInt 检查[]string中的元素，仅允许指潘秉衡[]int中的值
+func (self *Str) EnumSliceInt(sep string, slice []int, customError ...string) StrType {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+	values, err := self.SliceString(sep)
+	if err != nil {
+		self.err = wrapError(self.name, "", customError...)
+		return self
+	}
+	for k := range values {
+		for kk := range slice {
+			if strconv.Itoa(slice[kk]) == values[k] {
+				return self
+			}
+		}
+	}
+	self.err = wrapError(self.name, "", customError...)
+	return self
+}

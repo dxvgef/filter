@@ -32,7 +32,6 @@ func (self *Str) setCheck(target interface{}) (*reflect.Value, error) {
 func (self *Str) Set(target interface{}, customError ...string) error {
 	targetValueOf, err := self.setCheck(target)
 	if err != nil {
-		self.err = wrapError(self.name, err.Error(), customError...)
 		return self.err
 	}
 

@@ -65,7 +65,9 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `IsLetterOrDigit` 是字母或数字
 - `IsChinese` 是汉字
 - `IsMail` 是电邮地址
-- `IsIP` 蝇IPv4/v6地址
+- `IsIP` 是IPv4/v6地址
+- `IsTCPAddr` 是IP:Port格式
+- `IsMAC` 是MAC地址
 - `IsJSON` 是有效的JSON格式
 - `IsChinaTel` 是中国大陆地区固定电话号码
 - `IsChinaMobile` 是中国大陆地区手机号码

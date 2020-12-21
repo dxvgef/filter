@@ -238,6 +238,32 @@ func (self *Str) IsIP(customError ...string) StrType {
 	return self
 }
 
+// IsTCPAddr IP:Port
+func (self *Str) IsTCPAddr(customError ...string) StrType {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+	if _, err := net.ResolveTCPAddr("tcp", self.currentValue); err != nil {
+		self.err = wrapError(self.name, "", customError...)
+		return self
+	}
+
+	return self
+}
+
+// IsMAC MAC地址
+func (self *Str) IsMAC(customError ...string) StrType {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+	if _, err := net.ParseMAC(self.currentValue); err != nil {
+		self.err = wrapError(self.name, "", customError...)
+		return self
+	}
+
+	return self
+}
+
 // IsJSON JSON格式
 func (self *Str) IsJSON(customError ...string) StrType {
 	if self.err != nil || self.currentValue == "" {

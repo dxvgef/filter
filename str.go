@@ -67,6 +67,8 @@ type StrType interface {
 	IsChinaTel(...string) StrType
 	IsMail(...string) StrType
 	IsIP(...string) StrType
+	IsTCPAddr(...string) StrType
+	IsMAC(...string) StrType
 	IsJSON(...string) StrType
 	IsChinaIDNumber(...string) StrType
 	IsChinaMobile(...string) StrType

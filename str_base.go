@@ -23,7 +23,11 @@ func (self *Str) Require(customError ...string) StrType {
 // 检查require
 func (self *Str) checkRequire() {
 	if self.require && self.currentValue == "" {
-		self.err = wrapError(self.name, "不能为空")
+		if self.requireErr != "" {
+			self.err = wrapError(self.name, self.requireErr)
+		} else {
+			self.err = wrapError(self.name, "必要参数值不能为空")
+		}
 	}
 }
 

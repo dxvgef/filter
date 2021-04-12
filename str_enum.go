@@ -14,7 +14,7 @@ func (self *Str) EnumString(slice []string, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -25,7 +25,7 @@ func (self *Str) EnumInt(i []int, customError ...string) StrType {
 	}
 	value, err := strconv.Atoi(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	for k := range i {
@@ -33,7 +33,7 @@ func (self *Str) EnumInt(i []int, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -44,7 +44,7 @@ func (self *Str) EnumInt8(i []int8, customError ...string) StrType {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 8)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	value := int8(value64)
@@ -53,7 +53,7 @@ func (self *Str) EnumInt8(i []int8, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -64,7 +64,7 @@ func (self *Str) EnumInt16(i []int16, customError ...string) StrType {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 16)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	value := int16(value64)
@@ -73,7 +73,7 @@ func (self *Str) EnumInt16(i []int16, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -84,7 +84,7 @@ func (self *Str) EnumInt32(i []int32, customError ...string) StrType {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 32)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	value32 := int32(value64)
@@ -93,7 +93,7 @@ func (self *Str) EnumInt32(i []int32, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -104,7 +104,7 @@ func (self *Str) EnumInt64(i []int64, customError ...string) StrType {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 64)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	for k := range i {
@@ -112,7 +112,7 @@ func (self *Str) EnumInt64(i []int64, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -123,7 +123,7 @@ func (self *Str) EnumFloat32(f []float32, customError ...string) StrType {
 	}
 	value, err := strconv.ParseFloat(self.currentValue, 32)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	value32 := float32(value)
@@ -132,7 +132,7 @@ func (self *Str) EnumFloat32(f []float32, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -143,7 +143,7 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) StrType {
 	}
 	value64, err := strconv.ParseFloat(self.currentValue, 64)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	for k := range f {
@@ -151,7 +151,7 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 
@@ -162,12 +162,12 @@ func (self *Str) EnumSliceString(sep string, slice []string, customError ...stri
 	}
 	values, err := self.SliceString(sep)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	for k := range values {
 		if !inStrings(values[k], slice) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 			return self
 		}
 	}
@@ -181,21 +181,21 @@ func (self *Str) EnumSliceInt(sep string, slice []int, customError ...string) St
 	}
 	values, err := self.SliceString(sep)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "类型转换失败", customError...)
 		return self
 	}
 	for k := range values {
 		v, err := strconv.Atoi(values[k])
 		if err != nil {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "类型转换失败", customError...)
 			return self
 		}
 		if !inInt(v, slice) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "类型转换失败", customError...)
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "值不在允许的范围内", customError...)
 	return self
 }
 

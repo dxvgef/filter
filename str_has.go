@@ -15,7 +15,7 @@ func (self *Str) HasLetter(customError ...string) StrType {
 			return self
 		}
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含字母", customError...)
 	return self
 }
 
@@ -31,7 +31,7 @@ func (self *Str) HasLower(customError ...string) StrType {
 		}
 	}
 
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含小写字母", customError...)
 	return self
 }
 
@@ -47,7 +47,7 @@ func (self *Str) HasUpper(customError ...string) StrType {
 		}
 	}
 
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含大写字母", customError...)
 	return self
 }
 
@@ -63,7 +63,7 @@ func (self *Str) HasDigit(customError ...string) StrType {
 		}
 	}
 
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含数字", customError...)
 	return self
 }
 
@@ -79,7 +79,7 @@ func (self *Str) HasSymbol(customError ...string) StrType {
 		}
 	}
 
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含符号", customError...)
 	return self
 }
 
@@ -91,7 +91,7 @@ func (self *Str) HasString(sub string, customError ...string) StrType {
 	if strings.Contains(self.currentValue, sub) {
 		return self
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含特定的字符", customError...)
 	return self
 }
 
@@ -103,7 +103,7 @@ func (self *Str) HasPrefix(sub string, customError ...string) StrType {
 	if strings.HasPrefix(self.currentValue, sub) {
 		return self
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含特定的前缀", customError...)
 	return self
 }
 
@@ -115,6 +115,6 @@ func (self *Str) HasSuffix(sub string, customError ...string) StrType {
 	if strings.HasSuffix(self.currentValue, sub) {
 		return self
 	}
-	self.err = wrapError(self.name, "", customError...)
+	self.err = wrapError(self.name, "必须包含特定的后缀", customError...)
 	return self
 }

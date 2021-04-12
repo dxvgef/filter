@@ -22,7 +22,7 @@ func (self *Str) Base64StdDecode(customError ...string) StrType {
 	}
 	bytes, err := base64.StdEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "无法进行Base64编码", customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -45,7 +45,7 @@ func (self *Str) Base64RawStdDecode(customError ...string) StrType {
 	}
 	bytes, err := base64.RawStdEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "无法进行Base64解码", customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -68,7 +68,7 @@ func (self *Str) Base64URLDecode(customError ...string) StrType {
 	}
 	bytes, err := base64.URLEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "无法进行Base64解码", customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -91,7 +91,7 @@ func (self *Str) Base64RawURLDecode(customError ...string) StrType {
 	}
 	bytes, err := base64.RawURLEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "无法进行Base64解码", customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -123,7 +123,7 @@ func (self *Str) URLPathUnescape(customError ...string) StrType {
 	}
 	value, err := url.PathUnescape(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "无法进行URL路径解码", customError...)
 		return self
 	}
 	self.currentValue = value
@@ -146,7 +146,7 @@ func (self *Str) URLQueryUnescape(customError ...string) StrType {
 	}
 	value, err := url.QueryUnescape(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "无法进行URL参数解码", customError...)
 		return self
 	}
 	self.currentValue = value

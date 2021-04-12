@@ -13,17 +13,17 @@ func (self *Str) setCheck(target interface{}) (*reflect.Value, error) {
 
 	// 检查目标是否为nil
 	if target == nil {
-		return nil, errors.New("target cannot be nil")
+		return nil, errors.New("赋值目标不能是空指针")
 	}
 
 	targetValueOf := reflect.ValueOf(target)
 	// 检查对象是否是指针
 	if targetValueOf.Kind() != reflect.Ptr {
-		return nil, errors.New("target must be a pointer")
+		return nil, errors.New("赋值目标必须是指针")
 	}
 	// 检查对象是否能赋值
 	if !targetValueOf.Elem().CanSet() {
-		return nil, errors.New("cannot set the value of the target")
+		return nil, errors.New("目标无法赋值")
 	}
 	return &targetValueOf, nil
 }
@@ -46,7 +46,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowInt(value) {
-			self.err = wrapError(self.name, "Assignment failure", customError...)
+			self.err = wrapError(self.name, "赋值失败", customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetInt(value)
@@ -56,7 +56,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowUint(value) {
-			self.err = wrapError(self.name, "Assignment failure", customError...)
+			self.err = wrapError(self.name, "赋值失败", customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetUint(value)
@@ -66,7 +66,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowFloat(value) {
-			self.err = wrapError(self.name, "Assignment failure", customError...)
+			self.err = wrapError(self.name, "赋值失败", customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetFloat(value)
@@ -77,9 +77,9 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 		}
 		targetValueOf.Elem().SetBool(value)
 	case reflect.Slice:
-		return errors.New("The `" + targetTypeOf.String() + "` type can only be set using the `SetSlice` function")
+		return errors.New("'" + targetTypeOf.String() + "'类型只能使用'SetSlice'方法进行赋值")
 	default:
-		self.err = wrapError(self.name, "Cannot set "+targetTypeOf.String()+" type of target")
+		self.err = wrapError(self.name, "不能对'"+targetTypeOf.String()+"'类型赋值")
 		return self.err
 	}
 	return nil
@@ -87,7 +87,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 
 func (self *Str) SetSlice(target interface{}, sep string, customError ...string) error {
 	if sep == "" {
-		self.err = wrapError(self.name, "The `sep` cannot be empty, it is the separator for slice", customError...)
+		self.err = wrapError(self.name, "`sep`参数不能为空,它用于指定切片的分隔符", customError...)
 		return self.err
 	}
 	targetValueOf, err := self.setCheck(target)
@@ -98,12 +98,12 @@ func (self *Str) SetSlice(target interface{}, sep string, customError ...string)
 
 	// 检查对象是否是指针
 	if targetValueOf.Kind() != reflect.Ptr {
-		self.err = wrapError(self.name, "target must be a pointer", customError...)
+		self.err = wrapError(self.name, "赋值目标必须是指针", customError...)
 		return self.err
 	}
 	// 检查对象是否能赋值
 	if !targetValueOf.Elem().CanSet() {
-		self.err = wrapError(self.name, "cannot set the value of the target", customError...)
+		self.err = wrapError(self.name, "目标无法赋值", customError...)
 		return self.err
 	}
 
@@ -201,7 +201,7 @@ func (self *Str) SetSlice(target interface{}, sep string, customError ...string)
 		}
 		targetValueOf.Elem().Set(reflect.ValueOf(value))
 	default:
-		self.err = wrapError(self.name, "Cannot set "+sliceType+" type of target")
+		self.err = wrapError(self.name, "不能对"+sliceType+"类型赋值")
 		return self.err
 	}
 	return nil

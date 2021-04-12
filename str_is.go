@@ -15,7 +15,7 @@ func (self *Str) Equal(str string, customError ...string) StrType {
 		return self
 	}
 	if self.currentValue != str {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "值不匹配", customError...)
 	}
 	return self
 }
@@ -26,7 +26,7 @@ func (self *Str) IsBool(customError ...string) StrType {
 		return self
 	}
 	if _, err := strconv.ParseBool(self.currentValue); err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "必须是布尔类型", customError...)
 	}
 	return self
 }
@@ -38,7 +38,7 @@ func (self *Str) IsLower(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.IsLower(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是小写字母", customError...)
 			return self
 		}
 	}
@@ -52,7 +52,7 @@ func (self *Str) IsUpper(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.IsUpper(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是大写字母", customError...)
 			return self
 		}
 	}
@@ -66,7 +66,7 @@ func (self *Str) IsLetter(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.IsLetter(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是字母", customError...)
 			return self
 		}
 	}
@@ -80,7 +80,7 @@ func (self *Str) IsDigit(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.IsDigit(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是无符号数字", customError...)
 			return self
 		}
 	}
@@ -94,7 +94,7 @@ func (self *Str) IsLowerOrDigit(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.IsLower(v) && !unicode.IsDigit(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是小写字母或无符号数字", customError...)
 			return self
 		}
 	}
@@ -108,7 +108,7 @@ func (self *Str) IsUpperOrDigit(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.IsUpper(v) && !unicode.IsDigit(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是大写字母或无符号数字", customError...)
 			return self
 		}
 	}
@@ -122,7 +122,7 @@ func (self *Str) IsLetterOrDigit(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.IsLetter(v) && !unicode.IsDigit(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是字母或无符号数字", customError...)
 			return self
 		}
 	}
@@ -136,7 +136,7 @@ func (self *Str) IsChinese(customError ...string) StrType {
 	}
 	for _, v := range self.currentValue {
 		if !unicode.Is(unicode.Scripts["Han"], v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, "必须是汉字", customError...)
 			return self
 		}
 	}
@@ -145,31 +145,32 @@ func (self *Str) IsChinese(customError ...string) StrType {
 
 // IsChinaTel 中国固定电话号码
 func (self *Str) IsChinaTel(customError ...string) StrType {
+	errMsg := "不是有效的中国大陆固定电话号码"
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	telSlice := strings.Split(self.currentValue, "-")
 	if len(telSlice) != 2 {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	regionCode, err := strconv.Atoi(telSlice[0])
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	if regionCode < 10 || regionCode > 999 {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 
 	code, err := strconv.Atoi(telSlice[1])
 	if err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	if code < 1000000 || code > 99999999 {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	return self
@@ -177,32 +178,33 @@ func (self *Str) IsChinaTel(customError ...string) StrType {
 
 // IsMail 电邮地址
 func (self *Str) IsMail(customError ...string) StrType {
+	errMsg := "不是有效的电邮地址"
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	emailSlice := strings.Split(self.currentValue, "@")
 	if len(emailSlice) != 2 {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	if emailSlice[0] == "" || emailSlice[1] == "" {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 
 	for k, v := range emailSlice[0] {
 		if k == 0 && !unicode.IsLetter(v) && !unicode.IsDigit(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, errMsg, customError...)
 			return self
 		} else if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '@' && v != '.' && v != '_' && v != '-' {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, errMsg, customError...)
 			return self
 		}
 	}
 
 	domainSlice := strings.Split(emailSlice[1], ".")
 	if len(domainSlice) < 2 {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	domainSliceLen := len(domainSlice)
@@ -210,13 +212,13 @@ func (self *Str) IsMail(customError ...string) StrType {
 		for k, v := range domainSlice[i] {
 			// nolint
 			if i != domainSliceLen-1 && k == 0 && !unicode.IsLetter(v) && !unicode.IsDigit(v) {
-				self.err = wrapError(self.name, "", customError...)
+				self.err = wrapError(self.name, errMsg, customError...)
 				return self
 			} else if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '.' && v != '_' && v != '-' {
-				self.err = wrapError(self.name, "", customError...)
+				self.err = wrapError(self.name, errMsg, customError...)
 				return self
 			} else if i == domainSliceLen-1 && !unicode.IsLetter(v) {
-				self.err = wrapError(self.name, "", customError...)
+				self.err = wrapError(self.name, errMsg, customError...)
 				return self
 			}
 		}
@@ -231,7 +233,7 @@ func (self *Str) IsIP(customError ...string) StrType {
 		return self
 	}
 	if net.ParseIP(self.currentValue) == nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "不是有效的IP地址", customError...)
 		return self
 	}
 
@@ -244,7 +246,7 @@ func (self *Str) IsTCPAddr(customError ...string) StrType {
 		return self
 	}
 	if _, err := net.ResolveTCPAddr("tcp", self.currentValue); err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "不是有效的TCP地址(IP:Port)", customError...)
 		return self
 	}
 
@@ -257,7 +259,7 @@ func (self *Str) IsMAC(customError ...string) StrType {
 		return self
 	}
 	if _, err := net.ParseMAC(self.currentValue); err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "不是有效的MAC地址", customError...)
 		return self
 	}
 
@@ -271,7 +273,7 @@ func (self *Str) IsJSON(customError ...string) StrType {
 	}
 	var js json.RawMessage
 	if json.Unmarshal([]byte(self.currentValue), &js) != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "不是有效的JSON字符串", customError...)
 		return self
 	}
 	return self
@@ -279,6 +281,7 @@ func (self *Str) IsJSON(customError ...string) StrType {
 
 // IsChinaIDNumber 中国身份证号码
 func (self *Str) IsChinaIDNumber(customError ...string) StrType {
+	errMsg := "不是有效的中国大陆身份证号码"
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -288,7 +291,7 @@ func (self *Str) IsChinaIDNumber(customError ...string) StrType {
 	} else {
 		var err error
 		if idV, err = strconv.Atoi(self.currentValue[17:]); err != nil {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, errMsg, customError...)
 			return self
 		}
 	}
@@ -318,7 +321,7 @@ func (self *Str) IsChinaIDNumber(customError ...string) StrType {
 		}
 	}
 	if temp != idV {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 
@@ -328,11 +331,12 @@ func (self *Str) IsChinaIDNumber(customError ...string) StrType {
 // nolint:gocyclo
 // IsChinaMobile 中国手机号码
 func (self *Str) IsChinaMobile(customError ...string) StrType {
+	errMsg := "不是有效的中国大陆手机号码"
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	if len(self.currentValue) != 11 {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	var (
@@ -340,7 +344,7 @@ func (self *Str) IsChinaMobile(customError ...string) StrType {
 		prefixValid bool
 	)
 	if prefix64, err := strconv.ParseUint(self.currentValue[0:3], 10, 8); err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	} else {
 		prefix = uint8(prefix64)
@@ -352,11 +356,11 @@ func (self *Str) IsChinaMobile(customError ...string) StrType {
 		}
 	}
 	if !prefixValid {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	if _, err := strconv.ParseUint(self.currentValue[3:], 10, 32); err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	return self
@@ -377,7 +381,7 @@ func (self *Str) IsSQLObject(customError ...string) StrType {
 		return self
 	}
 	if !isSQLObject(self.currentValue) {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "不是有效的SQL对象名", customError...)
 		return self
 	}
 	return self
@@ -385,17 +389,18 @@ func (self *Str) IsSQLObject(customError ...string) StrType {
 
 // IsSQLObjects SQL对象集合（库名、表名、字段名）
 func (self *Str) IsSQLObjects(sep string, customError ...string) StrType {
+	errMsg := "不是有效的SQL对象合集"
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	values := strings.Split(self.currentValue, sep)
 	if values[0] == "" || values[0] == " " {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	for _, v := range values {
 		if !isSQLObject(v) {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, errMsg, customError...)
 			return self
 		}
 	}
@@ -408,13 +413,14 @@ func (self *Str) IsURL(customError ...string) StrType {
 		return self
 	}
 	if _, err := url.ParseRequestURI(self.currentValue); err != nil {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, "不是有效的URL", customError...)
 	}
 	return self
 }
 
 // IsUUID UUID格式
 func (self *Str) IsUUID(customError ...string) StrType {
+	errMsg := "不是有效的UUID"
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -429,7 +435,7 @@ func (self *Str) IsUUID(customError ...string) StrType {
 	// urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	case 36 + 9:
 		if strings.EqualFold(strings.ToLower(str[:9]), "urn:uuid:") {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, errMsg, customError...)
 			return self
 		}
 		str = str[9:]
@@ -444,19 +450,19 @@ func (self *Str) IsUUID(customError ...string) StrType {
 		for i := range uuid {
 			uuid[i], ok = xtob(str[i*2], str[i*2+1])
 			if !ok {
-				self.err = wrapError(self.name, "", customError...)
+				self.err = wrapError(self.name, errMsg, customError...)
 				return self
 			}
 		}
 		return self
 	default:
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	// s is now at least 36 bytes long
 	// it must be of the form  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	if str[8] != '-' || str[13] != '-' || str[18] != '-' || str[23] != '-' {
-		self.err = wrapError(self.name, "", customError...)
+		self.err = wrapError(self.name, errMsg, customError...)
 		return self
 	}
 	for i, x := range [16]int{
@@ -467,7 +473,7 @@ func (self *Str) IsUUID(customError ...string) StrType {
 		24, 26, 28, 30, 32, 34} {
 		v, ok := xtob(str[x], str[x+1])
 		if !ok {
-			self.err = wrapError(self.name, "", customError...)
+			self.err = wrapError(self.name, errMsg, customError...)
 			return self
 		}
 		uuid[i] = v

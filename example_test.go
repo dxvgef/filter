@@ -12,6 +12,14 @@ func TestCheck(t *testing.T) {
 	}
 }
 
+// 检查错误提示
+func TestError(t *testing.T) {
+	err := String("ab", "账号").MinLength(5).Error()
+	if err != nil {
+		t.Error(err)
+	}
+}
+
 // 将过滤结果赋值到普通变量
 func TestSet(t *testing.T) {
 	var str string

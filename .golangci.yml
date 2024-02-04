@@ -1,42 +1,34 @@
 # 运行配置
 run:
   # 要使用的CPU核心数
-  concurrency: 4
-
-  # 分析超时，例如 30s, 5m，默认是 1m
-  timeout: 5m
-
-  # 包管理模式，go modules使用readonly
-  # 可用的值范围 readonly|release|vendor
-  modules-download-mode: readonly
-
-  # 当有多少个问题存在时则退出检查，默认是1
-  issues-exit-code: 10
-
-  # 是否包含测试文件
+  # concurrency: 4
+  # 分析超时，30m, 5m, 默认1m
+  timeout: 1m
+  # 退出代码, default is 1
+  issues-exit-code: 1
+  # 是否包含单元测试文件, default is true
   tests: true
-
-  # 要跳过检查的目录
+  # 跳过目录
   skip-dirs:
-    - bin
     - vendor
-
-  # 允许跳过目录
+    - .idea
+    - bin
+    - output
+  # 跳过默认目录：vendor$, third_party$, testdata$, examples$, Godeps$, builtin$
   skip-dirs-use-default: true
-
-  # 跳过文件
-  skip-files:
+  # 包管理模式，go modules使用readonly
+  modules-download-mode: readonly
 
 # 输出配置
 output:
-  # colored-line-number|line-number|json|tab|checkstyle|code-climate, default is "colored-line-number"
+  # 输出格式：colored-line-number|line-number|json|tab|checkstyle|code-climate, default is "colored-line-number"
   format: colored-line-number
-
-  # 打印行号
+  # 打印有问题的代码行号, default is true
   print-issued-lines: true
-
-  # 打印检查器的名称
+  # 在问题文本的未尾打印检查器名称, default is true
   print-linter-name: true
+  # 使问题的输出逐行唯一, default is true
+  uniq-by-line: true
 
 # 质量检查配置
 linters-settings:
@@ -44,84 +36,22 @@ linters-settings:
   errcheck:
     # 检查类型错误
     check-type-assertions: false
-
     # 检查空标识符
     check-blank: true
-
     # 忽略文件
     ignore: fmt:.*,io/ioutil:^Read.*
-
-  funlen:
-    lines: 60
-    statements: 40
-
   govet:
-    # 检查影子变量
-    check-shadowing: true
-    # 根氟名称启用或禁用分析器
-    enable:
-#      - atomicalign
-    enable-all: false
-    disable:
-#      - shadow
-    disable-all: false
-
-  golint:
-    # minimal confidence for issues, default is 0.8
-    min-confidence: 0.8
-
+    enable-all: true
   # 检查函数的复杂程度
   gocyclo:
     # 最小复杂性
-    min-complexity: 35
-
-  gocognit:
-    # 最小复杂性
-    min-complexity: 35
-
-  maligned:
-    # 为内存对齐优化给出新的结构体字段排序建议
-    suggest-new: true
-    # 自动修复
-    auto-fix: true
-
-  dupl:
-    # tokens count to trigger issue, 150 by default
-    threshold: 100
-
-  goconst:
-    # minimal length of string constant, 3 by default
-    min-len: 3
-    # minimal occurrences count to trigger, 3 by default
-    min-occurrences: 3
-
-  depguard:
-    list-type: blacklist
-    include-go-root: false
-
+    min-complexity: 30
   lll:
-    line-length: 240
+    line-length: 120
     tab-width: 1
-
-  misspell:
-    # Correct spellings using locale preferences for US or UK.
-    # Default is to use a neutral variety of English.
-    # Setting locale to US will correct the British spelling of 'colour' to 'color'.
-    locale: US
-    ignore-words:
-      - someword
-
-  nakedret:
-    # 如果func的代码行数比这个设置的多，并且它的返回值是空的，就会产生问题，默认是30
-    max-func-lines: 30
-
-  unused:
-    check-exported: true
   unparam:
     check-exported: false
   gocritic:
-    enabled-checks:
-    disabled-checks:
     enabled-tags:
       - performance
     settings: # settings passed to gocritic
@@ -129,78 +59,143 @@ linters-settings:
         paramsOnly: true
       rangeValCopy:
         sizeThreshold: 32
-
 linters:
-  enable:
-    - bodyclose
-    - deadcode
-    - depguard
-    - dogsled
-    - errcheck
-    - gochecknoinits
-    - goconst
-    - gocritic
-    - gocyclo
-    - gofmt
-    - goimports
-    - gosec
-    - gosimple
-    - govet
-    - ineffassign
-    - interfacer
-    - misspell
-    - scopelint
-    - staticcheck
-    - typecheck
-    - unconvert
-    - unparam
-    - varcheck
-    - godox
-    - structcheck
-    - maligned
-  enable-all: false
+  enable-all: true
+#  enable:
+#    - bodyclose
+#    - depguard
+#    - dogsled
+#    - dupl
+#    - errcheck
+#    - exportloopref
+#    - exhaustive
+#    - gochecknoinits
+#    - goconst
+#    - gocritic
+#    - gofmt
+#    - govet
+#    - goimports
+#    - goprintffuncname
+#    - gosec
+#    - gosimple
+#    - ineffassign
+#    - lll
+#    - misspell
+#    - noctx
+#    - rowserrcheck
+#    - staticcheck
+#    - stylecheck
+#    - typecheck
+#    - unconvert
+#    - unparam
+#    - unused
+#    - whitespace
   disable:
-    - unused
-    - stylecheck
-    - funlen
-    - whitespace
-    - dupl
-    - golint
-    - lll
+    - paralleltest
+    - nlreturn
+    - gofumpt
+    - goerr113
     - wsl
-    - nakedret
+    - godot
+    - scopelint
+    - structcheck
+    - deadcode
+    - nosnakecase
+    - exhaustivestruct
+    - gomnd
+    - interfacer
+    - golint
+    - ifshort
+    - maligned
+    - varcheck
+    - nonamedreturns
+    - testpackage
+    - cyclop
+    - funlen
     - gochecknoglobals
   disable-all: false
-  presets:
-    - bugs
+#  presets:
+#    - bugs
+  # 只运行所有启用的 linter 中支持快速检查的 linter
   fast: false
 
 issues:
-  new: false
-  exclude: /bin
+  exclude:
+    - /bin
+    - /output
+    - /.idea
   exclude-rules:
     # 设置某个目录的排除规则
     - path: _test\.go
       linters:
-        - gocyclo
-        - errcheck
-        - dupl
-        - gosec
-
+        - depguard
     - path: internal/hmac/
       text: "weak cryptographic primitive"
       linters:
         - gosec
-
-    # 排序一些staticcheck消息
+    - linters:
+        - revive
+      text: "package-comments:"
+    - linters:
+        - revive
+      text: "exported:"
+    - linters:
+        - govet
+      text: "fieldalignment"
+    - linters:
+        - varnamelen
+      text: "too short"
+    - linters:
+        - staticcheck
+      text: "SA6002:"
     - linters:
         - staticcheck
       text: "SA9003:"
-
-    # Exclude lll issues for long lines with go:generate
+    - linters:
+        - gosec
+      text: "G103:"
+    # 排除stylecheck的导出未注释的消息
+    - linters:
+        - stylecheck
+      text: "ST1020:"
+    # 排除stylecheck的导出未注释的消息
+    - linters:
+        - stylecheck
+      text: "ST1006:"
+    - linters:
+        - wrapcheck
+      text: "error returned from external package is unwrapped"
+    - linters:
+        - stylecheck
+      text: "ST1000:"
+    # 排除stylecheck的导出未注释的消息
+    - linters:
+        - stylecheck
+      text: "ST1021:"
+    # 排除stylecheck的导出未注释的消息
+    - linters:
+        - stylecheck
+      text: "ST1022:"
+    - linters:
+        - revive
+      text: "receiver-naming:"
     - linters:
         - lll
-      source: "^//go:generate "
+      text: "line is"
+    - linters:
+        - gocognit
+      text: "is high"
+    - linters:
+        - gocritic
+      text: "unnecessaryDefer:"
+    - linters:
+        - gocyclo
+      text: "is high"
+
+    # Exclude lll issues for long lines with go:generate
+  #    - linters:
+  #        - lll
+  #      source: "^//go:generate "
 
   # Independently from option `exclude` we use default exclude patterns,
   # it can be disabled by this option. To list all

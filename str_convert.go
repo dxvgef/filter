@@ -5,9 +5,8 @@ import (
 	"strings"
 )
 
-// String 转为string类型
+// FromStr 转为string类型
 func (self *Str) String() (string, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return "", self.err
 	}
@@ -16,7 +15,6 @@ func (self *Str) String() (string, error) {
 
 // DefaultString 转为string类型，如果出错则只返回默认值
 func (self *Str) DefaultString(def string) string {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -25,7 +23,6 @@ func (self *Str) DefaultString(def string) string {
 
 // SliceString 使用SetSeparator()设置的分隔符拆分成[]string类型
 func (self *Str) SliceString(sep string) ([]string, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return []string{}, self.err
 	}
@@ -48,8 +45,7 @@ func (self *Str) SliceString(sep string) ([]string, error) {
 
 // DefaultSliceString 使用SetSeparator()设置的分隔符拆分成[]string类型，如果出错则只返回默认值
 func (self *Str) DefaultSliceString(sep string, def []string) []string {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := self.SliceString(sep)
@@ -61,21 +57,15 @@ func (self *Str) DefaultSliceString(sep string, def []string) []string {
 
 // Int 转为int类型
 func (self *Str) Int() (int, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
-	value, err := strconv.Atoi(self.currentValue)
-	if err != nil {
-		return 0, err
-	}
-	return value, nil
+	return strconv.Atoi(self.currentValue)
 }
 
 // DefaultInt 转为int类型，如果出错则只返回默认值
 func (self *Str) DefaultInt(def int) int {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := self.Int()
@@ -87,9 +77,8 @@ func (self *Str) DefaultInt(def int) int {
 
 // SliceInt 转为[]int类型
 func (self *Str) SliceInt(sep string) (result []int, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
-		return
+		return nil, self.err
 	}
 	var (
 		values []string
@@ -111,7 +100,6 @@ func (self *Str) SliceInt(sep string) (result []int, err error) {
 
 // DefaultSliceInt 转为[]int类型，出错则返回传入的默认值
 func (self *Str) DefaultSliceInt(sep string, def []int) []int {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -124,7 +112,6 @@ func (self *Str) DefaultSliceInt(sep string, def []int) []int {
 
 // Uint 转为uint类型
 func (self *Str) Uint() (uint, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -137,8 +124,7 @@ func (self *Str) Uint() (uint, error) {
 
 // DefaultUint 转为uint类型，如果出错则只返回默认值
 func (self *Str) DefaultUint(def uint) uint {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := self.Uint()
@@ -148,11 +134,10 @@ func (self *Str) DefaultUint(def uint) uint {
 	return value
 }
 
-// SliceInt 转为[]int类型
+// SliceUint 转为[]int类型
 func (self *Str) SliceUint(sep string) (result []uint, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
-		return
+		return nil, self.err
 	}
 	var (
 		values []string
@@ -172,9 +157,8 @@ func (self *Str) SliceUint(sep string) (result []uint, err error) {
 	return
 }
 
-// DefaultSliceInt 转为[]int类型，出错则返回传入的默认值
+// DefaultSliceUint 转为[]int类型，出错则返回传入的默认值
 func (self *Str) DefaultSliceUint(sep string, def []uint) []uint {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -187,7 +171,6 @@ func (self *Str) DefaultSliceUint(sep string, def []uint) []uint {
 
 // Int8 转为int8类型
 func (self *Str) Int8() (int8, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -200,8 +183,7 @@ func (self *Str) Int8() (int8, error) {
 
 // DefaultInt8 转为int8类型，如果出错则只返回默认值
 func (self *Str) DefaultInt8(def int8) int8 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseInt(self.currentValue, 10, 8)
@@ -213,7 +195,6 @@ func (self *Str) DefaultInt8(def int8) int8 {
 
 // SliceInt8 转为[]int8类型
 func (self *Str) SliceInt8(sep string) (result []int8, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -238,8 +219,7 @@ func (self *Str) SliceInt8(sep string) (result []int8, err error) {
 
 // DefaultSliceInt8 转为[]int8类型，如果出错则只返回默认值
 func (self *Str) DefaultSliceInt8(sep string, def []int8) []int8 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := self.SliceInt8(sep)
@@ -251,7 +231,6 @@ func (self *Str) DefaultSliceInt8(sep string, def []int8) []int8 {
 
 // Uint8 转为uint8类型
 func (self *Str) Uint8() (uint8, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -264,8 +243,7 @@ func (self *Str) Uint8() (uint8, error) {
 
 // DefaultUint8 转为uint8类型，如果出错则只返回默认值
 func (self *Str) DefaultUint8(def uint8) uint8 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseUint(self.currentValue, 10, 8)
@@ -277,7 +255,6 @@ func (self *Str) DefaultUint8(def uint8) uint8 {
 
 // SliceUint8 转为[]int8类型
 func (self *Str) SliceUint8(sep string) (result []uint8, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -302,8 +279,7 @@ func (self *Str) SliceUint8(sep string) (result []uint8, err error) {
 
 // DefaultSliceUint8 转为[]uint8类型，如果出错则只返回默认值
 func (self *Str) DefaultSliceUint8(sep string, def []uint8) []uint8 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := self.SliceUint8(sep)
@@ -315,7 +291,6 @@ func (self *Str) DefaultSliceUint8(sep string, def []uint8) []uint8 {
 
 // Int16 转为int16类型
 func (self *Str) Int16() (int16, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -328,8 +303,7 @@ func (self *Str) Int16() (int16, error) {
 
 // DefaultInt16 转为int16类型，如果出错则只返回默认值
 func (self *Str) DefaultInt16(def int16) int16 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseInt(self.currentValue, 10, 16)
@@ -341,7 +315,6 @@ func (self *Str) DefaultInt16(def int16) int16 {
 
 // SliceInt16 转为[]int16类型
 func (self *Str) SliceInt16(sep string) (result []int16, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -366,7 +339,6 @@ func (self *Str) SliceInt16(sep string) (result []int16, err error) {
 
 // DefaultSliceInt16 转为[]int16类型
 func (self *Str) DefaultSliceInt16(sep string, def []int16) []int16 {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -379,7 +351,6 @@ func (self *Str) DefaultSliceInt16(sep string, def []int16) []int16 {
 
 // Uint16 转为uint16类型
 func (self *Str) Uint16() (uint16, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -392,8 +363,7 @@ func (self *Str) Uint16() (uint16, error) {
 
 // DefaultUint16 转为uint16类型，如果出错则只返回默认值
 func (self *Str) DefaultUint16(def uint16) uint16 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseUint(self.currentValue, 10, 16)
@@ -405,7 +375,6 @@ func (self *Str) DefaultUint16(def uint16) uint16 {
 
 // SliceUint16 转为[]uint16类型
 func (self *Str) SliceUint16(sep string) (result []uint16, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -430,7 +399,6 @@ func (self *Str) SliceUint16(sep string) (result []uint16, err error) {
 
 // DefaultSliceUint16 转为[]uint16类型
 func (self *Str) DefaultSliceUint16(sep string, def []uint16) []uint16 {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -443,7 +411,6 @@ func (self *Str) DefaultSliceUint16(sep string, def []uint16) []uint16 {
 
 // Int32 转为int32类型
 func (self *Str) Int32() (int32, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -456,8 +423,7 @@ func (self *Str) Int32() (int32, error) {
 
 // DefaultInt32 转为int32类型，如果出错则只返回默认值
 func (self *Str) DefaultInt32(def int32) int32 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseInt(self.currentValue, 10, 32)
@@ -469,7 +435,6 @@ func (self *Str) DefaultInt32(def int32) int32 {
 
 // SliceInt32 转为[]int32类型
 func (self *Str) SliceInt32(sep string) (result []int32, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -494,7 +459,6 @@ func (self *Str) SliceInt32(sep string) (result []int32, err error) {
 
 // DefaultSliceInt32 转为[]int8类型
 func (self *Str) DefaultSliceInt32(sep string, def []int32) []int32 {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -507,7 +471,6 @@ func (self *Str) DefaultSliceInt32(sep string, def []int32) []int32 {
 
 // Uint32 转为uint32类型
 func (self *Str) Uint32() (uint32, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -520,8 +483,7 @@ func (self *Str) Uint32() (uint32, error) {
 
 // DefaultUint32 转为uint32类型，如果出错则只返回默认值
 func (self *Str) DefaultUint32(def uint32) uint32 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseUint(self.currentValue, 10, 32)
@@ -533,7 +495,6 @@ func (self *Str) DefaultUint32(def uint32) uint32 {
 
 // SliceUint32 转为[]uint32类型
 func (self *Str) SliceUint32(sep string) (result []uint32, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -558,7 +519,6 @@ func (self *Str) SliceUint32(sep string) (result []uint32, err error) {
 
 // DefaultSliceUint32 转为[]uint8类型
 func (self *Str) DefaultSliceUint32(sep string, def []uint32) []uint32 {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -571,21 +531,15 @@ func (self *Str) DefaultSliceUint32(sep string, def []uint32) []uint32 {
 
 // Int64 转为int64类型
 func (self *Str) Int64() (int64, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
-	value, err := strconv.ParseInt(self.currentValue, 10, 64)
-	if err != nil {
-		return 0, err
-	}
-	return value, nil
+	return strconv.ParseInt(self.currentValue, 10, 64)
 }
 
 // DefaultInt64 转为int64类型，如果出错则只返回默认值
 func (self *Str) DefaultInt64(def int64) int64 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseInt(self.currentValue, 10, 64)
@@ -597,7 +551,6 @@ func (self *Str) DefaultInt64(def int64) int64 {
 
 // SliceInt64 转为[]int64类型
 func (self *Str) SliceInt64(sep string) (result []int64, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -622,8 +575,7 @@ func (self *Str) SliceInt64(sep string) (result []int64, err error) {
 
 // DefaultSliceInt64 转为[]int64类型，如果出错则只返回默认值
 func (self *Str) DefaultSliceInt64(sep string, def []int64) []int64 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := self.SliceInt64(sep)
@@ -635,21 +587,15 @@ func (self *Str) DefaultSliceInt64(sep string, def []int64) []int64 {
 
 // Uint64 转为uint64类型
 func (self *Str) Uint64() (uint64, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
-	value, err := strconv.ParseUint(self.currentValue, 10, 64)
-	if err != nil {
-		return 0, err
-	}
-	return value, nil
+	return strconv.ParseUint(self.currentValue, 10, 64)
 }
 
 // DefaultUint64 转为uint64类型，如果出错则只返回默认值
 func (self *Str) DefaultUint64(def uint64) uint64 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseUint(self.currentValue, 10, 64)
@@ -661,7 +607,6 @@ func (self *Str) DefaultUint64(def uint64) uint64 {
 
 // SliceUint64 转为[]uint64类型
 func (self *Str) SliceUint64(sep string) (result []uint64, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -686,8 +631,7 @@ func (self *Str) SliceUint64(sep string) (result []uint64, err error) {
 
 // DefaultSliceUint64 转为[]uint64类型，如果出错则只返回默认值
 func (self *Str) DefaultSliceUint64(sep string, def []uint64) []uint64 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := self.SliceUint64(sep)
@@ -699,7 +643,6 @@ func (self *Str) DefaultSliceUint64(sep string, def []uint64) []uint64 {
 
 // Float32 转为float32类型
 func (self *Str) Float32() (float32, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
@@ -712,8 +655,7 @@ func (self *Str) Float32() (float32, error) {
 
 // DefaultFloat32 转为float32类型，如果出错则只返回默认值
 func (self *Str) DefaultFloat32(def float32) float32 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseFloat(self.currentValue, 32)
@@ -725,7 +667,6 @@ func (self *Str) DefaultFloat32(def float32) float32 {
 
 // SliceFloat32 转为[]float32类型
 func (self *Str) SliceFloat32(sep string) (result []float32, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -750,7 +691,6 @@ func (self *Str) SliceFloat32(sep string) (result []float32, err error) {
 
 // DefaultSliceFloat32 转为[]float32类型
 func (self *Str) DefaultSliceFloat32(sep string, def []float32) []float32 {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -763,21 +703,15 @@ func (self *Str) DefaultSliceFloat32(sep string, def []float32) []float32 {
 
 // Float64 转为float64类型
 func (self *Str) Float64() (float64, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return 0, self.err
 	}
-	value, err := strconv.ParseFloat(self.currentValue, 64)
-	if err != nil {
-		return 0, err
-	}
-	return value, nil
+	return strconv.ParseFloat(self.currentValue, 64)
 }
 
 // DefaultFloat64 转为float64类型，如果出错则只返回默认值
 func (self *Str) DefaultFloat64(def float64) float64 {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseFloat(self.currentValue, 64)
@@ -789,7 +723,6 @@ func (self *Str) DefaultFloat64(def float64) float64 {
 
 // SliceFloat64 转为[]float64类型
 func (self *Str) SliceFloat64(sep string) (result []float64, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -814,7 +747,6 @@ func (self *Str) SliceFloat64(sep string) (result []float64, err error) {
 
 // DefaultSliceFloat64 转为[]float64类型
 func (self *Str) DefaultSliceFloat64(sep string, def []float64) []float64 {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
@@ -827,21 +759,15 @@ func (self *Str) DefaultSliceFloat64(sep string, def []float64) []float64 {
 
 // Bool 转为bool类型
 func (self *Str) Bool() (bool, error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return false, self.err
 	}
-	value, err := strconv.ParseBool(self.currentValue)
-	if err != nil {
-		return false, err
-	}
-	return value, nil
+	return strconv.ParseBool(self.currentValue)
 }
 
 // DefaultBool 转为bool类型，如果出错则只返回默认值
 func (self *Str) DefaultBool(def bool) bool {
-	self.checkRequire()
-	if self.err != nil {
+	if self.err != nil || self.currentValue == "" {
 		return def
 	}
 	value, err := strconv.ParseBool(self.currentValue)
@@ -853,7 +779,6 @@ func (self *Str) DefaultBool(def bool) bool {
 
 // SliceBool 转为[]bool类型
 func (self *Str) SliceBool(sep string) (result []bool, err error) {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		err = self.err
 		return
@@ -878,7 +803,6 @@ func (self *Str) SliceBool(sep string) (result []bool, err error) {
 
 // DefaultSliceBool 转为[]bool类型
 func (self *Str) DefaultSliceBool(sep string, def []bool) []bool {
-	self.checkRequire()
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}

@@ -16,7 +16,7 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 ## 函数列表
 
 #### 输入
-- `String()` 输入字符串类型的数据
+- `FromStr()` 输入字符串类型的数据
 
 #### 格式化
 
@@ -59,10 +59,10 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `IsLower` 是小写字母
 - `IsUpper` 是大写字母
 - `IsLetter` 是字母
-- `IsDigit` 是数字，不能包含有任何符号或其它字符
-- `IsLowerOrDigit` 是小写字母或数字
-- `IsUpperOrDigit` 是大写字母或数字
-- `IsLetterOrDigit` 是字母或数字
+- `IsUnsigned` 是无符号数值
+- `IsLowerOrNumber` 是小写字母或数字
+- `IsUpperOrNumber` 是大写字母或数字
+- `IsLetterOrNumber` 是字母或数字
 - `IsChinese` 是汉字
 - `IsMail` 是电邮地址
 - `IsIP` 是IPv4/v6地址
@@ -79,20 +79,20 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `HasLetter` 必须包含字母
 - `HasLower` 必须包含小写字母
 - `HasUpper` 必须包含大写字母
-- `HasDigit` 必须包含数字
+- `HasNumber` 必须包含数字
 - `HasSymbol` 必须包含符号
 - `HasPrefix` 必须包含指定的前缀字符串
 - `HasSuffix` 必须包含指定的后缀字符串
-- `HasString` 必须包含指定的字符串
-- `EnumString` 仅允许[]string中的值
+- `HasStr` 必须包含指定的字符串
+- `EnumStr` 仅允许[]string中的值
 - `EnumInt` 仅允许[]int中的值
 - `EnumInt32` 仅允许[]int32中的值
 - `EnumInt64` 仅允许[]int64中的值
 - `EnumFloat32` 仅允许[]float32中的值
 - `EnumFloat64` 仅允许[]float64中的值
-- `EnumSliceString` 将数据转为[]string,并检查其元素是否存在于指定的[]string中
-- `EnumSliceInt` 将数据转为[]int,并检查其元素是否存在于指定的[]int中
-- `DenyString` 阻止[]string中的值
+- `EnumStrSlice` 将数据转为[]string,并检查其元素是否存在于指定的[]string中
+- `EnumIntSlice` 将数据转为[]int,并检查其元素是否存在于指定的[]int中
+- `DenyStr` 阻止[]string中的值
 - `DenyInt` 阻止[]int中的值
 - `DenyInt32` 阻止[]int32中的值
 - `DenyInt64` 阻止[]int64中的值

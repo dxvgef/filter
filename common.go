@@ -7,9 +7,12 @@ import (
 )
 
 // 默认的错误文本
-var DefaultErrorText = "数据处理失败"
+const DefaultErrorText = "data processing failed"
+const RequireErrorText = "data cannot be empty"
+const InvalidErrorText = "invalid data"
+const ConvErrorText = "failed to convert data type"
 
-// 批处理
+// Batch 批量处理
 func Batch(errs ...error) error {
 	for k := range errs {
 		if errs[k] != nil {
@@ -20,18 +23,16 @@ func Batch(errs ...error) error {
 }
 
 // 封装错误信息
-// nolint:unparam
 func wrapError(name, err string, custom ...string) error {
 	var body strings.Builder
 	body.WriteString(name)
 	body.WriteString(": ")
-
-	// nolint:gocritic
-	if len(custom) > 0 && custom[0] != "" {
+	switch {
+	case len(custom) > 0 && custom[0] != "":
 		body.WriteString(custom[0])
-	} else if err != "" {
+	case err != "":
 		body.WriteString(err)
-	} else {
+	default:
 		body.WriteString(DefaultErrorText)
 	}
 	return errors.New(body.String())
@@ -51,14 +52,14 @@ var chinaMobilePrefix = []uint8{
 
 // []byte转string
 func bytesToStr(value []byte) string {
-	return *(*string)(unsafe.Pointer(&value)) // nolint
+	return *(*string)(unsafe.Pointer(&value))
 }
 
 // string转[]byte
 func strToBytes(s string) []byte {
-	x := (*[2]uintptr)(unsafe.Pointer(&s)) // nolint
+	x := (*[2]uintptr)(unsafe.Pointer(&s))
 	h := [3]uintptr{x[0], x[1], x[1]}
-	return *(*[]byte)(unsafe.Pointer(&h)) // nolint
+	return *(*[]byte)(unsafe.Pointer(&h))
 }
 
 // 用于校验uuid

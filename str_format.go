@@ -5,7 +5,7 @@ import (
 )
 
 // 字母转为大写
-func (self *Str) ToUpper() StrType {
+func (self *Str) ToUpper() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -14,7 +14,7 @@ func (self *Str) ToUpper() StrType {
 }
 
 // 字母转为小写
-func (self *Str) ToLower() StrType {
+func (self *Str) ToLower() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -23,7 +23,7 @@ func (self *Str) ToLower() StrType {
 }
 
 // SnakeCaseToCamelCase 蛇形转驼峰: hello_world => helloWorld
-func (self *Str) SnakeCaseToCamelCase() StrType {
+func (self *Str) SnakeCaseToCamelCase() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -38,7 +38,7 @@ func (self *Str) SnakeCaseToCamelCase() StrType {
 }
 
 // SnakeCaseToPascalCase 蛇形转帕斯卡: hello_world => HelloWorld
-func (self *Str) SnakeCaseToPascalCase() StrType {
+func (self *Str) SnakeCaseToPascalCase() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -51,7 +51,7 @@ func (self *Str) SnakeCaseToPascalCase() StrType {
 }
 
 // CamelCaseToSnakeCase 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
-func (self *Str) CamelCaseToSnakeCase() StrType {
+func (self *Str) CamelCaseToSnakeCase() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}

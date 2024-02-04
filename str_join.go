@@ -3,7 +3,7 @@ package filter
 import "strings"
 
 // 拼接string
-func (self *Str) JoinStr(values ...string) StrType {
+func (self *Str) JoinStr(values ...string) *Str {
 	if self.err != nil {
 		return self
 	}
@@ -16,8 +16,8 @@ func (self *Str) JoinStr(values ...string) StrType {
 	return self
 }
 
-// 拼接bytes
-func (self *Str) JoinBytes(values ...[]byte) StrType {
+// JoinBytes 拼接bytes
+func (self *Str) JoinBytes(values ...[]byte) *Str {
 	if self.err != nil {
 		return self
 	}
@@ -30,8 +30,8 @@ func (self *Str) JoinBytes(values ...[]byte) StrType {
 	return self
 }
 
-// 拼接byte
-func (self *Str) JoinByte(values ...byte) StrType {
+// JoinByte 拼接byte
+func (self *Str) JoinByte(values ...byte) *Str {
 	if self.err != nil {
 		return self
 	}
@@ -44,8 +44,8 @@ func (self *Str) JoinByte(values ...byte) StrType {
 	return self
 }
 
-// 拼接rune
-func (self *Str) JoinRune(values ...rune) StrType {
+// JoinRune 拼接rune
+func (self *Str) JoinRune(values ...rune) *Str {
 	if self.err != nil {
 		return self
 	}

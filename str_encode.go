@@ -7,7 +7,7 @@ import (
 )
 
 // base64 std编码
-func (self *Str) Base64StdEncode() StrType {
+func (self *Str) Base64StdEncode() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -16,13 +16,13 @@ func (self *Str) Base64StdEncode() StrType {
 }
 
 // base64 std解码
-func (self *Str) Base64StdDecode(customError ...string) StrType {
+func (self *Str) Base64StdDecode(customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	bytes, err := base64.StdEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "无法进行Base64编码", customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -30,7 +30,7 @@ func (self *Str) Base64StdDecode(customError ...string) StrType {
 }
 
 // base64 RawStd编码
-func (self *Str) Base64RawStdEncode() StrType {
+func (self *Str) Base64RawStdEncode() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -39,13 +39,13 @@ func (self *Str) Base64RawStdEncode() StrType {
 }
 
 // base64 RawStd解码
-func (self *Str) Base64RawStdDecode(customError ...string) StrType {
+func (self *Str) Base64RawStdDecode(customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	bytes, err := base64.RawStdEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "无法进行Base64解码", customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -53,7 +53,7 @@ func (self *Str) Base64RawStdDecode(customError ...string) StrType {
 }
 
 // base64 URL编码
-func (self *Str) Base64URLEncode() StrType {
+func (self *Str) Base64URLEncode() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -62,13 +62,13 @@ func (self *Str) Base64URLEncode() StrType {
 }
 
 // base64 URL解码
-func (self *Str) Base64URLDecode(customError ...string) StrType {
+func (self *Str) Base64URLDecode(customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	bytes, err := base64.URLEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "无法进行Base64解码", customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -76,7 +76,7 @@ func (self *Str) Base64URLDecode(customError ...string) StrType {
 }
 
 // base64 RawURL编码
-func (self *Str) Base64RawURLEncode() StrType {
+func (self *Str) Base64RawURLEncode() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -85,13 +85,13 @@ func (self *Str) Base64RawURLEncode() StrType {
 }
 
 // base64 RawURL解码
-func (self *Str) Base64RawURLDecode(customError ...string) StrType {
+func (self *Str) Base64RawURLDecode(customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	bytes, err := base64.RawURLEncoding.DecodeString(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "无法进行Base64解码", customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	self.currentValue = bytesToStr(bytes)
@@ -99,7 +99,7 @@ func (self *Str) Base64RawURLDecode(customError ...string) StrType {
 }
 
 // html.UnescapeString
-func (self *Str) HTMLUnescape() StrType {
+func (self *Str) HTMLUnescape() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -108,7 +108,7 @@ func (self *Str) HTMLUnescape() StrType {
 }
 
 // html.EscapeString
-func (self *Str) HTMLEscape() StrType {
+func (self *Str) HTMLEscape() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -117,13 +117,13 @@ func (self *Str) HTMLEscape() StrType {
 }
 
 // url.PathUnescape
-func (self *Str) URLPathUnescape(customError ...string) StrType {
+func (self *Str) URLPathUnescape(customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	value, err := url.PathUnescape(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "无法进行URL路径解码", customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	self.currentValue = value
@@ -131,7 +131,7 @@ func (self *Str) URLPathUnescape(customError ...string) StrType {
 }
 
 // 与url.PathEscape相同
-func (self *Str) URLPathEscape() StrType {
+func (self *Str) URLPathEscape() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -140,21 +140,21 @@ func (self *Str) URLPathEscape() StrType {
 }
 
 // 与url.QueryUnescape相同
-func (self *Str) URLQueryUnescape(customError ...string) StrType {
+func (self *Str) URLQueryUnescape(customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	value, err := url.QueryUnescape(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, "无法进行URL参数解码", customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	self.currentValue = value
 	return self
 }
 
-// 与url.QueryEscape相同
-func (self *Str) URLQueryEscape() StrType {
+// URLQueryEscape 与url.QueryEscape相同
+func (self *Str) URLQueryEscape() *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}

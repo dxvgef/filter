@@ -4,13 +4,13 @@ import (
 	"testing"
 )
 
-func customFunc(s string) (string, error) {
-	return s + "def", nil
-	// return s + "def", errors.New("错误信息")
+func customTestFunc(s *Str) (string, error) {
+	return s.Value() + "def", nil
+	//return s.Value() + "def", errors.New("错误信息")
 }
 
 func TestCustomFunc(t *testing.T) {
-	str, err := FromStr("abc", "账号").Custom(customFunc).String()
+	str, err := FromStr("abc", "账号").Custom(customTestFunc).String()
 	if err != nil {
 		t.Error(err)
 		return

@@ -48,21 +48,28 @@ func (self *Str) IsRequire() bool {
 	return self.require
 }
 
+// Value 获得当前参数值
+func (self *Str) Value() string {
+	return self.currentValue
+}
+
 // Error 获得错误信息
 func (self *Str) Error() error {
 	return self.err
 }
 
-type CustomFunc func(string) (string, error)
+// CustomFunc 自定义处理函数
+// 入参是当前状态的参数值，出参是处理后的参数值以及错误信息
+type CustomFunc func(*Str) (string, error)
 
 // Custom 自定义处理方法
 func (self *Str) Custom(f CustomFunc) *Str {
 	if self.err != nil {
 		return self
 	}
-	value, err := f(self.currentValue)
+	value, err := f(self)
 	if err != nil {
-		self.err = err
+		self.err = wrapError(self.name, InvalidErrorText, err.Error())
 		return self
 	}
 	self.currentValue = value

@@ -58,8 +58,12 @@ func (self *Str) Error() error {
 	return self.err
 }
 
-// CustomFunc 自定义处理函数
-// 入参是当前状态的参数值，出参是处理后的参数值以及错误信息
+/*
+CustomFunc 自定义处理函数
+用*Str.Value()获得当前参数值
+用*Str.Error()获得当前错误信息
+出参是处理后的参数值和错误信息
+*/
 type CustomFunc func(*Str) (string, error)
 
 // Custom 自定义处理方法

@@ -6,7 +6,7 @@ import (
 
 func customTestFunc(s *Str) (string, error) {
 	return s.Value() + "def", nil
-	//return s.Value() + "def", errors.New("错误信息")
+	// return s.Value() + "def", errors.New("错误信息")
 }
 
 func TestCustomFunc(t *testing.T) {

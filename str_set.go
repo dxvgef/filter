@@ -45,7 +45,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowInt(value) {
-			self.err = wrapError(self.name, DefaultErrorText, customError...)
+			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetInt(value)
@@ -55,7 +55,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowUint(value) {
-			self.err = wrapError(self.name, DefaultErrorText, customError...)
+			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetUint(value)
@@ -65,7 +65,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 			return self.err
 		}
 		if targetValueOf.Elem().OverflowFloat(value) {
-			self.err = wrapError(self.name, DefaultErrorText, customError...)
+			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self.err
 		}
 		targetValueOf.Elem().SetFloat(value)

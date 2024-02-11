@@ -23,7 +23,7 @@ func (self *Str) DenyInt(i []int, customError ...string) *Str {
 	}
 	value, err := strconv.Atoi(self.currentValue)
 	if err != nil {
-		self.err = wrapError(self.name, ConvErrorText, customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	for k := range i {
@@ -42,7 +42,7 @@ func (self *Str) DenyInt8(i []int8, customError ...string) *Str {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 8)
 	if err != nil {
-		self.err = wrapError(self.name, ConvErrorText, customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	value := int8(value64)
@@ -62,7 +62,7 @@ func (self *Str) DenyInt16(i []int16, customError ...string) *Str {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 16)
 	if err != nil {
-		self.err = wrapError(self.name, ConvErrorText, customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	value := int16(value64)
@@ -82,7 +82,7 @@ func (self *Str) DenyInt32(i []int32, customError ...string) *Str {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 32)
 	if err != nil {
-		self.err = wrapError(self.name, ConvErrorText, customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	value := int32(value64)
@@ -102,7 +102,7 @@ func (self *Str) DenyInt64(i []int64, customError ...string) *Str {
 	}
 	value64, err := strconv.ParseInt(self.currentValue, 10, 64)
 	if err != nil {
-		self.err = wrapError(self.name, ConvErrorText, customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	for k := range i {
@@ -121,7 +121,7 @@ func (self *Str) DenyFloat32(f []float32, customError ...string) *Str {
 	}
 	value, err := strconv.ParseFloat(self.currentValue, 32)
 	if err != nil {
-		self.err = wrapError(self.name, ConvErrorText, customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	value32 := float32(value)
@@ -141,7 +141,7 @@ func (self *Str) DenyFloat64(f []float64, customError ...string) *Str {
 	}
 	value64, err := strconv.ParseFloat(self.currentValue, 64)
 	if err != nil {
-		self.err = wrapError(self.name, ConvErrorText, customError...)
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
 	for k := range f {

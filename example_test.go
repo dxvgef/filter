@@ -4,6 +4,20 @@ import (
 	"testing"
 )
 
+func customFunc(s string) (string, error) {
+	return s + "def", nil
+	// return s + "def", errors.New("错误信息")
+}
+
+func TestCustomFunc(t *testing.T) {
+	str, err := FromStr("abc", "账号").Custom(customFunc).String()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(str)
+}
+
 // 检查过滤结果
 func TestCheck(t *testing.T) {
 	err := FromStr("   ", "账号").Require().

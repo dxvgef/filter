@@ -40,10 +40,31 @@ func (self *Str) checkRequire() {
 		self.err = wrapError(self.name, self.requireErr)
 		return
 	}
-	self.err = wrapError(self.name, RequireErrorText)
+	self.err = wrapError(self.name, InvalidErrorText)
+}
+
+// IsRequire 判断是否必须
+func (self *Str) IsRequire() bool {
+	return self.require
 }
 
 // Error 获得错误信息
 func (self *Str) Error() error {
 	return self.err
+}
+
+type CustomFunc func(string) (string, error)
+
+// Custom 自定义处理方法
+func (self *Str) Custom(f CustomFunc) *Str {
+	if self.err != nil {
+		return self
+	}
+	value, err := f(self.currentValue)
+	if err != nil {
+		self.err = err
+		return self
+	}
+	self.currentValue = value
+	return self
 }

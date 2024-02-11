@@ -6,11 +6,8 @@ import (
 	"unsafe"
 )
 
-// 默认的错误文本
-const DefaultErrorText = "data processing failed"
-const RequireErrorText = "data cannot be empty"
+// InvalidErrorText 无效数据错误提示
 const InvalidErrorText = "invalid data"
-const ConvErrorText = "failed to convert data type"
 
 // Batch 批量处理
 func Batch(errs ...error) error {
@@ -33,7 +30,7 @@ func wrapError(name, err string, custom ...string) error {
 	case err != "":
 		body.WriteString(err)
 	default:
-		body.WriteString(DefaultErrorText)
+		body.WriteString(InvalidErrorText)
 	}
 	return errors.New(body.String())
 }

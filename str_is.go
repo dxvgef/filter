@@ -144,50 +144,6 @@ func (self *Str) IsChinese(customError ...string) *Str {
 	return self
 }
 
-// 中国手机号码前缀
-var chinaMobilePrefix = []uint8{
-	// 移动
-	139, 138, 137, 136, 135, 134, 147, 150, 151, 152, 157, 158, 159, 165, 178, 182, 183, 184, 187, 188, 198,
-	// 联通
-	130, 131, 132, 155, 156, 166, 167, 185, 186, 145, 175, 176,
-	// 电信
-	133, 153, 162, 177, 173, 180, 181, 189, 191, 199,
-	// 虚拟运营商
-	170, 171,
-}
-
-// IsChinaTel 中国固定电话号码
-func (self *Str) IsChinaTel(customError ...string) *Str {
-	if self.err != nil || self.currentValue == "" {
-		return self
-	}
-	telSlice := strings.Split(self.currentValue, "-")
-	if len(telSlice) != 2 {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	}
-	regionCode, err := strconv.Atoi(telSlice[0])
-	if err != nil {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	}
-	if regionCode < 10 || regionCode > 999 {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	}
-
-	code, err := strconv.Atoi(telSlice[1])
-	if err != nil {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	}
-	if code < 1000000 || code > 99999999 {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	}
-	return self
-}
-
 // IsMail 电邮地址
 func (self *Str) IsMail(customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
@@ -292,41 +248,6 @@ func (self *Str) IsChinaIDNumber(customError ...string) *Str {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 	}
 
-	return self
-}
-
-// IsChinaMobile 中国手机号码
-func (self *Str) IsChinaMobile(customError ...string) *Str {
-	if self.err != nil || self.currentValue == "" {
-		return self
-	}
-	if len(self.currentValue) != 11 {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	}
-	var (
-		prefix      uint8
-		prefixValid bool
-	)
-	if prefix64, err := strconv.ParseUint(self.currentValue[0:3], 10, 8); err != nil {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	} else { //nolint
-		prefix = uint8(prefix64)
-	}
-	for k := range chinaMobilePrefix {
-		if chinaMobilePrefix[k] == prefix {
-			prefixValid = true
-			break
-		}
-	}
-	if !prefixValid {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-		return self
-	}
-	if _, err := strconv.ParseUint(self.currentValue[3:], 10, 32); err != nil {
-		self.err = wrapError(self.name, InvalidErrorText, customError...)
-	}
 	return self
 }
 

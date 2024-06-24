@@ -67,8 +67,6 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `IsTCPAddr` 是IP:Port格式
 - `IsMAC` 是MAC地址
 - `IsJSON` 是有效的JSON格式
-- `IsChinaTel` 是中国大陆地区固定电话号码
-- `IsChinaMobile` 是中国大陆地区手机号码
 - `IsChinaIDNumber` 是中国大陆地区身份证号码
 - `IsSQLObject` 是SQL对象名(库、表、字段)
 - `IsSQLObjects` 是SQL对象名集合

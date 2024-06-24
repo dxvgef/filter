@@ -22,11 +22,16 @@ func (self *Str) DefaultString(def string) string {
 }
 
 // SliceString 使用SetSeparator()设置的分隔符拆分成[]string类型
-func (self *Str) SliceString(sep string) ([]string, error) {
+func (self *Str) SliceString(sep string, trimSpace bool) ([]string, error) {
 	if self.err != nil || self.currentValue == "" {
 		return []string{}, self.err
 	}
 	value := strings.Split(self.currentValue, sep)
+	if trimSpace {
+		for k := range value {
+			value[k] = strings.TrimSpace(value[k])
+		}
+	}
 	if self.require {
 		v := false
 		for k := range value {
@@ -44,11 +49,11 @@ func (self *Str) SliceString(sep string) ([]string, error) {
 }
 
 // DefaultSliceString 使用SetSeparator()设置的分隔符拆分成[]string类型，如果出错则只返回默认值
-func (self *Str) DefaultSliceString(sep string, def []string) []string {
+func (self *Str) DefaultSliceString(sep string, trimSpace bool, def []string) []string {
 	if self.err != nil || self.currentValue == "" {
 		return def
 	}
-	value, err := self.SliceString(sep)
+	value, err := self.SliceString(sep, trimSpace)
 	if err != nil {
 		return def
 	}
@@ -84,7 +89,7 @@ func (self *Str) SliceInt(sep string) (result []int, err error) {
 		values []string
 		value  int
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -143,7 +148,7 @@ func (self *Str) SliceUint(sep string) (result []uint, err error) {
 		values []string
 		value  uint64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -203,7 +208,7 @@ func (self *Str) SliceInt8(sep string) (result []int8, err error) {
 		values []string
 		value  int64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -263,7 +268,7 @@ func (self *Str) SliceUint8(sep string) (result []uint8, err error) {
 		values []string
 		value  uint64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -323,7 +328,7 @@ func (self *Str) SliceInt16(sep string) (result []int16, err error) {
 		values []string
 		value  int64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -383,7 +388,7 @@ func (self *Str) SliceUint16(sep string) (result []uint16, err error) {
 		values []string
 		value  uint64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -443,7 +448,7 @@ func (self *Str) SliceInt32(sep string) (result []int32, err error) {
 		values []string
 		value  int64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -503,7 +508,7 @@ func (self *Str) SliceUint32(sep string) (result []uint32, err error) {
 		values []string
 		value  uint64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -559,7 +564,7 @@ func (self *Str) SliceInt64(sep string) (result []int64, err error) {
 		values []string
 		value  int64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -615,7 +620,7 @@ func (self *Str) SliceUint64(sep string) (result []uint64, err error) {
 		values []string
 		value  uint64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -675,7 +680,7 @@ func (self *Str) SliceFloat32(sep string) (result []float32, err error) {
 		values []string
 		value  float64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -731,7 +736,7 @@ func (self *Str) SliceFloat64(sep string) (result []float64, err error) {
 		values []string
 		value  float64
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}
@@ -787,7 +792,7 @@ func (self *Str) SliceBool(sep string) (result []bool, err error) {
 		values []string
 		value  bool
 	)
-	values, err = self.SliceString(sep)
+	values, err = self.SliceString(sep, true)
 	if err != nil {
 		return
 	}

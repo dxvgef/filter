@@ -4,6 +4,17 @@ import (
 	"unicode/utf8"
 )
 
+// MatchLength 匹配长度
+func (self *Str) MatchLength(value int, customError ...string) *Str {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+	if len(self.currentValue) != value {
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
+	}
+	return self
+}
+
 // MinLength 最小长度
 func (self *Str) MinLength(min int, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {

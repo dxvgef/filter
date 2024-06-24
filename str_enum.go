@@ -156,11 +156,11 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) *Str {
 }
 
 // EnumStrSlice 检查[]string中的元素，仅允许指定[]string中的值
-func (self *Str) EnumStrSlice(sep string, slice []string, customError ...string) *Str {
+func (self *Str) EnumStrSlice(sep string, slice []string, trimSpace bool, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	values, err := self.SliceString(sep)
+	values, err := self.SliceString(sep, trimSpace)
 	if err != nil {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
@@ -175,11 +175,11 @@ func (self *Str) EnumStrSlice(sep string, slice []string, customError ...string)
 }
 
 // EnumIntSlice 检查[]string中的元素，仅允许指潘秉衡[]int中的值
-func (self *Str) EnumIntSlice(sep string, slice []int, customError ...string) *Str {
+func (self *Str) EnumIntSlice(sep string, slice []int, trimSpace bool, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	values, err := self.SliceString(sep)
+	values, err := self.SliceString(sep, trimSpace)
 	if err != nil {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self

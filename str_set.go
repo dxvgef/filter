@@ -84,7 +84,7 @@ func (self *Str) Set(target interface{}, customError ...string) error {
 	return nil
 }
 
-func (self *Str) SetSlice(target interface{}, sep string, customError ...string) error {
+func (self *Str) SetSlice(target interface{}, sep string, trimSpace bool, customError ...string) error {
 	if sep == "" {
 		self.err = wrapError(self.name, "`sep`parameter cannot be empty", customError...)
 		return self.err
@@ -116,7 +116,7 @@ func (self *Str) SetSlice(target interface{}, sep string, customError ...string)
 	sliceType := targetValueOf.Elem().Type().String()
 	switch sliceType {
 	case "[]string":
-		value, err := self.SliceString(sep)
+		value, err := self.SliceString(sep, trimSpace)
 		if err != nil {
 			return self.err
 		}

@@ -160,3 +160,30 @@ func TestDenyOtherSymbol(t *testing.T) {
 		t.Log(arr)
 	}
 }
+
+// 测试 在slice中检查slice
+func TestSliceInSlice(t *testing.T) {
+	allows := []string{"aa", "bb"}
+	if arr, err := FromStr("   aa   ,    bb").EnumStrSlice(",", allows, true).SliceString(",", true); err != nil {
+		t.Error(err)
+	} else {
+		t.Log(arr)
+	}
+}
+
+// 测试 在string中检查slice
+func TestSliceInString(t *testing.T) {
+	allows := []string{"aabb", "bb"}
+	if arr, err := FromStr("   aabb").Trim(" ").EnumStr(allows).String(); err != nil {
+		t.Error(err)
+	} else {
+		t.Log(arr)
+	}
+}
+
+// 测试 ULID
+func TestIsULID(t *testing.T) {
+	if err := FromStr("   01J14QKCCW1Z1WP8KZT8BP2FTP").TrimSpace().IsULID().Error(); err != nil {
+		t.Error(err)
+	}
+}

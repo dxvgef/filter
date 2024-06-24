@@ -65,7 +65,7 @@ func TestSetSlice(t *testing.T) {
 	var str []string
 	err := FromStr("dxv,gef", "账号").Require().
 		TrimSpace().MinLength(3, "不能少于3个字符").MaxLength(15).
-		SetSlice(&str, ",")
+		SetSlice(&str, ",", true)
 
 	if err != nil {
 		t.Error(err)
@@ -145,8 +145,18 @@ func TestSliceRequire(t *testing.T) {
 // 测试EnumSliceString
 func TestEnumSliceString(t *testing.T) {
 	allow := []string{"a", "b", "c"}
-	if err := FromStr("a,c", "账号").Require("不能为空").EnumStrSlice(",", allow).Error(); err != nil {
+	if err := FromStr("a,c", "账号").Require("不能为空").EnumStrSlice(",", allow, true).Error(); err != nil {
 		t.Error(err)
 		return
+	}
+}
+
+// 测试 DenyOtherSymbol
+func TestDenyOtherSymbol(t *testing.T) {
+	allows := []rune{'-', '_', ','}
+	if arr, err := FromStr("   aa   ,    bb,cc    ").DenyOtherSymbol(allows).SliceString(",", true); err != nil {
+		t.Error(err)
+	} else {
+		t.Log(arr)
 	}
 }

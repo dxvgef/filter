@@ -4,13 +4,13 @@ import (
 	"strconv"
 )
 
-// EnumStr 仅允许[]string中的值
-func (self *Str) EnumStr(slice []string, customError ...string) *Str {
+// EnumStr 仅允许allows中的值
+func (self *Str) EnumStr(allows []string, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for k := range slice {
-		if slice[k] == self.currentValue {
+	for k := range allows {
+		if allows[k] == self.currentValue {
 			return self
 		}
 	}
@@ -18,8 +18,8 @@ func (self *Str) EnumStr(slice []string, customError ...string) *Str {
 	return self
 }
 
-// EnumInt 仅允许[]int中的值
-func (self *Str) EnumInt(i []int, customError ...string) *Str {
+// EnumInt 仅允许allows中的值
+func (self *Str) EnumInt(allows []int, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -28,8 +28,8 @@ func (self *Str) EnumInt(i []int, customError ...string) *Str {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
-	for k := range i {
-		if value == i[k] {
+	for k := range allows {
+		if value == allows[k] {
 			return self
 		}
 	}
@@ -37,8 +37,8 @@ func (self *Str) EnumInt(i []int, customError ...string) *Str {
 	return self
 }
 
-// EnumInt8 仅允许[]int8中的值
-func (self *Str) EnumInt8(i []int8, customError ...string) *Str {
+// EnumInt8 仅允许allows中的值
+func (self *Str) EnumInt8(allows []int8, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -48,8 +48,8 @@ func (self *Str) EnumInt8(i []int8, customError ...string) *Str {
 		return self
 	}
 	value := int8(value64)
-	for k := range i {
-		if value == i[k] {
+	for k := range allows {
+		if value == allows[k] {
 			return self
 		}
 	}
@@ -57,8 +57,8 @@ func (self *Str) EnumInt8(i []int8, customError ...string) *Str {
 	return self
 }
 
-// EnumInt16 仅允许[]int16中的值
-func (self *Str) EnumInt16(i []int16, customError ...string) *Str {
+// EnumInt16 仅允许allows中的值
+func (self *Str) EnumInt16(allows []int16, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -68,8 +68,8 @@ func (self *Str) EnumInt16(i []int16, customError ...string) *Str {
 		return self
 	}
 	value := int16(value64)
-	for k := range i {
-		if value == i[k] {
+	for k := range allows {
+		if value == allows[k] {
 			return self
 		}
 	}
@@ -77,8 +77,8 @@ func (self *Str) EnumInt16(i []int16, customError ...string) *Str {
 	return self
 }
 
-// EnumInt32 仅允许[]int32中的值
-func (self *Str) EnumInt32(i []int32, customError ...string) *Str {
+// EnumInt32 仅允许allows中的值
+func (self *Str) EnumInt32(allows []int32, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -88,8 +88,8 @@ func (self *Str) EnumInt32(i []int32, customError ...string) *Str {
 		return self
 	}
 	value32 := int32(value64)
-	for k := range i {
-		if value32 == i[k] {
+	for k := range allows {
+		if value32 == allows[k] {
 			return self
 		}
 	}
@@ -97,8 +97,8 @@ func (self *Str) EnumInt32(i []int32, customError ...string) *Str {
 	return self
 }
 
-// EnumInt64 仅允许[]int64中的值
-func (self *Str) EnumInt64(i []int64, customError ...string) *Str {
+// EnumInt64 仅允许allows中的值
+func (self *Str) EnumInt64(allows []int64, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -107,8 +107,8 @@ func (self *Str) EnumInt64(i []int64, customError ...string) *Str {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
-	for k := range i {
-		if value64 == i[k] {
+	for k := range allows {
+		if value64 == allows[k] {
 			return self
 		}
 	}
@@ -116,8 +116,8 @@ func (self *Str) EnumInt64(i []int64, customError ...string) *Str {
 	return self
 }
 
-// EnumFloat32 仅允许[]float32中的值
-func (self *Str) EnumFloat32(f []float32, customError ...string) *Str {
+// EnumFloat32 仅允许allows中的值
+func (self *Str) EnumFloat32(allows []float32, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -127,8 +127,8 @@ func (self *Str) EnumFloat32(f []float32, customError ...string) *Str {
 		return self
 	}
 	value32 := float32(value)
-	for k := range f {
-		if value32 == f[k] {
+	for k := range allows {
+		if value32 == allows[k] {
 			return self
 		}
 	}
@@ -136,8 +136,8 @@ func (self *Str) EnumFloat32(f []float32, customError ...string) *Str {
 	return self
 }
 
-// EnumFloat64 仅允许[]float64中的值
-func (self *Str) EnumFloat64(f []float64, customError ...string) *Str {
+// EnumFloat64 仅允许allows中的值
+func (self *Str) EnumFloat64(allows []float64, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -146,8 +146,8 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) *Str {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
-	for k := range f {
-		if value64 == f[k] {
+	for k := range allows {
+		if value64 == allows[k] {
 			return self
 		}
 	}
@@ -155,7 +155,7 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) *Str {
 	return self
 }
 
-// EnumStrSlice 仅允许使用allow中的值
+// EnumStrSlice 仅允许使用allows中的值
 func (self *Str) EnumStrSlice(sep string, allows []string, trimSpace bool, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
@@ -174,8 +174,8 @@ func (self *Str) EnumStrSlice(sep string, allows []string, trimSpace bool, custo
 	return self
 }
 
-// EnumIntSlice 检查[]string中的元素，仅允许指潘秉衡[]int中的值
-func (self *Str) EnumIntSlice(sep string, slice []int, trimSpace bool, customError ...string) *Str {
+// EnumIntSlice 仅允许使用allows中的值
+func (self *Str) EnumIntSlice(sep string, allows []int, trimSpace bool, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -190,7 +190,7 @@ func (self *Str) EnumIntSlice(sep string, slice []int, trimSpace bool, customErr
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
-		if !inInt(v, slice) {
+		if !inInt(v, allows) {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}

@@ -16,12 +16,12 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 ## 函数列表
 
 #### 输入
-- `FromStr()` 输入字符串类型的数据
+- `FromString()` 输入`string`类型的数据
 
 #### 格式化
 
-- `Trim()` 去除前后空格
-- `RemoveSpace` 去除所有空格
+- `Trim()` 去除前后的指定字符
+- `RemoveSpace` 去除字符串中所有出现的空格
 - `ReplaceAll` 替换所有
 - `ToUpper` 字母转为大写
 - `ToLower` 字母转为小写
@@ -39,7 +39,6 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `Base64URLDecode` Base64 URL 解码
 - `Base64RawURLEncode` Base64 raw URL 编码
 - `Base64RawURLDecode` Base64 raw URL 解码
-
 
 #### 校验
 - `Require` 参数不能为零值

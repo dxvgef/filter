@@ -187,3 +187,11 @@ func TestIsULID(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+// 测试 ULID
+func TestMy(t *testing.T) {
+	str := "abcdefg"
+	if err := FromStr(str).HasStr("bd").Error(); err != nil {
+		t.Error(err)
+	}
+}

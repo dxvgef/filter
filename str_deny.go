@@ -6,13 +6,13 @@ import (
 	"unicode"
 )
 
-// DenyStr 阻止[]string中的值
-func (self *Str) DenyStr(slice []string, customError ...string) *Str {
+// DenyStr 阻止denyValues中的值
+func (self *Str) DenyStr(denyValues []string, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
-	for k := range slice {
-		if slice[k] == self.currentValue {
+	for k := range denyValues {
+		if denyValues[k] == self.currentValue {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
@@ -20,15 +20,15 @@ func (self *Str) DenyStr(slice []string, customError ...string) *Str {
 	return self
 }
 
-// DenyOtherSymbol 阻止allowSymbols之外的符号
-func (self *Str) DenyOtherSymbol(allowSymbols []rune, customError ...string) *Str {
+// DenyOtherSymbol 阻止allowValues之外的符号
+func (self *Str) DenyOtherSymbol(allowValues []rune, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
 	for _, r := range self.currentValue {
 		// 如果是标点符号
 		if unicode.IsPunct(r) {
-			if !slices.Contains(allowSymbols, r) {
+			if !slices.Contains(allowValues, r) {
 				self.err = wrapError(self.name, InvalidErrorText, customError...)
 				return self
 			}
@@ -37,8 +37,8 @@ func (self *Str) DenyOtherSymbol(allowSymbols []rune, customError ...string) *St
 	return self
 }
 
-// DenyInt 阻止[]int中的值
-func (self *Str) DenyInt(i []int, customError ...string) *Str {
+// DenyInt 阻止denyValues中的值
+func (self *Str) DenyInt(denyValues []int, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -47,8 +47,8 @@ func (self *Str) DenyInt(i []int, customError ...string) *Str {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
-	for k := range i {
-		if value == i[k] {
+	for k := range denyValues {
+		if value == denyValues[k] {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
@@ -56,8 +56,8 @@ func (self *Str) DenyInt(i []int, customError ...string) *Str {
 	return self
 }
 
-// DenyInt8 阻止[]int8中的值
-func (self *Str) DenyInt8(i []int8, customError ...string) *Str {
+// DenyInt8 阻止denyValues中的值
+func (self *Str) DenyInt8(denyValues []int8, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -67,8 +67,8 @@ func (self *Str) DenyInt8(i []int8, customError ...string) *Str {
 		return self
 	}
 	value := int8(value64)
-	for k := range i {
-		if value == i[k] {
+	for k := range denyValues {
+		if value == denyValues[k] {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
@@ -76,8 +76,8 @@ func (self *Str) DenyInt8(i []int8, customError ...string) *Str {
 	return self
 }
 
-// DenyInt16 阻止[]int16中的值
-func (self *Str) DenyInt16(i []int16, customError ...string) *Str {
+// DenyInt16 阻止denyValues中的值
+func (self *Str) DenyInt16(denyValues []int16, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -87,8 +87,8 @@ func (self *Str) DenyInt16(i []int16, customError ...string) *Str {
 		return self
 	}
 	value := int16(value64)
-	for k := range i {
-		if value == i[k] {
+	for k := range denyValues {
+		if value == denyValues[k] {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
@@ -96,8 +96,8 @@ func (self *Str) DenyInt16(i []int16, customError ...string) *Str {
 	return self
 }
 
-// DenyInt32 阻止[]int32中的值
-func (self *Str) DenyInt32(i []int32, customError ...string) *Str {
+// DenyInt32 阻止denyValues中的值
+func (self *Str) DenyInt32(denyValues []int32, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -107,8 +107,8 @@ func (self *Str) DenyInt32(i []int32, customError ...string) *Str {
 		return self
 	}
 	value := int32(value64)
-	for k := range i {
-		if value == i[k] {
+	for k := range denyValues {
+		if value == denyValues[k] {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
@@ -116,8 +116,8 @@ func (self *Str) DenyInt32(i []int32, customError ...string) *Str {
 	return self
 }
 
-// DenyInt64 阻止[]int64中的值
-func (self *Str) DenyInt64(i []int64, customError ...string) *Str {
+// DenyInt64 阻止denyValues中的值
+func (self *Str) DenyInt64(denyValues []int64, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -126,8 +126,8 @@ func (self *Str) DenyInt64(i []int64, customError ...string) *Str {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
-	for k := range i {
-		if value64 == i[k] {
+	for k := range denyValues {
+		if value64 == denyValues[k] {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
@@ -135,8 +135,8 @@ func (self *Str) DenyInt64(i []int64, customError ...string) *Str {
 	return self
 }
 
-// DenyFloat32 阻止[]float32中的值
-func (self *Str) DenyFloat32(f []float32, customError ...string) *Str {
+// DenyFloat32 阻止denyValues中的值
+func (self *Str) DenyFloat32(denyValues []float32, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -146,8 +146,8 @@ func (self *Str) DenyFloat32(f []float32, customError ...string) *Str {
 		return self
 	}
 	value32 := float32(value)
-	for k := range f {
-		if value32 == f[k] {
+	for k := range denyValues {
+		if value32 == denyValues[k] {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}
@@ -155,8 +155,8 @@ func (self *Str) DenyFloat32(f []float32, customError ...string) *Str {
 	return self
 }
 
-// DenyFloats64 阻止[]float64中的值
-func (self *Str) DenyFloat64(f []float64, customError ...string) *Str {
+// DenyFloats64 阻止denyValues中的值
+func (self *Str) DenyFloat64(denyValues []float64, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -165,8 +165,8 @@ func (self *Str) DenyFloat64(f []float64, customError ...string) *Str {
 		self.err = wrapError(self.name, InvalidErrorText, customError...)
 		return self
 	}
-	for k := range f {
-		if value64 == f[k] {
+	for k := range denyValues {
+		if value64 == denyValues[k] {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}

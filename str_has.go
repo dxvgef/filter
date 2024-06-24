@@ -84,6 +84,7 @@ func (self *Str) HasSymbol(customError ...string) *Str {
 }
 
 // HasStr 必须包含指定的字符串
+// 如果只能使用指定的字符串，请使用EnumStr函数
 func (self *Str) HasStr(sub string, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self

@@ -25,9 +25,6 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `ReplaceAll` 替换所有
 - `ToUpper` 字母转为大写
 - `ToLower` 字母转为小写
-- `SnakeCaseToCamelCase` 蛇形转驼峰: hello_world => helloWorld
-- `SnakeCaseToPascalCase` 蛇形转帕斯卡: hello_world => HelloWorld
-- `CamelCaseToSnakeCase` 驼峰(含帕斯卡)转蛇形 helloWorld/HelloWorld => hello_world
 - `HTMLEscape` 编码成HTML中显示的字符
 - `HTMLUnescape` HTMLEscape的解码函数
 - `URLPathEscape` 编码成能作为URL路径传输的字符
@@ -47,6 +44,7 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 #### 校验
 - `Require` 参数不能为零值
 - `Equal` 匹配两个字符串相等
+- `MatchLength` 匹配长度
 - `MinLength` 最小长度
 - `MinUTF8Length` UTF8编码最小长度
 - `MaxLength` 最大长度
@@ -98,6 +96,7 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `DenyInt64` 阻止[]int64中的值
 - `DenyFloat32` 阻止[]float32中的值
 - `DenyFloat64` 阻止[]float64中的值
+- `DenyOtherSymbol` 阻止指定之外的符号
 
 #### 输出
 

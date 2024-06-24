@@ -20,16 +20,15 @@ func Batch(errs ...error) error {
 }
 
 // 封装错误信息
-func wrapError(name, err string, custom ...string) error {
+func wrapError(name string, customError ...string) error {
 	var body strings.Builder
 	body.WriteString(name)
-	body.WriteString(": ")
-	switch {
-	case len(custom) > 0 && custom[0] != "":
-		body.WriteString(custom[0])
-	case err != "":
-		body.WriteString(err)
-	default:
+	if name != "" {
+		body.WriteString(": ")
+	}
+	if len(customError) > 0 {
+		body.WriteString(customError[0])
+	} else {
 		body.WriteString(InvalidErrorText)
 	}
 	return errors.New(body.String())

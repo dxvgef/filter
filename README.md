@@ -13,18 +13,28 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 
 请参考`example_test.go`的单元测试代码，如需其它帮助请在[Issues](https://github.com/dxvgef/filter/issues)里提出。
 
-## 函数列表
+---
 
-#### 输入
+## 字符串处理
+
+#### 输入函数
 - `FromString()` 输入`string`类型的数据
 
-#### 格式化
-
-- `Trim()` 去除前后的指定字符
-- `RemoveSpace` 去除字符串中所有出现的空格
-- `ReplaceAll` 替换所有
+#### 格式化函数
+- 
 - `ToUpper` 字母转为大写
 - `ToLower` 字母转为小写
+- `Trim` 删除左右的指定字符
+- `TrimSpace` 删除左右的空格，是 `Trim(" ")` 函数的封装
+- `TrimLeft` 删除所有出现在左边的指定字符串
+- `TrimRight` 删除所有出现在右边的指定字符串
+- `TrimPrefix` 删除指定的前缀字符串
+- `TrimSuffix` 删除指定的后缀字符串
+- `Replace` 替换指定的字符串，可指定替换次数
+- `ReplaceAll` 替换指定的字符串，替换所有
+- `RemoveSpace` 删除字符串中所有出现的空格
+
+### 编/解码函数
 - `HTMLEscape` 编码成HTML中显示的字符
 - `HTMLUnescape` HTMLEscape的解码函数
 - `URLPathEscape` 编码成能作为URL路径传输的字符
@@ -40,7 +50,7 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `Base64RawURLEncode` Base64 raw URL 编码
 - `Base64RawURLDecode` Base64 raw URL 解码
 
-#### 校验
+#### 校验函数
 - `Require` 参数不能为零值
 - `Equal` 匹配两个字符串相等
 - `MatchLength` 匹配长度
@@ -95,7 +105,7 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `DenyFloat64` 阻止[]float64中的值
 - `DenyOtherSymbol` 阻止指定之外的符号
 
-#### 输出
+#### 输出函数
 
 ###### 类型转换
 - `String` 转为string类型
@@ -154,14 +164,13 @@ golang的数据过滤包，由 **数据输入、格式化、校验、输出** �
 - `DefaultBool` 转为bool类型，出错则返回默认值
 
 ###### 赋值 
-- `Set` 将过滤结果赋值到普通变量
-- `SetSlice` 将过滤结果赋值到切片变量
+- `Set()` 通过反射将处理结果值赋值到`string`类型的变量
 
 ###### 结果
-- `Error` 过滤结果，返回`error`类型
-- `Value` 返回当前状态的参数值，主要用于自定义处理函数中获取
-- `IsRequire` 判断是否执行了`Require`
+- `Error()` 返回处理过程中出更的错误（`error`类型）
+- `Value()` 返回已处理的值
+- `Result()` 返回 `Value(), Error()`
 
 ###### 自定义处理函数
 
-- `Custom` 自定义处理函数，详见`CustomFunc`类型
+- `Custom` 自定义字符串处理函数，详见 `CustomStringFunc`

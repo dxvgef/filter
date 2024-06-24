@@ -1,0 +1,121 @@
+package filter
+
+import (
+	"strings"
+	"unicode"
+)
+
+// 必须包含字母(不区分大小写)
+func (strType *StringType) HasLetter(customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+	for _, v := range strType.currentValue {
+		if unicode.IsLetter(v) {
+			return strType
+		}
+	}
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}
+
+// HasLower 必须包含小写字母
+func (strType *StringType) HasLower(customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+
+	for _, v := range strType.currentValue {
+		if unicode.IsLower(v) {
+			return strType
+		}
+	}
+
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}
+
+// HasUpper 必须包含大写字母
+func (strType *StringType) HasUpper(customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+
+	for _, v := range strType.currentValue {
+		if unicode.IsUpper(v) {
+			return strType
+		}
+	}
+
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}
+
+// HasNumber 必须包含数字
+func (strType *StringType) HasNumber(customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+
+	for _, v := range strType.currentValue {
+		if unicode.IsDigit(v) {
+			return strType
+		}
+	}
+
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}
+
+// HasSymbol 必须包含符号
+func (strType *StringType) HasSymbol(customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+
+	for _, v := range strType.currentValue {
+		if !unicode.IsDigit(v) && !unicode.IsLetter(v) && !unicode.Is(unicode.Han, v) {
+			return strType
+		}
+	}
+
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}
+
+// HasStr 必须包含指定的字符串
+// 如果只能使用指定的字符串，请使用EnumStr函数
+func (strType *StringType) HasStr(sub string, customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+	if strings.Contains(strType.currentValue, sub) {
+		return strType
+	}
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}
+
+// HasPrefix 必须包含指定的前缀字符串
+func (strType *StringType) HasPrefix(sub string, customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+	if strings.HasPrefix(strType.currentValue, sub) {
+		return strType
+	}
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}
+
+// HasSuffix 必须包含指定的后缀字符串
+func (strType *StringType) HasSuffix(sub string, customError ...string) *StringType {
+	if strType.err != nil || strType.currentValue == "" {
+		return strType
+	}
+	if strings.HasSuffix(strType.currentValue, sub) {
+		return strType
+	}
+	strType.err = wrapError(strType.name, InvalidErrorText, customError...)
+	return strType
+}

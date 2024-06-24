@@ -1,81 +1,76 @@
 package filter
 
-// Str 输入字符串类型
-type Str struct {
-	name         string // 变量名称，用于拼接错误消息
+// StringType 字符串类型
+type StringType struct {
+	name         string // 字段名称，用于拼接错误消息
 	rawValue     string // 原始值
 	currentValue string // 当前值
 	err          error  // 错误
-	require      bool   // 不能为零值
-	requireErr   string
 }
 
-// FromStr 输入字符串类型的值
-func FromStr(value string, name ...string) *Str {
-	var str Str
-	str.rawValue = value
-	str.currentValue = value
+// FromString 输入string类型的值
+func FromString(value string, name ...string) *StringType {
+	str := &StringType{
+		rawValue:     value,
+		currentValue: value,
+	}
 	if len(name) > 0 {
 		str.name = name[0]
 	}
-	return &str
+	return str
 }
 
-// Require 必须有值(不能为零值)
-func (self *Str) Require(customError ...string) *Str {
-	self.require = true
-	if len(customError) > 0 {
-		self.requireErr = customError[0]
+// Require 不能为零值
+func (strType *StringType) Require(customError ...string) *StringType {
+	if strType.currentValue == "" {
+		strType.err = wrapError(strType.name, customError...)
+		return strType
 	}
-	self.checkRequire()
-	return self
+	return strType
 }
 
-// 检查require
-func (self *Str) checkRequire() {
-	if self.currentValue != "" {
-		return
-	}
-	if self.requireErr != "" {
-		self.err = wrapError(self.name, self.requireErr)
-		return
-	}
-	self.err = wrapError(self.name, InvalidErrorText)
-}
-
-// IsRequire 判断是否必须
-func (self *Str) IsRequire() bool {
-	return self.require
+// Result 获得过滤结果
+func (strType *StringType) Result() (string, error) {
+	return strType.currentValue, strType.err
 }
 
 // Value 获得当前参数值
-func (self *Str) Value() string {
-	return self.currentValue
+func (strType *StringType) Value() string {
+	return strType.currentValue
 }
 
 // Error 获得错误信息
-func (self *Str) Error() error {
-	return self.err
+func (strType *StringType) Error() error {
+	return strType.err
 }
 
 /*
-CustomFunc 自定义处理函数
+CustomStringFunc 自定义字符串处理函数
 用*Str.Value()获得当前参数值
-用*Str.Error()获得当前错误信息
+用*StringType.Error()获得当前错误信息
 出参是处理后的参数值和错误信息
 */
-type CustomFunc func(*Str) (string, error)
+type CustomStringFunc func(*StringType) (string, error)
 
-// Custom 自定义处理方法
-func (self *Str) Custom(f CustomFunc) *Str {
-	if self.err != nil {
-		return self
+// Custom 自定义string处理方法
+func (strType *StringType) Custom(f CustomStringFunc) *StringType {
+	// 如果已经存在错误，则不进行处理，直接抛出错误
+	if strType.err != nil {
+		return strType
 	}
-	value, err := f(self)
+	// 执行自定义函数
+	value, err := f(strType)
 	if err != nil {
-		self.err = wrapError(self.name, InvalidErrorText, err.Error())
-		return self
+		// 如果自定义函数返回了错误，则抛出错误
+		strType.err = wrapError(strType.name, err.Error())
+		return strType
 	}
-	self.currentValue = value
-	return self
+	// 否则获取自定义函数的返回值
+	strType.currentValue = value
+	return strType
 }
+
+// // Abort 是否要继续处理
+// func (strType *StringType) Abort() error {
+// 	return strType.err
+// }

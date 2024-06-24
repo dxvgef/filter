@@ -388,3 +388,26 @@ func (self *Str) IsUUID(customError ...string) *Str {
 
 	return self
 }
+
+// IsULID ULID格式
+func (self *Str) IsULID(customError ...string) *Str {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+
+	if len(self.currentValue) != 26 {
+		self.err = wrapError(self.name, InvalidErrorText, customError...)
+		return self
+	}
+
+	validChars := "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
+
+	for _, char := range self.currentValue {
+		if !strings.ContainsRune(validChars, unicode.ToUpper(char)) {
+			self.err = wrapError(self.name, InvalidErrorText, customError...)
+			return self
+		}
+	}
+
+	return self
+}

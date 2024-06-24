@@ -8,12 +8,6 @@ run:
   issues-exit-code: 1
   # 是否包含单元测试文件, default is true
   tests: true
-  # 跳过目录
-  skip-dirs:
-    - vendor
-    - .idea
-    - bin
-    - output
   # 跳过默认目录：vendor$, third_party$, testdata$, examples$, Godeps$, builtin$
   skip-dirs-use-default: true
   # 包管理模式，go modules使用readonly
@@ -22,7 +16,7 @@ run:
 # 输出配置
 output:
   # 输出格式：colored-line-number|line-number|json|tab|checkstyle|code-climate, default is "colored-line-number"
-  format: colored-line-number
+  formats: colored-line-number
   # 打印有问题的代码行号, default is true
   print-issued-lines: true
   # 在问题文本的未尾打印检查器名称, default is true
@@ -61,69 +55,69 @@ linters-settings:
         sizeThreshold: 32
 linters:
   enable-all: true
-#  enable:
-#    - bodyclose
-#    - depguard
-#    - dogsled
-#    - dupl
-#    - errcheck
-#    - exportloopref
-#    - exhaustive
-#    - gochecknoinits
-#    - goconst
-#    - gocritic
-#    - gofmt
-#    - govet
-#    - goimports
-#    - goprintffuncname
-#    - gosec
-#    - gosimple
-#    - ineffassign
-#    - lll
-#    - misspell
-#    - noctx
-#    - rowserrcheck
-#    - staticcheck
-#    - stylecheck
-#    - typecheck
-#    - unconvert
-#    - unparam
-#    - unused
-#    - whitespace
+  #  enable:
+  #    - bodyclose
+  #    - depguard
+  #    - dogsled
+  #    - dupl
+  #    - errcheck
+  #    - exportloopref
+  #    - exhaustive
+  #    - gochecknoinits
+  #    - goconst
+  #    - gocritic
+  #    - gofmt
+  #    - govet
+  #    - goimports
+  #    - goprintffuncname
+  #    - gosec
+  #    - gosimple
+  #    - ineffassign
+  #    - lll
+  #    - misspell
+  #    - noctx
+  #    - rowserrcheck
+  #    - staticcheck
+  #    - stylecheck
+  #    - typecheck
+  #    - unconvert
+  #    - unparam
+  #    - unused
+  #    - whitespace
   disable:
+    - err113
     - paralleltest
     - nlreturn
     - gofumpt
-    - goerr113
     - wsl
     - godot
-    - scopelint
-    - structcheck
-    - deadcode
-    - nosnakecase
-    - exhaustivestruct
     - gomnd
-    - interfacer
-    - golint
-    - ifshort
-    - maligned
-    - varcheck
+    - mnd
     - nonamedreturns
     - testpackage
     - cyclop
     - funlen
     - gochecknoglobals
+    - tagliatelle
+    - nakedret
+    - exhaustruct
+    - tagalign
   disable-all: false
-#  presets:
-#    - bugs
+  #  presets:
+  #    - bugs
   # 只运行所有启用的 linter 中支持快速检查的 linter
   fast: false
 
 issues:
-  exclude:
-    - /bin
-    - /output
-    - /.idea
+#  exclude:
+#    - /bin
+#    - /output
+#    - /.idea
+  exclude-dirs:
+    - vendor
+    - .idea
+    - bin
+    - output
   exclude-rules:
     # 设置某个目录的排除规则
     - path: _test\.go
@@ -137,6 +131,15 @@ issues:
         - revive
       text: "package-comments:"
     - linters:
+        - maintidx
+      text: "Cyclomatic Complexity:"
+    - linters:
+        - canonicalheader
+      text: "X-Real-IP"
+    - linters:
+        - unused
+      text: "tableName"
+    - linters:
         - revive
       text: "exported:"
     - linters:
@@ -145,6 +148,18 @@ issues:
     - linters:
         - varnamelen
       text: "too short"
+    - linters:
+        - gosmopolitan
+      text: "string literal contains rune in Han script"
+    - linters:
+        - nestif
+      text: "has complex nested blocks"
+    - linters:
+        - gocritic
+      text: "hugeParam:"
+    - linters:
+        - wastedassign
+      text: "assigned to err, but reassigned without using the value"
     - linters:
         - staticcheck
       text: "SA6002:"
@@ -162,6 +177,12 @@ issues:
     - linters:
         - stylecheck
       text: "ST1006:"
+    - linters:
+        - depguard
+      text: "is not allowed from list 'Main'"
+    - linters:
+        - gci
+      text: "File is not `gci`-ed with --skip-generated -s standard -s default"
     - linters:
         - wrapcheck
       text: "error returned from external package is unwrapped"

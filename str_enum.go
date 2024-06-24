@@ -155,8 +155,8 @@ func (self *Str) EnumFloat64(f []float64, customError ...string) *Str {
 	return self
 }
 
-// EnumStrSlice 检查[]string中的元素，仅允许指定[]string中的值
-func (self *Str) EnumStrSlice(sep string, slice []string, trimSpace bool, customError ...string) *Str {
+// EnumStrSlice 仅允许使用allow中的值
+func (self *Str) EnumStrSlice(sep string, allows []string, trimSpace bool, customError ...string) *Str {
 	if self.err != nil || self.currentValue == "" {
 		return self
 	}
@@ -166,7 +166,7 @@ func (self *Str) EnumStrSlice(sep string, slice []string, trimSpace bool, custom
 		return self
 	}
 	for k := range values {
-		if !inStrings(values[k], slice) {
+		if !inStrings(values[k], allows) {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
 		}

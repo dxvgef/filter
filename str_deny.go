@@ -1,6 +1,10 @@
 package filter
 
-import "strconv"
+import (
+	"slices"
+	"strconv"
+	"unicode"
+)
 
 // DenyStr 阻止[]string中的值
 func (self *Str) DenyStr(slice []string, customError ...string) *Str {
@@ -11,6 +15,23 @@ func (self *Str) DenyStr(slice []string, customError ...string) *Str {
 		if slice[k] == self.currentValue {
 			self.err = wrapError(self.name, InvalidErrorText, customError...)
 			return self
+		}
+	}
+	return self
+}
+
+// DenyOtherSymbol 阻止allowSymbols之外的符号
+func (self *Str) DenyOtherSymbol(allowSymbols []rune, customError ...string) *Str {
+	if self.err != nil || self.currentValue == "" {
+		return self
+	}
+	for _, r := range self.currentValue {
+		// 如果是标点符号
+		if unicode.IsPunct(r) {
+			if !slices.Contains(allowSymbols, r) {
+				self.err = wrapError(self.name, InvalidErrorText, customError...)
+				return self
+			}
 		}
 	}
 	return self

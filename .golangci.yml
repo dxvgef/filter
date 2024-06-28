@@ -92,6 +92,7 @@ linters:
     - wsl
     - godot
     - gomnd
+    - dupl
     - mnd
     - nonamedreturns
     - testpackage

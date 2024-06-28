@@ -2,6 +2,7 @@ package filter
 
 import (
 	"errors"
+	"reflect"
 	"strings"
 	"unsafe"
 )
@@ -44,4 +45,23 @@ func strToBytes(s string) []byte {
 	x := (*[2]uintptr)(unsafe.Pointer(&s))
 	h := [3]uintptr{x[0], x[1], x[1]}
 	return *(*[]byte)(unsafe.Pointer(&h))
+}
+
+// 检查对象能否赋值
+func setCheck(target interface{}) (*reflect.Value, error) {
+	// 检查目标是否为nil
+	if target == nil {
+		return nil, errors.New(InvalidErrorText)
+	}
+
+	targetValueOf := reflect.ValueOf(target)
+	// 检查对象是否是指针
+	if targetValueOf.Kind() != reflect.Ptr {
+		return nil, errors.New(InvalidErrorText)
+	}
+	// 检查对象是否能赋值
+	if !targetValueOf.Elem().CanSet() {
+		return nil, errors.New(InvalidErrorText)
+	}
+	return &targetValueOf, nil
 }

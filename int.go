@@ -18,15 +18,6 @@ func FromInteger(value int64, name ...string) *IntegerType {
 	return intType
 }
 
-// Require 不能为零值
-func (intType *IntegerType) Require(customError ...string) *IntegerType {
-	if intType.value == 0 {
-		intType.err = wrapError(intType.name, customError...)
-		return intType
-	}
-	return intType
-}
-
 /*
 CustomStringFunc 自定义整数处理函数
 用StrType.Int64()获得当前参数值

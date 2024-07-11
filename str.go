@@ -18,15 +18,6 @@ func FromString(value string, name ...string) *StringType {
 	return strType
 }
 
-// Require 不能为零值
-func (strType *StringType) Require(customError ...string) *StringType {
-	if strType.value == "" {
-		strType.err = wrapError(strType.name, customError...)
-		return strType
-	}
-	return strType
-}
-
 /*
 CustomStringFunc 自定义字符串处理函数
 用StrType.Int64()获得当前参数值

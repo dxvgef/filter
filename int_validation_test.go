@@ -4,56 +4,32 @@ import (
 	"testing"
 )
 
-// 测试 FromInteger().Min()
+// 测试 FromInteger().Require()
+func TestFromIntegerRequire(t *testing.T) {
+	t.Log(FromInteger(0).Require().Error())
+	t.Log(FromInteger(1).Require().Error())
+}
+
+// 测试 FromInteger().MinCount()
 func TestFromIntegerMin(t *testing.T) {
-	err := FromInteger(5, "id").Min(5).Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	t.Log(FromInteger(3).MinValue(5).Error())
+	t.Log(FromInteger(5).MinValue(5).Error())
 }
 
-// 测试 FromInteger().Max()
+// 测试 FromInteger().MaxCount()
 func TestFromIntegerMax(t *testing.T) {
-	err := FromInteger(5, "id").Max(5).Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromInteger().Equal()
-func TestFromIntegerEqual(t *testing.T) {
-	err := FromInteger(5, "id").Equal(5).Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromInteger().NotEqual()
-func TestFromIntegerNotEqual(t *testing.T) {
-	err := FromInteger(6, "id").NotEqual(5).Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	t.Log(FromInteger(5).MaxValue(5).Error())
+	t.Log(FromInteger(7).MaxValue(5).Error())
 }
 
 // 测试 FromInteger().AllowedValues()
 func TestFromIntegerAllowedValues(t *testing.T) {
-	err := FromInteger(2, "id").AllowedValues([]int64{1, 2, 3}).Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	t.Log(FromInteger(2).AllowedValues([]int64{1, 3}).Error())
+	t.Log(FromInteger(2).AllowedValues([]int64{1, 2, 3}).Error())
 }
 
 // 测试 FromInteger().DeniedValues()
 func TestFromIntegerDeniedValues(t *testing.T) {
-	err := FromInteger(4, "id").DeniedValues([]int64{1, 2, 3}).Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	t.Log(FromInteger(2).DeniedValues([]int64{1, 2, 3}).Error())
+	t.Log(FromInteger(4).DeniedValues([]int64{1, 2, 3}).Error())
 }

@@ -11,3 +11,13 @@ func TestFromStringToInteger(t *testing.T) {
 	}
 	t.Log(value)
 }
+
+// 测试 FromString().ToStringSlice()
+func TestFromStringToStringSlice(t *testing.T) {
+	value, err := FromString("aaa,bbb,ccc", "username").ToStringSlice(",").Result()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(value)
+}

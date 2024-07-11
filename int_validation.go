@@ -1,7 +1,18 @@
 package filter
 
-// Min 不能最小值
-func (intType *IntegerType) Min(value int64, customError ...string) *IntegerType {
+import "slices"
+
+// Require 不能为零值
+func (intType *IntegerType) Require(customError ...string) *IntegerType {
+	if intType.value == 0 {
+		intType.err = wrapError(intType.name, customError...)
+		return intType
+	}
+	return intType
+}
+
+// MinValue 不能小于最小值
+func (intType *IntegerType) MinValue(value int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
@@ -11,34 +22,12 @@ func (intType *IntegerType) Min(value int64, customError ...string) *IntegerType
 	return intType
 }
 
-// Max 不能最大值
-func (intType *IntegerType) Max(value int64, customError ...string) *IntegerType {
+// MaxValue 不能大于最大值
+func (intType *IntegerType) MaxValue(value int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
 	if intType.value > value {
-		intType.err = wrapError(intType.name, customError...)
-	}
-	return intType
-}
-
-// Equal 必须等于值
-func (intType *IntegerType) Equal(value int64, customError ...string) *IntegerType {
-	if intType.err != nil {
-		return intType
-	}
-	if intType.value != value {
-		intType.err = wrapError(intType.name, customError...)
-	}
-	return intType
-}
-
-// NotEqual 不能等于值
-func (intType *IntegerType) NotEqual(value int64, customError ...string) *IntegerType {
-	if intType.err != nil {
-		return intType
-	}
-	if intType.value == value {
 		intType.err = wrapError(intType.name, customError...)
 	}
 	return intType
@@ -49,12 +38,9 @@ func (intType *IntegerType) AllowedValues(values []int64, customError ...string)
 	if intType.err != nil {
 		return intType
 	}
-	for k := range values {
-		if intType.value == values[k] {
-			return intType
-		}
+	if !slices.Contains(values, intType.value) {
+		intType.err = wrapError(intType.name, customError...)
 	}
-	intType.err = wrapError(intType.name, customError...)
 	return intType
 }
 
@@ -63,11 +49,8 @@ func (intType *IntegerType) DeniedValues(values []int64, customError ...string) 
 	if intType.err != nil {
 		return intType
 	}
-	for k := range values {
-		if intType.value == values[k] {
-			intType.err = wrapError(intType.name, customError...)
-			return intType
-		}
+	if slices.Contains(values, intType.value) {
+		intType.err = wrapError(intType.name, customError...)
 	}
 	return intType
 }

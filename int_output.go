@@ -3,7 +3,6 @@ package filter
 import (
 	"math"
 	"reflect"
-	"unsafe"
 )
 
 // Result 获得过滤结果
@@ -11,12 +10,8 @@ func (intType *IntegerType) Result() (int64, error) {
 	return intType.value, intType.err
 }
 
-// DefaultValue 如果校验失败则返回默认值
-func (intType *IntegerType) DefaultValue(def int64) int64 {
-	if intType.err != nil || intType.value == 0 {
-		intType.err = nil
-		return def
-	}
+// Value 获得当前值
+func (intType *IntegerType) Value() int64 {
 	return intType.value
 }
 
@@ -38,11 +33,104 @@ func (intType *IntegerType) Set(target interface{}, customError ...string) error
 
 	// 开始赋值
 	targetTypeOf := targetValueOf.Elem().Type().Kind()
-	if targetTypeOf != reflect.Int64 {
+	switch targetTypeOf {
+	case reflect.Int:
+		_, err := intType.Int()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetInt(intType.value)
+	case reflect.Int8:
+		_, err := intType.Int8()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetInt(intType.value)
+	case reflect.Int16:
+		_, err := intType.Int16()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetInt(intType.value)
+	case reflect.Int32:
+		_, err := intType.Int32()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetInt(intType.value)
+	case reflect.Int64:
+		_, err := intType.Int64()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetInt(intType.value)
+	case reflect.Uint:
+		var value uint64
+		_, err := intType.Uint()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		value, err = intType.Uint64()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetUint(value)
+	case reflect.Uint8:
+		var value uint64
+		_, err := intType.Uint8()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		value, err = intType.Uint64()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetUint(value)
+	case reflect.Uint16:
+		var value uint64
+		_, err := intType.Uint16()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		value, err = intType.Uint64()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetUint(value)
+	case reflect.Uint32:
+		var value uint64
+		_, err := intType.Uint32()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		value, err = intType.Uint64()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetUint(value)
+	case reflect.Uint64:
+		value, err := intType.Uint64()
+		if err != nil {
+			intType.err = wrapError(intType.name, customError...)
+			return intType.err
+		}
+		targetValueOf.Elem().SetUint(value)
+	default:
 		intType.err = wrapError(intType.name, customError...)
-		return intType.err
 	}
-	targetValueOf.Elem().SetInt(intType.value)
 	return intType.err
 }
 
@@ -60,13 +148,11 @@ func (intType *IntegerType) Int8(customError ...string) (value int8, err error) 
 
 // DefaultInt8 转为int8类型，出错则用默认值替代
 func (intType *IntegerType) DefaultInt8(def int8) int8 {
-	if intType.err != nil {
+	value, err := intType.Int8()
+	if err != nil {
 		return def
 	}
-	if intType.value < math.MinInt8 || intType.value > math.MaxInt8 {
-		return def
-	}
-	return int8(intType.value)
+	return value
 }
 
 // Int16 转为int16类型
@@ -83,13 +169,11 @@ func (intType *IntegerType) Int16(customError ...string) (value int16, err error
 
 // DefaultInt16 转为int16类型，出错则用默认值替代
 func (intType *IntegerType) DefaultInt16(def int16) int16 {
-	if intType.err != nil {
+	value, err := intType.Int16()
+	if err != nil {
 		return def
 	}
-	if intType.value < math.MinInt16 || intType.value > math.MaxInt16 {
-		return def
-	}
-	return int16(intType.value)
+	return value
 }
 
 // Int32 转为int32类型
@@ -106,26 +190,25 @@ func (intType *IntegerType) Int32(customError ...string) (value int32, err error
 
 // DefaultInt32 转为int32类型，出错则用默认值替代
 func (intType *IntegerType) DefaultInt32(def int32) int32 {
-	if intType.err != nil {
+	value, err := intType.Int32()
+	if err != nil {
 		return def
 	}
-	if intType.value < math.MinInt32 || intType.value > math.MaxInt32 {
-		return def
-	}
-	return int32(intType.value)
+	return value
 }
 
 // Int64 转为int64类型
-func (intType *IntegerType) Int64() int64 {
-	return intType.value
+func (intType *IntegerType) Int64() (int64, error) {
+	return intType.Result()
 }
 
 // DefaultInt64 转为int64类型，出错则用默认值替代
 func (intType *IntegerType) DefaultInt64(def int64) int64 {
-	if intType.err != nil {
+	value, err := intType.Result()
+	if err != nil {
 		return def
 	}
-	return intType.value
+	return value
 }
 
 // Int 转为int类型
@@ -142,13 +225,11 @@ func (intType *IntegerType) Int(customError ...string) (value int, err error) {
 
 // DefaultInt 转为int类型，出错则用默认值替代
 func (intType *IntegerType) DefaultInt(def int) int {
-	if intType.err != nil {
+	value, err := intType.Int()
+	if err != nil {
 		return def
 	}
-	if intType.value < math.MinInt || intType.value > math.MaxInt {
-		return def
-	}
-	return int(intType.value)
+	return value
 }
 
 // Uint8 转为uint8类型
@@ -165,13 +246,11 @@ func (intType *IntegerType) Uint8(customError ...string) (value uint8, err error
 
 // DefaultUint8 转为uint8类型，出错则用默认值替代
 func (intType *IntegerType) DefaultUint8(def uint8) uint8 {
-	if intType.err != nil {
+	value, err := intType.Uint8()
+	if err != nil {
 		return def
 	}
-	if intType.value > math.MaxUint8 {
-		return def
-	}
-	return uint8(intType.value)
+	return value
 }
 
 // Uint16 转为uint16类型
@@ -188,13 +267,11 @@ func (intType *IntegerType) Uint16(customError ...string) (value uint16, err err
 
 // DefaultUint16 转为uint16类型，出错则用默认值替代
 func (intType *IntegerType) DefaultUint16(def uint16) uint16 {
-	if intType.err != nil {
+	value, err := intType.Uint16()
+	if err != nil {
 		return def
 	}
-	if intType.value > math.MaxUint16 {
-		return def
-	}
-	return uint16(intType.value)
+	return value
 }
 
 // Uint32 转为uint32类型
@@ -202,7 +279,7 @@ func (intType *IntegerType) Uint32(customError ...string) (value uint32, err err
 	if intType.err != nil {
 		return 0, intType.err
 	}
-	if intType.value > math.MaxUint32 {
+	if intType.value < 0 || intType.value > math.MaxUint32 {
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
@@ -211,21 +288,32 @@ func (intType *IntegerType) Uint32(customError ...string) (value uint32, err err
 
 // DefaultUint32 转为uint32类型，出错则用默认值替代
 func (intType *IntegerType) DefaultUint32(def uint32) uint32 {
+	value, err := intType.Uint32()
+	if err != nil {
+		return def
+	}
+	return value
+}
+
+// Uint64 转为uint64类型
+func (intType *IntegerType) Uint64(customError ...string) (value uint64, err error) {
 	if intType.err != nil {
-		return def
+		return 0, intType.err
 	}
-	if intType.value > math.MaxUint32 {
-		return def
+	if intType.value < 0 {
+		intType.err = wrapError(intType.name, customError...)
+		return 0, intType.err
 	}
-	return uint32(intType.value)
+	return uint64(intType.value), nil
 }
 
 // DefaultUint64 转为uint64类型，出错则用默认值替代
 func (intType *IntegerType) DefaultUint64(def uint64) uint64 {
-	if intType.err != nil {
+	value, err := intType.Uint64()
+	if err != nil {
 		return def
 	}
-	return uint64(intType.value)
+	return value
 }
 
 // Uint 转为uint类型
@@ -233,7 +321,7 @@ func (intType *IntegerType) Uint(customError ...string) (value uint, err error) 
 	if intType.err != nil {
 		return 0, intType.err
 	}
-	if intType.value < 0 {
+	if intType.value < 0 || intType.value > math.MaxInt {
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
@@ -242,15 +330,9 @@ func (intType *IntegerType) Uint(customError ...string) (value uint, err error) 
 
 // DefaultUint 转为uint类型，出错则用默认值替代
 func (intType *IntegerType) DefaultUint(def uint) uint {
-	if intType.err != nil {
+	value, err := intType.Uint()
+	if err != nil {
 		return def
 	}
-	if intType.value < 0 {
-		return def
-	}
-	// 32位
-	if unsafe.Sizeof(int(0)) == 4 && intType.value > math.MaxUint32 {
-		return def
-	}
-	return uint(intType.value)
+	return value
 }

@@ -12,16 +12,12 @@ import (
 	"unicode/utf8"
 )
 
-// IsBool 布尔值
-func (strType *StringType) IsBool(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+// Require 不能为零值
+func (strType *StringType) Require(customError ...string) *StringType {
+	if strType.value == "" {
+		strType.err = wrapError(strType.name, customError...)
 		return strType
 	}
-
-	if _, err := strconv.ParseBool(strType.value); err != nil {
-		strType.err = wrapError(strType.name, customError...)
-	}
-
 	return strType
 }
 
@@ -65,20 +61,6 @@ func (strType *StringType) IsLetter(customError ...string) *StringType {
 
 	for _, v := range strType.value {
 		if !unicode.IsLetter(v) {
-			strType.err = wrapError(strType.name, customError...)
-			return strType
-		}
-	}
-	return strType
-}
-
-// IsUnsigned 无符号整数类型
-func (strType *StringType) IsUnsigned(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
-		return strType
-	}
-	for _, v := range strType.value {
-		if !unicode.IsDigit(v) {
 			strType.err = wrapError(strType.name, customError...)
 			return strType
 		}
@@ -245,17 +227,7 @@ func (strType *StringType) IsChinaIDNumber(customError ...string) *StringType {
 	if temp != idV {
 		strType.err = wrapError(strType.name, customError...)
 	}
-
 	return strType
-}
-
-func isSQLObject(value string) bool {
-	for _, v := range value {
-		if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '_' {
-			return false
-		}
-	}
-	return true
 }
 
 // IsSQLObject SQL对象（库名、表名、字段名）
@@ -265,25 +237,6 @@ func (strType *StringType) IsSQLObject(customError ...string) *StringType {
 	}
 	if !isSQLObject(strType.value) {
 		strType.err = wrapError(strType.name, customError...)
-	}
-	return strType
-}
-
-// IsSQLObjects SQL对象集合（库名、表名、字段名）
-func (strType *StringType) IsSQLObjects(sep string, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
-		return strType
-	}
-	values := strings.Split(strType.value, sep)
-	if values[0] == "" || values[0] == " " {
-		strType.err = wrapError(strType.name, customError...)
-		return strType
-	}
-	for _, v := range values {
-		if !isSQLObject(v) {
-			strType.err = wrapError(strType.name, customError...)
-			return strType
-		}
 	}
 	return strType
 }
@@ -299,91 +252,15 @@ func (strType *StringType) IsURL(customError ...string) *StringType {
 	return strType
 }
 
-// 用于校验uuid
-var xvalues = [256]byte{
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 255, 255, 255, 255, 255, 255,
-	255, 10, 11, 12, 13, 14, 15, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 10, 11, 12, 13, 14, 15, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
-}
-
-// 用于校验uuid
-func xtob(x1, x2 byte) (byte, bool) {
-	b1 := xvalues[x1]
-	b2 := xvalues[x2]
-	return (b1 << 4) | b2, b1 != 255 && b2 != 255
-}
-
 // IsUUID UUID格式
 func (strType *StringType) IsUUID(customError ...string) *StringType {
 	if strType.err != nil || strType.value == "" {
 		return strType
 	}
-
-	str := strType.value
-
-	var uuid [16]byte
-	switch len(str) {
-	// xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	case 36:
-
-	// urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	case 36 + 9:
-		if strings.EqualFold(strings.ToLower(str[:9]), "urn:uuid:") {
-			strType.err = wrapError(strType.name, customError...)
-			return strType
-		}
-		str = str[9:]
-	// {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}
-	case 36 + 2:
-		str = str[1:]
-	// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-	case 32:
-		var ok bool
-		for i := range uuid {
-			uuid[i], ok = xtob(str[i*2], str[i*2+1])
-			if !ok {
-				strType.err = wrapError(strType.name, customError...)
-				return strType
-			}
-		}
-		return strType
-	default:
+	if !isUUID(strType.value) {
 		strType.err = wrapError(strType.name, customError...)
 		return strType
 	}
-	// s is now at least 36 bytes long
-	// it must be of the form  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	if str[8] != '-' || str[13] != '-' || str[18] != '-' || str[23] != '-' {
-		strType.err = wrapError(strType.name, customError...)
-		return strType
-	}
-	for i, x := range [16]int{
-		0, 2, 4, 6,
-		9, 11,
-		14, 16,
-		19, 21,
-		24, 26, 28, 30, 32, 34} {
-		v, ok := xtob(str[x], str[x+1])
-		if !ok {
-			strType.err = wrapError(strType.name, customError...)
-			return strType
-		}
-		uuid[i] = v
-	}
-
 	return strType
 }
 
@@ -526,12 +403,9 @@ func (strType *StringType) AllowedStrings(allowedValues []string, customError ..
 	if strType.err != nil || strType.value == "" {
 		return strType
 	}
-	for k := range allowedValues {
-		if allowedValues[k] == strType.value {
-			return strType
-		}
+	if !slices.Contains(allowedValues, strType.value) {
+		strType.err = wrapError(strType.name, customError...)
 	}
-	strType.err = wrapError(strType.name, customError...)
 	return strType
 }
 
@@ -571,11 +445,8 @@ func (strType *StringType) DeniedStrings(deniedValues []string, customError ...s
 	if strType.err != nil || strType.value == "" {
 		return strType
 	}
-	for k := range deniedValues {
-		if deniedValues[k] == strType.value {
-			strType.err = wrapError(strType.name, customError...)
-			return strType
-		}
+	if slices.Contains(deniedValues, strType.value) {
+		strType.err = wrapError(strType.name, customError...)
 	}
 	return strType
 }
@@ -658,7 +529,7 @@ func (strType *StringType) HasSymbol(customError ...string) *StringType {
 	return strType
 }
 
-// Contains 包含了指定的字符串
+// Contains 必须包含指定的字符串
 func (strType *StringType) Contains(sub string, customError ...string) *StringType {
 	if strType.err != nil || strType.value == "" {
 		return strType

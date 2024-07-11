@@ -33,7 +33,7 @@ linters-settings:
     # 检查空标识符
     check-blank: true
     # 忽略文件
-    ignore: fmt:.*,io/ioutil:^Read.*
+    exclude-functions: fmt:.*,io/ioutil:^Read.*
   govet:
     enable-all: true
   # 检查函数的复杂程度
@@ -85,6 +85,9 @@ linters:
   #    - unused
   #    - whitespace
   disable:
+    - execinquery
+    - intrange
+    - copyloopvar
     - err113
     - paralleltest
     - nlreturn
@@ -131,6 +134,9 @@ issues:
     - linters:
         - revive
       text: "package-comments:"
+    - linters:
+        - stylecheck
+      text: "ST1016:"
     - linters:
         - maintidx
       text: "Cyclomatic Complexity:"

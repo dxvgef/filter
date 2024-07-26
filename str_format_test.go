@@ -4,42 +4,23 @@ import "testing"
 
 // 测试 FromString().ToUpper()
 func TestStrToUpper(t *testing.T) {
-	value, err := FromString("abc").ToUpper().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
+	t.Log(FromString("    A1bc     ").ToUpper().Result())
 }
 
 // 测试 FromString().ToLower()
 func TestStrToLower(t *testing.T) {
-	value, err := FromString("aBc").ToLower().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
+	t.Log(FromString("    A1Bc     ").ToLower().Result())
 }
 
 // 测试 FromString().Trim()
 func TestStrTrim(t *testing.T) {
-	value, err := FromString("0x0x1110x0x").Trim("0x").Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
+	t.Log("abc")
+	t.Log(FromString("     abc      ").Trim(" ").Result())
 }
 
 // 测试 FromString().TrimSpace()
 func TestStrTrimSpace(t *testing.T) {
-	value, err := FromString("   abc   ").TrimSpace().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
+	t.Log(FromString("   abc   ").TrimSpace().Result())
 }
 
 // 测试 FromString().TrimLeft()

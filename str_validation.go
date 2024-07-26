@@ -287,6 +287,53 @@ func (strType *StringType) IsULID(customError ...string) *StringType {
 	return strType
 }
 
+// IsChineseIDCard 中国大陆地区身份证号码
+func (strType *StringType) IsChineseIDCard(customError ...string) *StringType {
+	if strType.err != nil || strType.value == "" {
+		return strType
+	}
+	var idV int
+	if strType.value[17:] == "X" {
+		idV = 88
+	} else {
+		var err error
+		if idV, err = strconv.Atoi(strType.value[17:]); err != nil {
+			strType.err = wrapError(strType.name, customError...)
+			return strType
+		}
+	}
+
+	var verify int
+	id := strType.value[:17]
+	arr := make([]int, 17)
+	for i := 0; i < 17; i++ {
+		arr[i], strType.err = strconv.Atoi(string(id[i]))
+		if strType.err != nil {
+			return strType
+		}
+	}
+	wi := [17]int{7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2}
+	var res int
+	for i := 0; i < 17; i++ {
+		res += arr[i] * wi[i]
+	}
+	verify = res % 11
+
+	var temp int
+	a18 := [11]int{1, 0, 88 /* 'X' */, 9, 8, 7, 6, 5, 4, 3, 2}
+	for i := 0; i < 11; i++ {
+		if i == verify {
+			temp = a18[i]
+			break
+		}
+	}
+	if temp != idV {
+		strType.err = wrapError(strType.name, customError...)
+	}
+
+	return strType
+}
+
 // Length 指定的长度
 func (strType *StringType) Length(value int, customError ...string) *StringType {
 	if strType.err != nil || strType.value == "" {

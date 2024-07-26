@@ -47,6 +47,60 @@ func TestStrSliceNotEqualCount(t *testing.T) {
 	}
 }
 
+// 测试 FromStringSlice().Length()
+func TestStrSliceLength(t *testing.T) {
+	err := FromStringSlice([]string{"aaa", "bbb"}).Length(3).Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// 测试 FromStringSlice().UTF8Length()
+func TestStrSliceUTF8Length(t *testing.T) {
+	err := FromStringSlice([]string{"龙井", "龙井"}).UTF8Length(2).Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// 测试 FromStringSlice().MinLength()
+func TestStrSliceMinLength(t *testing.T) {
+	err := FromStringSlice([]string{"aa", "bbb"}).MinLength(2).Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// 测试 FromStringSlice().UTF8MinLength()
+func TestStrSliceUTF8MinLength(t *testing.T) {
+	err := FromStringSlice([]string{"龙井", "龙井云"}).UTF8MinLength(2).Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// 测试 FromStringSlice().MaxLength()
+func TestStrSliceMaxLength(t *testing.T) {
+	err := FromStringSlice([]string{"aa", "bbb"}).MaxLength(3).Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// 测试 FromStringSlice().UTF8MaxLength()
+func TestStrSliceUTF8MaxLength(t *testing.T) {
+	err := FromStringSlice([]string{"龙", "龙井"}).UTF8MaxLength(2).Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
 // 测试 FromStringSlice().IsLower()
 func TestStrSliceIsLower(t *testing.T) {
 	err := FromStringSlice([]string{"aa", "bb"}).IsLower().Error()
@@ -173,54 +227,72 @@ func TestStrSliceIsULID(t *testing.T) {
 	}
 }
 
-// 测试 FromStringSlice().Length()
-func TestStrSliceLength(t *testing.T) {
-	err := FromStringSlice([]string{"aaa", "bbb"}).Length(3).Error()
+// 测试 FromStringSlice().Contains()
+func TestStrSliceContains(t *testing.T) {
+	err := FromStringSlice([]string{"Aai1", "B@ib2", "C:ci3"}).Contains("i").Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().UTF8Length()
-func TestStrSliceUTF8Length(t *testing.T) {
-	err := FromStringSlice([]string{"龙井", "龙井"}).UTF8Length(2).Error()
+// 测试 FromStringSlice().HasPrefix()
+func TestStrSliceHasPrefix(t *testing.T) {
+	err := FromStringSlice([]string{"TestAa1", "TestBb2", "TestCc1-"}).HasPrefix("Test").Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().MinLength()
-func TestStrSliceMinLength(t *testing.T) {
-	err := FromStringSlice([]string{"aa", "bbb"}).MinLength(2).Error()
+// 测试 FromStringSlice().HasSuffix()
+func TestStrSliceHasSuffix(t *testing.T) {
+	err := FromStringSlice([]string{"Aa1Test", "Bb2Test", "Cc1-Test"}).HasSuffix("Test").Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().UTF8MinLength()
-func TestStrSliceUTF8MinLength(t *testing.T) {
-	err := FromStringSlice([]string{"龙井", "龙井云"}).UTF8MinLength(2).Error()
+// 测试 FromStringSlice().HasLetter()
+func TestStrSliceHasLetter(t *testing.T) {
+	err := FromStringSlice([]string{"1Aa1", "2Bb2", "3Cc3"}).HasLetter().Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().MaxLength()
-func TestStrSliceMaxLength(t *testing.T) {
-	err := FromStringSlice([]string{"aa", "bbb"}).MaxLength(3).Error()
+// 测试 FromStringSlice().HasLower()
+func TestStrSliceHasLower(t *testing.T) {
+	err := FromStringSlice([]string{"1Aa1", "2Bb2", "3c3"}).HasLower().Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().UTF8MaxLength()
-func TestStrSliceUTF8MaxLength(t *testing.T) {
-	err := FromStringSlice([]string{"龙", "龙井"}).UTF8MaxLength(2).Error()
+// 测试 FromStringSlice().HasUpper()
+func TestStrSliceHasUpper(t *testing.T) {
+	err := FromStringSlice([]string{"1Aa1", "2Bb2", "3Cc3"}).HasUpper().Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// 测试 FromStringSlice().HasNumber()
+func TestStrSliceHasNumber(t *testing.T) {
+	err := FromStringSlice([]string{"Aa1", "Bb2", "Cc3"}).HasNumber().Error()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+// 测试 FromStringSlice().HasSymbol()
+func TestStrSliceHasSymbol(t *testing.T) {
+	err := FromStringSlice([]string{"A-a1", "B@b2", "C:c3"}).HasSymbol().Error()
 	if err != nil {
 		t.Error(err)
 		return
@@ -275,78 +347,6 @@ func TestStrSliceDeniedSymbols(t *testing.T) {
 // 测试 FromStringSlice().DeniedStrings()
 func TestStrSliceDeniedStrings(t *testing.T) {
 	err := FromStringSlice([]string{"cc", "dd", "ee"}).DeniedStrings([]string{"aa", "bb"}).Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().HasLetter()
-func TestStrSliceHasLetter(t *testing.T) {
-	err := FromStringSlice([]string{"1Aa1", "2Bb2", "3Cc3"}).HasLetter().Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().HasLower()
-func TestStrSliceHasLower(t *testing.T) {
-	err := FromStringSlice([]string{"1Aa1", "2Bb2", "3c3"}).HasLower().Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().HasUpper()
-func TestStrSliceHasUpper(t *testing.T) {
-	err := FromStringSlice([]string{"1Aa1", "2Bb2", "3Cc3"}).HasUpper().Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().HasNumber()
-func TestStrSliceHasNumber(t *testing.T) {
-	err := FromStringSlice([]string{"Aa1", "Bb2", "Cc3"}).HasNumber().Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().HasSymbol()
-func TestStrSliceHasSymbol(t *testing.T) {
-	err := FromStringSlice([]string{"A-a1", "B@b2", "C:c3"}).HasSymbol().Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().Contains()
-func TestStrSliceContains(t *testing.T) {
-	err := FromStringSlice([]string{"Aai1", "B@ib2", "C:ci3"}).Contains("i").Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().HasPrefix()
-func TestStrSliceHasPrefix(t *testing.T) {
-	err := FromStringSlice([]string{"TestAa1", "TestBb2", "TestCc1-"}).HasPrefix("Test").Error()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
-
-// 测试 FromStringSlice().HasSuffix()
-func TestStrSliceHasSuffix(t *testing.T) {
-	err := FromStringSlice([]string{"Aa1Test", "Bb2Test", "Cc1-Test"}).HasSuffix("Test").Error()
 	if err != nil {
 		t.Error(err)
 		return

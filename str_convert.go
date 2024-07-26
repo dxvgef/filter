@@ -57,8 +57,8 @@ func (strType *StringType) ToIntegerSlice(sep string, customError ...string) *In
 	return intSliceType
 }
 
-// ToBooleanType 转[]bool类型
-func (strType *StringType) ToBooleanType(customError ...string) *BooleanType {
+// ToBoolean 转bool类型
+func (strType *StringType) ToBoolean(customError ...string) *BooleanType {
 	boolType := &BooleanType{
 		name: strType.name,
 		err:  strType.err,
@@ -75,8 +75,8 @@ func (strType *StringType) ToBooleanType(customError ...string) *BooleanType {
 	return boolType
 }
 
-// ToBooleanSliceType 转为[]bool]类型
-func (strType *StringType) ToBooleanSliceType(sep string, customError ...string) *BooleanSliceType {
+// ToBooleanSlice 转为[]bool类型
+func (strType *StringType) ToBooleanSlice(sep string, customError ...string) *BooleanSliceType {
 	boolSliceType := &BooleanSliceType{
 		name: strType.name,
 		err:  strType.err,
@@ -94,4 +94,43 @@ func (strType *StringType) ToBooleanSliceType(sep string, customError ...string)
 		boolSliceType.value = append(boolSliceType.value, v)
 	}
 	return boolSliceType
+}
+
+// ToFloat 转float64类型
+func (strType *StringType) ToFloat(customError ...string) *FloatType {
+	floatType := &FloatType{
+		name: strType.name,
+		err:  strType.err,
+	}
+	if strType.err != nil {
+		return floatType
+	}
+	v, err := strconv.ParseFloat(strType.value, 64)
+	if err != nil {
+		floatType.err = wrapError(strType.name, customError...)
+		return floatType
+	}
+	floatType.value = v
+	return floatType
+}
+
+// ToFloatSlice 转为[]float64类型
+func (strType *StringType) ToFloatSlice(sep string, customError ...string) *FloatSliceType {
+	floatSliceType := &FloatSliceType{
+		name: strType.name,
+		err:  strType.err,
+	}
+	if strType.err != nil {
+		return floatSliceType
+	}
+	floatSlice := strings.Split(strType.value, sep)
+	for k := range floatSlice {
+		v, err := strconv.ParseFloat(floatSlice[k], 64)
+		if err != nil {
+			floatSliceType.err = wrapError(strType.name, customError...)
+			return floatSliceType
+		}
+		floatSliceType.value = append(floatSliceType.value, v)
+	}
+	return floatSliceType
 }

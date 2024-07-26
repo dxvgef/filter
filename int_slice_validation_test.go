@@ -26,6 +26,20 @@ func TestFromIntegerSliceMaxCount(t *testing.T) {
 	t.Log(FromIntegerSlice([]int64{3, 5}).MaxCount(2).Error())
 }
 
+// 测试 FromIntegerSlice().EqualCount()
+func TestFromIntegerSliceEqualCount(t *testing.T) {
+	t.Log(FromIntegerSlice([]int64{}).EqualCount(1).Error())
+	t.Log(FromIntegerSlice([]int64{0, 0}).EqualCount(1).Error())
+	t.Log(FromIntegerSlice([]int64{3, 5}).EqualCount(2).Error())
+}
+
+// 测试 FromIntegerSlice().NotEqualCount()
+func TestFromIntegerSliceNotEqualCount(t *testing.T) {
+	t.Log(FromIntegerSlice([]int64{}).NotEqualCount(1).Error())
+	t.Log(FromIntegerSlice([]int64{0, 0}).NotEqualCount(1).Error())
+	t.Log(FromIntegerSlice([]int64{3, 5}).NotEqualCount(2).Error())
+}
+
 // 测试 FromIntegerSlice().MinValue()
 func TestFromIntegerSliceMinValue(t *testing.T) {
 	t.Log(FromIntegerSlice([]int64{0, 3}).MinValue(2).Error())

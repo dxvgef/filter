@@ -8,6 +8,47 @@ func TestFromStringRequire(t *testing.T) {
 	t.Log(FromString("aa").TrimSpace().Require().Error())
 }
 
+// 测试 FromString().Length()
+func TestStrLength(t *testing.T) {
+	t.Log(FromString("ab").Length(3).Error())
+	t.Log(FromString("a龙").Length(3).Error())
+	t.Log(FromString("abc").Length(3).Error())
+}
+
+// 测试 FromString().UTF8Length()
+func TestStrUTF8Length(t *testing.T) {
+	t.Log(FromString("a龙井").UTF8Length(2).Error())
+	t.Log(FromString("ab").UTF8Length(2).Error())
+	t.Log(FromString("a井").UTF8Length(2).Error())
+	t.Log(FromString("龙井").UTF8Length(2).Error())
+}
+
+// 测试 FromString().MinLength()
+func TestStrMinLength(t *testing.T) {
+	t.Log(FromString("ab").MinLength(3).Error())
+	t.Log(FromString("abcdef").MinLength(3).Error())
+}
+
+// 测试 FromString().UTF8MinLength()
+func TestStrUTF8MinLength(t *testing.T) {
+	t.Log(FromString("龙").UTF8MinLength(2).Error())
+	t.Log(FromString("龙井").UTF8MinLength(2).Error())
+}
+
+// 测试 FromString().MaxLength()
+func TestStrMaxLength(t *testing.T) {
+	t.Log(FromString("abdef龙").MaxLength(5).Error())
+	t.Log(FromString("龙井").MaxLength(5).Error())
+	t.Log(FromString("abdef").MaxLength(5).Error())
+}
+
+// 测试 FromString().UTF8MaxLength()
+func TestStrUTF8MaxLength(t *testing.T) {
+	t.Log(FromString("a龙井").UTF8MaxLength(2).Error())
+	t.Log(FromString("龙井").UTF8MaxLength(2).Error())
+	t.Log(FromString("a龙").UTF8MaxLength(2).Error())
+}
+
 // 测试 FromString().IsLower()
 func TestStrIsLower(t *testing.T) {
 	t.Log(FromString("aBc").IsLower().Error())
@@ -84,6 +125,13 @@ func TestStrIsJSON(t *testing.T) {
 	t.Log(FromString(`{"a": "0"}`).IsJSON().Error())
 }
 
+// 测试 FromString().IsChineseIDCard()
+func TestStrIsChineseIDCard(t *testing.T) {
+	t.Log(FromString("000000000000000000").IsChineseIDCard().Error())
+	t.Log(FromString("000000000000000001").IsChineseIDCard().Error())
+	t.Log(FromString("00000000000000001X").IsChineseIDCard().Error())
+}
+
 // 测试 FromString().IsSQLObject()
 func TestStrIsSQLObject(t *testing.T) {
 	t.Log(FromString("user;name").IsSQLObject().Error())
@@ -110,47 +158,6 @@ func TestStrIsUUID(t *testing.T) {
 func TestStrIsULID(t *testing.T) {
 	t.Log(FromString("01J1C8KMEXV8JHMS0QDNCJTFS").IsULID().Error())
 	t.Log(FromString("01J1C8KMEXV8JHMS0QDNCJTFSZ").IsULID().Error())
-}
-
-// 测试 FromString().Length()
-func TestStrLength(t *testing.T) {
-	t.Log(FromString("ab").Length(3).Error())
-	t.Log(FromString("a龙").Length(3).Error())
-	t.Log(FromString("abc").Length(3).Error())
-}
-
-// 测试 FromString().UTF8Length()
-func TestStrUTF8Length(t *testing.T) {
-	t.Log(FromString("a龙井").UTF8Length(2).Error())
-	t.Log(FromString("ab").UTF8Length(2).Error())
-	t.Log(FromString("a井").UTF8Length(2).Error())
-	t.Log(FromString("龙井").UTF8Length(2).Error())
-}
-
-// 测试 FromString().MinLength()
-func TestStrMinLength(t *testing.T) {
-	t.Log(FromString("ab").MinLength(3).Error())
-	t.Log(FromString("abcdef").MinLength(3).Error())
-}
-
-// 测试 FromString().UTF8MinLength()
-func TestStrUTF8MinLength(t *testing.T) {
-	t.Log(FromString("龙").UTF8MinLength(2).Error())
-	t.Log(FromString("龙井").UTF8MinLength(2).Error())
-}
-
-// 测试 FromString().MaxLength()
-func TestStrMaxLength(t *testing.T) {
-	t.Log(FromString("abdef龙").MaxLength(5).Error())
-	t.Log(FromString("龙井").MaxLength(5).Error())
-	t.Log(FromString("abdef").MaxLength(5).Error())
-}
-
-// 测试 FromString().UTF8MaxLength()
-func TestStrUTF8MaxLength(t *testing.T) {
-	t.Log(FromString("a龙井").UTF8MaxLength(2).Error())
-	t.Log(FromString("龙井").UTF8MaxLength(2).Error())
-	t.Log(FromString("a龙").UTF8MaxLength(2).Error())
 }
 
 // 测试 FromString().AllowedChars()

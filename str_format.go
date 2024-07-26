@@ -34,7 +34,7 @@ func (strType *StringType) Trim(sub string) *StringType {
 	return strType
 }
 
-// TrimSpace 删除左右的空格，是 Trim() 函数的封装
+// TrimSpace 删除左右所有的空格
 func (strType *StringType) TrimSpace() *StringType {
 	if strType.err != nil || strType.value == "" {
 		return strType

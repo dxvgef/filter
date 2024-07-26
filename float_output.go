@@ -33,8 +33,15 @@ func (floatType *FloatType) Set(target interface{}, customError ...string) error
 
 	// 开始赋值
 	targetTypeOf := targetValueOf.Elem().Type().Kind()
-	switch targetTypeOf {
-	case reflect.Float64, reflect.Float32:
+	switch targetTypeOf { //nolint:exhaustive
+	case reflect.Float64:
+		targetValueOf.Elem().SetFloat(floatType.value)
+	case reflect.Float32:
+		_, err := floatType.Float32()
+		if err != nil {
+			floatType.err = wrapError(floatType.name, customError...)
+			return floatType.err
+		}
 		targetValueOf.Elem().SetFloat(floatType.value)
 	default:
 		floatType.err = wrapError(floatType.name, customError...)
@@ -47,7 +54,7 @@ func (floatType *FloatType) Float32(customError ...string) (value float32, err e
 	if floatType.err != nil {
 		return 0, floatType.err
 	}
-	if floatType.value > math.MaxFloat32 {
+	if floatType.value < math.SmallestNonzeroFloat32 || floatType.value > math.MaxFloat32 {
 		floatType.err = wrapError(floatType.name, customError...)
 		return 0, floatType.err
 	}

@@ -33,7 +33,7 @@ func (intType *IntegerType) Set(target interface{}, customError ...string) error
 
 	// 开始赋值
 	targetTypeOf := targetValueOf.Elem().Type().Kind()
-	switch targetTypeOf {
+	switch targetTypeOf { //nolint:exhaustive
 	case reflect.Int:
 		_, err := intType.Int()
 		if err != nil {

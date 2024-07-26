@@ -20,6 +20,16 @@ func TestFromFloatSliceError(t *testing.T) {
 	t.Log(FromFloatSlice([]float64{0, 0}).Require().Error())
 }
 
+// 测试 FromFloatSlice().Set()
+func TestFromFloatSliceSet(t *testing.T) {
+	var value64 []float64
+	var value32 []float32
+	t.Log(FromFloatSlice([]float64{0, 1}).Set(&value64))
+	t.Log(value64)
+	t.Log(FromFloatSlice([]float64{0, 1}).Set(&value32))
+	t.Log(value32)
+}
+
 // 测试 FromFloatSlice().Float32Slice()
 func TestFromFloatSliceFloat32Slice(t *testing.T) {
 	t.Log(FromFloatSlice([]float64{0, 1}).Float32Slice())

@@ -21,6 +21,41 @@ func TestFromIntIntegerSliceError(t *testing.T) {
 	t.Log(FromIntegerSlice([]int64{0, 0}).Require().Error())
 }
 
+// 测试 FromIntegerSlice().Set()
+func TestFromIntIntegerSliceSet(t *testing.T) {
+	var i []int
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&i))
+	t.Log(i)
+	var i8 []int8
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&i8))
+	t.Log(i8)
+	var i16 []int16
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&i16))
+	t.Log(i16)
+	var i32 []int32
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&i32))
+	t.Log(i32)
+	var i64 []int64
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&i64))
+	t.Log(i64)
+
+	var ui []uint
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&ui))
+	t.Log(ui)
+	var ui8 []uint8
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&ui8))
+	t.Log(ui8)
+	var ui16 []int16
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&ui16))
+	t.Log(ui16)
+	var ui32 []uint32
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&ui32))
+	t.Log(ui32)
+	var ui64 []uint64
+	t.Log(FromIntegerSlice([]int64{0, 1}).Set(&ui64))
+	t.Log(ui64)
+}
+
 // 测试 FromIntegerSlice().Int8Slice()
 func TestFromIntIntegerSliceInt8Slice(t *testing.T) {
 	t.Log(FromIntegerSlice([]int64{0, 1}).Int8Slice())

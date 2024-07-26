@@ -21,7 +21,6 @@ func (intSliceType *IntegerSliceType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-// todo 未完成
 func (intSliceType *IntegerSliceType) Set(target interface{}, customError ...string) error {
 	if intSliceType.err != nil {
 		return intSliceType.err
@@ -33,12 +32,81 @@ func (intSliceType *IntegerSliceType) Set(target interface{}, customError ...str
 	}
 
 	// 开始赋值
-	targetTypeOf := targetValueOf.Elem().Type().Kind()
-	if targetTypeOf != reflect.Int64 {
+	sliceType := targetValueOf.Elem().Type().String()
+	switch sliceType {
+	case "[]int":
+		value, err := intSliceType.IntSlice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]int8":
+		value, err := intSliceType.Int8Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]int16":
+		value, err := intSliceType.Int16Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]int32":
+		value, err := intSliceType.Int32Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]int64":
+		value, err := intSliceType.Int64Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]uint":
+		value, err := intSliceType.UintSlice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]uint8":
+		value, err := intSliceType.Uint8Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]uint16":
+		value, err := intSliceType.Uint16Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]uint32":
+		value, err := intSliceType.Uint32Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	case "[]uint64":
+		value, err := intSliceType.Uint64Slice()
+		if err != nil {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+		targetValueOf.Elem().Set(reflect.ValueOf(value))
+	default:
 		intSliceType.err = wrapError(intSliceType.name, customError...)
-		return intSliceType.err
 	}
-	// targetValueOf.Elem().SetInt(intSliceType.value)
 	return intSliceType.err
 }
 

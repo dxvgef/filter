@@ -1,8 +1,6 @@
 package filter
 
-import (
-	"reflect"
-)
+import "reflect"
 
 // Result 获得过滤结果
 func (boolSliceType *BooleanSliceType) Result() ([]bool, error) {
@@ -28,23 +26,22 @@ func (boolSiceType *BooleanSliceType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-// todo 未完成
-func (boolSiceType *BooleanSliceType) Set(target interface{}, customError ...string) error {
-	if boolSiceType.err != nil {
-		return boolSiceType.err
+func (boolSliceType *BooleanSliceType) Set(target interface{}, customError ...string) error {
+	if boolSliceType.err != nil {
+		return boolSliceType.err
 	}
 	targetValueOf, checkErr := setCheck(target)
 	if checkErr != nil {
-		boolSiceType.err = wrapError(boolSiceType.name, customError...)
-		return boolSiceType.err
+		boolSliceType.err = wrapError(boolSliceType.name, customError...)
+		return boolSliceType.err
 	}
 
 	// 开始赋值
-	targetTypeOf := targetValueOf.Elem().Type().Kind()
-	if targetTypeOf != reflect.Bool {
-		boolSiceType.err = wrapError(boolSiceType.name, customError...)
-		return boolSiceType.err
+	sliceType := targetValueOf.Elem().Type().String()
+	if sliceType != "[]bool" {
+		boolSliceType.err = wrapError(boolSliceType.name, customError...)
+		return boolSliceType.err
 	}
-	// targetValueOf.Elem().Set(boolSiceType.value)
-	return boolSiceType.err
+	targetValueOf.Elem().Set(reflect.ValueOf(boolSliceType.Value()))
+	return boolSliceType.err
 }

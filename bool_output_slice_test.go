@@ -23,3 +23,10 @@ func TestFromBooleanSliceError(t *testing.T) {
 func TestFromBooleanSliceDefaultValue(t *testing.T) {
 	t.Log(FromBooleanSlice([]bool{false, false}).Has(true).DefaultValue([]bool{false, true}))
 }
+
+// 测试 FromBooleanSlice().Set()
+func TestFromBooleanSliceSet(t *testing.T) {
+	var value []bool
+	t.Log(FromBooleanSlice([]bool{true, false}).Set(&value))
+	t.Log(value)
+}

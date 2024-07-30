@@ -14,7 +14,12 @@ func (strType *StringType) ToStringSlice(sep string) *StringSliceType {
 	if strType.err != nil {
 		return strSliceType
 	}
-	strSliceType.value = strings.Split(strType.value, sep)
+	value := strings.Split(strType.value, sep)
+	for k := range value {
+		if value[k] != "" {
+			strSliceType.value = append(strSliceType.value, value[k])
+		}
+	}
 	return strSliceType
 }
 
@@ -47,12 +52,14 @@ func (strType *StringType) ToIntegerSlice(sep string, customError ...string) *In
 	}
 	strSlice := strings.Split(strType.value, sep)
 	for k := range strSlice {
-		v, err := strconv.ParseInt(strSlice[k], 10, 64)
-		if err != nil {
-			intSliceType.err = wrapError(strType.name, customError...)
-			return intSliceType
+		if strSlice[k] != "" {
+			v, err := strconv.ParseInt(strSlice[k], 10, 64)
+			if err != nil {
+				intSliceType.err = wrapError(strType.name, customError...)
+				return intSliceType
+			}
+			intSliceType.value = append(intSliceType.value, v)
 		}
-		intSliceType.value = append(intSliceType.value, v)
 	}
 	return intSliceType
 }
@@ -86,12 +93,14 @@ func (strType *StringType) ToBooleanSlice(sep string, customError ...string) *Bo
 	}
 	strSlice := strings.Split(strType.value, sep)
 	for k := range strSlice {
-		v, err := strconv.ParseBool(strSlice[k])
-		if err != nil {
-			boolSliceType.err = wrapError(strType.name, customError...)
-			return boolSliceType
+		if strSlice[k] != "" {
+			v, err := strconv.ParseBool(strSlice[k])
+			if err != nil {
+				boolSliceType.err = wrapError(strType.name, customError...)
+				return boolSliceType
+			}
+			boolSliceType.value = append(boolSliceType.value, v)
 		}
-		boolSliceType.value = append(boolSliceType.value, v)
 	}
 	return boolSliceType
 }
@@ -125,12 +134,14 @@ func (strType *StringType) ToFloatSlice(sep string, customError ...string) *Floa
 	}
 	floatSlice := strings.Split(strType.value, sep)
 	for k := range floatSlice {
-		v, err := strconv.ParseFloat(floatSlice[k], 64)
-		if err != nil {
-			floatSliceType.err = wrapError(strType.name, customError...)
-			return floatSliceType
+		if floatSlice[k] != "" {
+			v, err := strconv.ParseFloat(floatSlice[k], 64)
+			if err != nil {
+				floatSliceType.err = wrapError(strType.name, customError...)
+				return floatSliceType
+			}
+			floatSliceType.value = append(floatSliceType.value, v)
 		}
-		floatSliceType.value = append(floatSliceType.value, v)
 	}
 	return floatSliceType
 }

@@ -78,6 +78,9 @@ func (strSliceType *StringSliceType) DeleteEmpty() *StringSliceType {
 	if strSliceType.err != nil || len(strSliceType.value) == 0 {
 		return strSliceType
 	}
+	if len(strSliceType.value) == 0 && strSliceType.value[0] == "" {
+		return strSliceType
+	}
 	var newValue []string
 	for k := range strSliceType.value {
 		if strSliceType.value[k] != "" {

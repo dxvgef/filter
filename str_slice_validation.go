@@ -18,12 +18,9 @@ func (strSliceType *StringSliceType) Require(customError ...string) *StringSlice
 		strSliceType.err = wrapError(strSliceType.name, customError...)
 		return strSliceType
 	}
-	for k := range strSliceType.value {
-		if strSliceType.value[k] != "" {
-			return strSliceType
-		}
+	if strSliceType.value[0] == "" {
+		strSliceType.err = wrapError(strSliceType.name, customError...)
 	}
-	strSliceType.err = wrapError(strSliceType.name, customError...)
 	return strSliceType
 }
 

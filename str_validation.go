@@ -14,6 +14,7 @@ import (
 
 // Require 不能为零值
 func (strType *StringType) Require(customError ...string) *StringType {
+	strType.isRequired = true
 	if strType.value == "" {
 		strType.err = wrapError(strType.name, customError...)
 		return strType
@@ -23,7 +24,7 @@ func (strType *StringType) Require(customError ...string) *StringType {
 
 // IsLower 小写字母
 func (strType *StringType) IsLower(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -39,7 +40,7 @@ func (strType *StringType) IsLower(customError ...string) *StringType {
 
 // IsUpper 大写字母
 func (strType *StringType) IsUpper(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -55,7 +56,7 @@ func (strType *StringType) IsUpper(customError ...string) *StringType {
 
 // IsLetter 大小写字母
 func (strType *StringType) IsLetter(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -70,9 +71,10 @@ func (strType *StringType) IsLetter(customError ...string) *StringType {
 
 // IsLowerOrNumber 小写字母或数字
 func (strType *StringType) IsLowerOrNumber(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, v := range strType.value {
 		if !unicode.IsLower(v) && !unicode.IsDigit(v) {
 			strType.err = wrapError(strType.name, customError...)
@@ -84,9 +86,10 @@ func (strType *StringType) IsLowerOrNumber(customError ...string) *StringType {
 
 // IsUpperOrNumber 大写字母或数字
 func (strType *StringType) IsUpperOrNumber(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, v := range strType.value {
 		if !unicode.IsUpper(v) && !unicode.IsDigit(v) {
 			strType.err = wrapError(strType.name, customError...)
@@ -98,9 +101,10 @@ func (strType *StringType) IsUpperOrNumber(customError ...string) *StringType {
 
 // IsLetterOrNumber 字母或数字
 func (strType *StringType) IsLetterOrNumber(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, v := range strType.value {
 		if !unicode.IsLetter(v) && !unicode.IsDigit(v) {
 			strType.err = wrapError(strType.name, customError...)
@@ -112,9 +116,10 @@ func (strType *StringType) IsLetterOrNumber(customError ...string) *StringType {
 
 // IsChinese 汉字
 func (strType *StringType) IsChinese(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, v := range strType.value {
 		if !unicode.Is(unicode.Scripts["Han"], v) {
 			strType.err = wrapError(strType.name, customError...)
@@ -126,9 +131,10 @@ func (strType *StringType) IsChinese(customError ...string) *StringType {
 
 // IsMail 电邮地址
 func (strType *StringType) IsMail(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	_, err := mail.ParseAddress(strType.value)
 	if err != nil {
 		strType.err = wrapError(strType.name, customError...)
@@ -138,9 +144,10 @@ func (strType *StringType) IsMail(customError ...string) *StringType {
 
 // IsIP IPv4/v6地址
 func (strType *StringType) IsIP(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if net.ParseIP(strType.value) == nil {
 		strType.err = wrapError(strType.name, customError...)
 	}
@@ -149,9 +156,10 @@ func (strType *StringType) IsIP(customError ...string) *StringType {
 
 // IsTCPAddr IP:Port
 func (strType *StringType) IsTCPAddr(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if _, err := net.ResolveTCPAddr("tcp", strType.value); err != nil {
 		strType.err = wrapError(strType.name, customError...)
 	}
@@ -160,9 +168,10 @@ func (strType *StringType) IsTCPAddr(customError ...string) *StringType {
 
 // IsMAC MAC地址
 func (strType *StringType) IsMAC(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if _, err := net.ParseMAC(strType.value); err != nil {
 		strType.err = wrapError(strType.name, customError...)
 		return strType
@@ -173,9 +182,10 @@ func (strType *StringType) IsMAC(customError ...string) *StringType {
 
 // IsJSON JSON格式
 func (strType *StringType) IsJSON(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	var js json.RawMessage
 	if json.Unmarshal([]byte(strType.value), &js) != nil {
 		strType.err = wrapError(strType.name, customError...)
@@ -186,9 +196,10 @@ func (strType *StringType) IsJSON(customError ...string) *StringType {
 
 // IsChinaIDNumber 中国身份证号码
 func (strType *StringType) IsChinaIDNumber(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	var idV int
 	if strType.value[17:] == "X" {
 		idV = 88
@@ -232,9 +243,10 @@ func (strType *StringType) IsChinaIDNumber(customError ...string) *StringType {
 
 // IsSQLObject SQL对象（库名、表名、字段名）
 func (strType *StringType) IsSQLObject(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if !isSQLObject(strType.value) {
 		strType.err = wrapError(strType.name, customError...)
 	}
@@ -243,9 +255,10 @@ func (strType *StringType) IsSQLObject(customError ...string) *StringType {
 
 // IsURL 是有效的URL
 func (strType *StringType) IsURL(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if _, err := url.ParseRequestURI(strType.value); err != nil {
 		strType.err = wrapError(strType.name, customError...)
 	}
@@ -254,9 +267,10 @@ func (strType *StringType) IsURL(customError ...string) *StringType {
 
 // IsUUID UUID格式
 func (strType *StringType) IsUUID(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if !isUUID(strType.value) {
 		strType.err = wrapError(strType.name, customError...)
 		return strType
@@ -266,7 +280,7 @@ func (strType *StringType) IsUUID(customError ...string) *StringType {
 
 // IsULID ULID格式
 func (strType *StringType) IsULID(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -289,9 +303,10 @@ func (strType *StringType) IsULID(customError ...string) *StringType {
 
 // IsChineseIDCard 中国大陆地区身份证号码
 func (strType *StringType) IsChineseIDCard(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	var idV int
 	if strType.value[17:] == "X" {
 		idV = 88
@@ -336,7 +351,7 @@ func (strType *StringType) IsChineseIDCard(customError ...string) *StringType {
 
 // Length 指定的长度
 func (strType *StringType) Length(value int, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -349,7 +364,7 @@ func (strType *StringType) Length(value int, customError ...string) *StringType 
 
 // UTF8Length 按UTF8编码指定长度
 func (strType *StringType) UTF8Length(value int, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -362,7 +377,7 @@ func (strType *StringType) UTF8Length(value int, customError ...string) *StringT
 
 // MinLength 最小长度
 func (strType *StringType) MinLength(min int, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -375,7 +390,7 @@ func (strType *StringType) MinLength(min int, customError ...string) *StringType
 
 // UTF8MinLength 按UTF8编码校验最小长度
 func (strType *StringType) UTF8MinLength(min int, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -388,7 +403,7 @@ func (strType *StringType) UTF8MinLength(min int, customError ...string) *String
 
 // MaxLength 最大长度
 func (strType *StringType) MaxLength(max int, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -401,7 +416,7 @@ func (strType *StringType) MaxLength(max int, customError ...string) *StringType
 
 // UTF8MaxLength 按UTF8编码校验最大长度
 func (strType *StringType) UTF8MaxLength(max int, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -414,7 +429,7 @@ func (strType *StringType) UTF8MaxLength(max int, customError ...string) *String
 
 // AllowedChars 仅允许字符串中包启allowValues内的字符
 func (strType *StringType) AllowedChars(allowValues []rune, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -430,9 +445,10 @@ func (strType *StringType) AllowedChars(allowValues []rune, customError ...strin
 
 // AllowedSymbols 如果有符号，只允许存在指定的符号
 func (strType *StringType) AllowedSymbols(allowValues []rune, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, r := range strType.value {
 		// 如果是符号
 		if unicode.IsPunct(r) {
@@ -447,9 +463,10 @@ func (strType *StringType) AllowedSymbols(allowValues []rune, customError ...str
 
 // AllowedStrings 只允许存在指定的字符串（枚举）
 func (strType *StringType) AllowedStrings(allowedValues []string, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if !slices.Contains(allowedValues, strType.value) {
 		strType.err = wrapError(strType.name, customError...)
 	}
@@ -458,9 +475,10 @@ func (strType *StringType) AllowedStrings(allowedValues []string, customError ..
 
 // DeniedChars 阻止deniedValues中的值
 func (strType *StringType) DeniedChars(deniedValues []rune, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, r := range strType.value {
 		if slices.Contains(deniedValues, r) {
 			strType.err = wrapError(strType.name, customError...)
@@ -472,9 +490,10 @@ func (strType *StringType) DeniedChars(deniedValues []rune, customError ...strin
 
 // DeniedSymbols 如果有符号，阻止存在指定的符号
 func (strType *StringType) DeniedSymbols(deniedValues []rune, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, r := range strType.value {
 		// 如果是符号
 		if unicode.IsPunct(r) {
@@ -489,9 +508,10 @@ func (strType *StringType) DeniedSymbols(deniedValues []rune, customError ...str
 
 // DeniedStrings 禁止存在指定的字符串
 func (strType *StringType) DeniedStrings(deniedValues []string, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if slices.Contains(deniedValues, strType.value) {
 		strType.err = wrapError(strType.name, customError...)
 	}
@@ -500,9 +520,10 @@ func (strType *StringType) DeniedStrings(deniedValues []string, customError ...s
 
 // 包含了字母(不区分大小写)
 func (strType *StringType) HasLetter(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	for _, v := range strType.value {
 		if unicode.IsLetter(v) {
 			return strType
@@ -514,7 +535,7 @@ func (strType *StringType) HasLetter(customError ...string) *StringType {
 
 // HasLower 包含了小写字母
 func (strType *StringType) HasLower(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -530,7 +551,7 @@ func (strType *StringType) HasLower(customError ...string) *StringType {
 
 // HasUpper 包含了大写字母
 func (strType *StringType) HasUpper(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -546,7 +567,7 @@ func (strType *StringType) HasUpper(customError ...string) *StringType {
 
 // HasNumber 包含了数字
 func (strType *StringType) HasNumber(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -562,7 +583,7 @@ func (strType *StringType) HasNumber(customError ...string) *StringType {
 
 // HasSymbol 包含了符号
 func (strType *StringType) HasSymbol(customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
 
@@ -578,9 +599,10 @@ func (strType *StringType) HasSymbol(customError ...string) *StringType {
 
 // Contains 必须包含指定的字符串
 func (strType *StringType) Contains(sub string, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if !strings.Contains(strType.value, sub) {
 		strType.err = wrapError(strType.name, customError...)
 		return strType
@@ -590,9 +612,10 @@ func (strType *StringType) Contains(sub string, customError ...string) *StringTy
 
 // HasPrefix 包含了指定的前缀字符串
 func (strType *StringType) HasPrefix(sub string, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if strings.HasPrefix(strType.value, sub) {
 		return strType
 	}
@@ -602,9 +625,10 @@ func (strType *StringType) HasPrefix(sub string, customError ...string) *StringT
 
 // HasSuffix 包含了指定的后缀字符串
 func (strType *StringType) HasSuffix(sub string, customError ...string) *StringType {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType
 	}
+
 	if strings.HasSuffix(strType.value, sub) {
 		return strType
 	}

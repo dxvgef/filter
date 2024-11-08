@@ -33,6 +33,10 @@ func (strSliceType *StringSliceType) Set(target interface{}, customError ...stri
 	if strSliceType.err != nil {
 		return strSliceType.err
 	}
+	if !strSliceType.isRequired && len(strSliceType.value) == 0 {
+		return nil
+	}
+
 	targetValueOf, checkErr := setCheck(target)
 	if checkErr != nil {
 		strSliceType.err = wrapError(strSliceType.name, customError...)

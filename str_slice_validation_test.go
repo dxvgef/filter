@@ -47,54 +47,54 @@ func TestStrSliceNotEqualCount(t *testing.T) {
 	}
 }
 
-// 测试 FromStringSlice().Length()
+// 测试 FromStringSlice().StringLength()
 func TestStrSliceLength(t *testing.T) {
-	err := FromStringSlice([]string{"aaa", "bbb"}).Length(3).Error()
+	err := FromStringSlice([]string{"aaa", "bbb"}).StringLength(3).Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().UTF8Length()
+// 测试 FromStringSlice().UTF8StringLength()
 func TestStrSliceUTF8Length(t *testing.T) {
-	err := FromStringSlice([]string{"龙井", "龙井"}).UTF8Length(2).Error()
+	err := FromStringSlice([]string{"龙井", "龙井"}).UTF8StringLength(2).Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().MinLength()
+// 测试 FromStringSlice().StringMinLength()
 func TestStrSliceMinLength(t *testing.T) {
-	err := FromStringSlice([]string{"aa", "bbb"}).MinLength(2).Error()
+	err := FromStringSlice([]string{"aa", "bbb"}).StringMinLength(2).Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().UTF8MinLength()
+// 测试 FromStringSlice().StringUTF8MinLength()
 func TestStrSliceUTF8MinLength(t *testing.T) {
-	err := FromStringSlice([]string{"龙井", "龙井云"}).UTF8MinLength(2).Error()
+	err := FromStringSlice([]string{"龙井", "龙井云"}).StringUTF8MinLength(2).Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().MaxLength()
+// 测试 FromStringSlice().StringMaxLength()
 func TestStrSliceMaxLength(t *testing.T) {
-	err := FromStringSlice([]string{"aa", "bbb"}).MaxLength(3).Error()
+	err := FromStringSlice([]string{"aa", "bbb"}).StringMaxLength(3).Error()
 	if err != nil {
 		t.Error(err)
 		return
 	}
 }
 
-// 测试 FromStringSlice().UTF8MaxLength()
+// 测试 FromStringSlice().StringUTF8MaxLength()
 func TestStrSliceUTF8MaxLength(t *testing.T) {
-	err := FromStringSlice([]string{"龙", "龙井"}).UTF8MaxLength(2).Error()
+	err := FromStringSlice([]string{"龙", "龙井"}).StringUTF8MaxLength(2).Error()
 	if err != nil {
 		t.Error(err)
 		return

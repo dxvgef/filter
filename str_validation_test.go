@@ -8,14 +8,14 @@ func TestFromStringRequire(t *testing.T) {
 	t.Log(FromString("aa").TrimSpace().Require().Error())
 }
 
-// 测试 FromString().Length()
+// 测试 FromString().StringLength()
 func TestStrLength(t *testing.T) {
 	t.Log(FromString("ab").Length(3).Error())
 	t.Log(FromString("a龙").Length(3).Error())
 	t.Log(FromString("abc").Length(3).Error())
 }
 
-// 测试 FromString().UTF8Length()
+// 测试 FromString().UTF8StringLength()
 func TestStrUTF8Length(t *testing.T) {
 	t.Log(FromString("a龙井").UTF8Length(2).Error())
 	t.Log(FromString("ab").UTF8Length(2).Error())
@@ -23,26 +23,26 @@ func TestStrUTF8Length(t *testing.T) {
 	t.Log(FromString("龙井").UTF8Length(2).Error())
 }
 
-// 测试 FromString().MinLength()
+// 测试 FromString().StringMinLength()
 func TestStrMinLength(t *testing.T) {
 	t.Log(FromString("ab").MinLength(3).Error())
 	t.Log(FromString("abcdef").MinLength(3).Error())
 }
 
-// 测试 FromString().UTF8MinLength()
+// 测试 FromString().StringUTF8MinLength()
 func TestStrUTF8MinLength(t *testing.T) {
 	t.Log(FromString("龙").UTF8MinLength(2).Error())
 	t.Log(FromString("龙井").UTF8MinLength(2).Error())
 }
 
-// 测试 FromString().MaxLength()
+// 测试 FromString().StringMaxLength()
 func TestStrMaxLength(t *testing.T) {
 	t.Log(FromString("abdef龙").MaxLength(5).Error())
 	t.Log(FromString("龙井").MaxLength(5).Error())
 	t.Log(FromString("abdef").MaxLength(5).Error())
 }
 
-// 测试 FromString().UTF8MaxLength()
+// 测试 FromString().StringUTF8MaxLength()
 func TestStrUTF8MaxLength(t *testing.T) {
 	t.Log(FromString("a龙井").UTF8MaxLength(2).Error())
 	t.Log(FromString("龙井").UTF8MaxLength(2).Error())

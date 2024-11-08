@@ -11,9 +11,10 @@ func (strType *StringType) ToStringSlice(sep string) *StringSliceType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strSliceType
 	}
+
 	value := strings.Split(strType.value, sep)
 	for k := range value {
 		if value[k] != "" {
@@ -29,9 +30,10 @@ func (strType *StringType) ToInteger(customError ...string) *IntegerType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return intType
 	}
+
 	v, err := strconv.ParseInt(strType.value, 10, 64)
 	if err != nil {
 		intType.err = wrapError(strType.name, customError...)
@@ -47,9 +49,10 @@ func (strType *StringType) ToIntegerSlice(sep string, customError ...string) *In
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return intSliceType
 	}
+
 	strSlice := strings.Split(strType.value, sep)
 	for k := range strSlice {
 		if strSlice[k] != "" {
@@ -70,9 +73,10 @@ func (strType *StringType) ToBoolean(customError ...string) *BooleanType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return boolType
 	}
+
 	v, err := strconv.ParseBool(strType.value)
 	if err != nil {
 		boolType.err = wrapError(strType.name, customError...)
@@ -88,9 +92,10 @@ func (strType *StringType) ToBooleanSlice(sep string, customError ...string) *Bo
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return boolSliceType
 	}
+
 	strSlice := strings.Split(strType.value, sep)
 	for k := range strSlice {
 		if strSlice[k] != "" {
@@ -111,9 +116,10 @@ func (strType *StringType) ToFloat(customError ...string) *FloatType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return floatType
 	}
+
 	v, err := strconv.ParseFloat(strType.value, 64)
 	if err != nil {
 		floatType.err = wrapError(strType.name, customError...)
@@ -129,9 +135,10 @@ func (strType *StringType) ToFloatSlice(sep string, customError ...string) *Floa
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return floatSliceType
 	}
+
 	floatSlice := strings.Split(strType.value, sep)
 	for k := range floatSlice {
 		if floatSlice[k] != "" {

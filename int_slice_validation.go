@@ -2,16 +2,11 @@ package filter
 
 import "slices"
 
-// Require 不能为零值
+// Require 长度不能为0
 func (intSliceType *IntegerSliceType) Require(customError ...string) *IntegerSliceType {
 	if len(intSliceType.value) == 0 {
 		intSliceType.err = wrapError(intSliceType.name, customError...)
 		return intSliceType
-	}
-	for k := range intSliceType.value {
-		if intSliceType.value[k] != 0 {
-			return intSliceType
-		}
 	}
 	intSliceType.err = wrapError(intSliceType.name, customError...)
 	return intSliceType

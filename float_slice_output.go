@@ -1,7 +1,6 @@
 package filter
 
 import (
-	"log"
 	"math"
 	"reflect"
 )
@@ -69,12 +68,10 @@ func (floatSliceType *FloatSliceType) Float32Slice(customError ...string) ([]flo
 // DefaultFloat32Slice 转为[]float32类型，出错则用默认值替代
 func (floatSliceType *FloatSliceType) DefaultFloat32Slice(def []float32) []float32 {
 	if floatSliceType.err != nil {
-		log.Println(floatSliceType.err)
 		return def
 	}
 	value, err := floatSliceType.Float32Slice()
 	if err != nil {
-		log.Println(floatSliceType.err)
 		return def
 	}
 	return value

@@ -16,7 +16,7 @@ func (strType *StringType) Value() string {
 
 // DefaultValue 如果校验失败则返回默认值
 func (strType *StringType) DefaultValue(def string) string {
-	if strType.err != nil || strType.value == "" {
+	if strType.err != nil {
 		strType.err = nil
 		return def
 	}
@@ -30,9 +30,10 @@ func (strType *StringType) Error() error {
 
 // Set 使用反射赋值到变量
 func (strType *StringType) Set(target interface{}, customError ...string) error {
-	if strType.err != nil {
+	if strType.err != nil || (!strType.isRequired && strType.value == "") {
 		return strType.err
 	}
+
 	targetValueOf, checkErr := setCheck(target)
 	if checkErr != nil {
 		strType.err = wrapError(strType.name, customError...)

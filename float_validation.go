@@ -40,6 +40,17 @@ func (floatType *FloatType) GreaterThan(value float64, customError ...string) *F
 	return floatType
 }
 
+// Range 范围
+func (floatType *FloatType) Range(minValue, maxValue float64, customError ...string) *FloatType {
+	if floatType.err != nil {
+		return floatType
+	}
+	if floatType.value < minValue || floatType.value > maxValue {
+		floatType.err = wrapError(floatType.name, customError...)
+	}
+	return floatType
+}
+
 // AllowedValues 只能是数组中的值
 func (floatType *FloatType) AllowedValues(values []float64, customError ...string) *FloatType {
 	if floatType.err != nil {

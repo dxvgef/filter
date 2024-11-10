@@ -40,6 +40,17 @@ func (intType *IntegerType) GreaterThan(value int64, customError ...string) *Int
 	return intType
 }
 
+// Range 范围
+func (intType *IntegerType) Range(minValue, maxValue int64, customError ...string) *IntegerType {
+	if intType.err != nil {
+		return intType
+	}
+	if intType.value < minValue || intType.value > maxValue {
+		intType.err = wrapError(intType.name, customError...)
+	}
+	return intType
+}
+
 // AllowedValues 只能是数组中的值
 func (intType *IntegerType) AllowedValues(values []int64, customError ...string) *IntegerType {
 	if intType.err != nil {

@@ -98,6 +98,20 @@ func (intSliceType *IntegerSliceType) MaxValue(value int64, customError ...strin
 	return intSliceType
 }
 
+// RangeValue 每个元素值的范围
+func (intSliceType *IntegerSliceType) RangeValue(minValue, maxValue int64, customError ...string) *IntegerSliceType {
+	if intSliceType.err != nil {
+		return intSliceType
+	}
+	for k := range intSliceType.value {
+		if intSliceType.value[k] < minValue || intSliceType.value[k] > maxValue {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+			break
+		}
+	}
+	return intSliceType
+}
+
 // AllowedValues 元素只能是数组中的值
 func (intSliceType *IntegerSliceType) AllowedValues(values []int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {

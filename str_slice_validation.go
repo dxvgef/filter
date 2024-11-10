@@ -433,6 +433,23 @@ func (strSliceType *StringSliceType) LengthGreaterThan(value int, customError ..
 	return strSliceType
 }
 
+// LengthRange 每个元素值的长度范围
+func (strSliceType *StringSliceType) LengthRange(minValue, maxValue int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		l := len(strSliceType.value[k])
+		if l < minValue || l > maxValue {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+
+	return strSliceType
+}
+
 // UTF8LengthEquals 每个元素值的UTF8编码的长度都等于
 func (strSliceType *StringSliceType) UTF8LengthEquals(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
@@ -489,6 +506,23 @@ func (strSliceType *StringSliceType) UTF8LengthGreaterThan(value int, customErro
 
 	for k := range strSliceType.value {
 		if utf8.RuneCountInString(strSliceType.value[k]) < value {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+
+	return strSliceType
+}
+
+// UTF8LengthRange 每个元素的UTF8编码的长度范围
+func (strSliceType *StringSliceType) UTF8LengthRange(minValue, maxValue int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		l := utf8.RuneCountInString(strSliceType.value[k])
+		if l < minValue || l > maxValue {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}

@@ -83,6 +83,20 @@ func (floatSliceType *FloatSliceType) MaxValue(value float64, customError ...str
 	return floatSliceType
 }
 
+// RangeValue 每个元素值的范围
+func (floatSliceType *FloatSliceType) RangeValue(minValue, maxValue float64, customError ...string) *FloatSliceType {
+	if floatSliceType.err != nil {
+		return floatSliceType
+	}
+	for k := range floatSliceType.value {
+		if floatSliceType.value[k] < minValue || floatSliceType.value[k] > maxValue {
+			floatSliceType.err = wrapError(floatSliceType.name, customError...)
+			break
+		}
+	}
+	return floatSliceType
+}
+
 // CountLessThan 元素数量小于
 func (floatSliceType *FloatSliceType) CountLessThan(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {

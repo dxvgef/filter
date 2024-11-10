@@ -103,6 +103,19 @@ func (strType *StringType) LengthGreaterThan(value int, customError ...string) *
 	return strType
 }
 
+// LengthRange 长度范围
+func (strType *StringType) LengthRange(minValue, maxValue int, customError ...string) *StringType {
+	if strType.err != nil {
+		return strType
+	}
+	l := len(strType.value)
+	if l < minValue || l > maxValue {
+		strType.err = wrapError(strType.name, customError...)
+	}
+
+	return strType
+}
+
 // UTF8LengthEquals UTF8编码长度等于
 func (strType *StringType) UTF8LengthEquals(value int, customError ...string) *StringType {
 	if strType.err != nil {
@@ -149,6 +162,19 @@ func (strType *StringType) UTF8LengthGreaterThan(value int, customError ...strin
 	}
 
 	if utf8.RuneCountInString(strType.value) < value {
+		strType.err = wrapError(strType.name, customError...)
+	}
+
+	return strType
+}
+
+// UTF8LengthRange UTF8编码长度范围
+func (strType *StringType) UTF8LengthRange(minValue, maxValue int, customError ...string) *StringType {
+	if strType.err != nil {
+		return strType
+	}
+	l := utf8.RuneCountInString(strType.value)
+	if l < minValue || l > maxValue {
 		strType.err = wrapError(strType.name, customError...)
 	}
 

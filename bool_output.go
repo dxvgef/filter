@@ -32,6 +32,7 @@ func (boolType *BooleanType) Set(target interface{}, customError ...string) erro
 	if boolType.err != nil {
 		return boolType.err
 	}
+
 	targetValueOf, checkErr := setCheck(target)
 	if checkErr != nil {
 		boolType.err = wrapError(boolType.name, customError...)

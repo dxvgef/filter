@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-// Trim 删除每个元素左右的指定字符串
+// Trim 删除每个元素值左右的指定字符串
 func (strSliceType *StringSliceType) Trim(sub string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -19,9 +19,9 @@ func (strSliceType *StringSliceType) Trim(sub string) *StringSliceType {
 	return strSliceType
 }
 
-// TrimSpace 删除每个元素左右的空格
+// TrimSpace 删除每个元素值左右所有的空格
 func (strSliceType *StringSliceType) TrimSpace() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -31,9 +31,9 @@ func (strSliceType *StringSliceType) TrimSpace() *StringSliceType {
 	return strSliceType
 }
 
-// TrimLeft 删除每个元素左边指定的字符串
+// TrimLeft 删除每个元素值左边所有指定的字符串
 func (strSliceType *StringSliceType) TrimLeft(sub string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -43,9 +43,9 @@ func (strSliceType *StringSliceType) TrimLeft(sub string) *StringSliceType {
 	return strSliceType
 }
 
-// TrimRight 删除每个元素右边指定的字符串
+// TrimRight 删除每个元素值右边所有指定的字符串
 func (strSliceType *StringSliceType) TrimRight(sub string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -55,9 +55,9 @@ func (strSliceType *StringSliceType) TrimRight(sub string) *StringSliceType {
 	return strSliceType
 }
 
-// TrimPrefix 删除每个元素指定的前缀字符串
+// TrimPrefix 删除每个元素值指定的前缀字符串
 func (strSliceType *StringSliceType) TrimPrefix(sub string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -67,9 +67,9 @@ func (strSliceType *StringSliceType) TrimPrefix(sub string) *StringSliceType {
 	return strSliceType
 }
 
-// TrimSuffix 删除每个元素指定的后缀字符串
+// TrimSuffix 删除每个元素值指定的后缀字符串
 func (strSliceType *StringSliceType) TrimSuffix(sub string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -81,7 +81,7 @@ func (strSliceType *StringSliceType) TrimSuffix(sub string) *StringSliceType {
 
 // DeleteEmpty 删除空字符串的元素
 func (strSliceType *StringSliceType) DeleteEmpty() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -95,9 +95,9 @@ func (strSliceType *StringSliceType) DeleteEmpty() *StringSliceType {
 	return strSliceType
 }
 
-// RemoveSpace 删除每个元素中的所有空格
+// RemoveSpace 删除每个元素值中的所有空格
 func (strSliceType *StringSliceType) RemoveSpace() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -107,9 +107,9 @@ func (strSliceType *StringSliceType) RemoveSpace() *StringSliceType {
 	return strSliceType
 }
 
-// Base64StdEncode 对每个元素进行Base64 std编码
+// Base64StdEncode 使用 base64.StdEncoding 对每个元素值编码
 func (strSliceType *StringSliceType) Base64StdEncode() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -119,9 +119,9 @@ func (strSliceType *StringSliceType) Base64StdEncode() *StringSliceType {
 	return strSliceType
 }
 
-// Base64StdDecode 对每个元素进行Base64 std解码
+// Base64StdDecode 使用 base64.StdEncoding 对每个元素值解码
 func (strSliceType *StringSliceType) Base64StdDecode(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -136,9 +136,9 @@ func (strSliceType *StringSliceType) Base64StdDecode(customError ...string) *Str
 	return strSliceType
 }
 
-// Base64RawStdEncode 对每个元素进行Base64 RawStd编码
+// Base64RawStdEncode 使用 base64.RawStdEncoding 对每个元素值编码
 func (strSliceType *StringSliceType) Base64RawStdEncode() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -148,9 +148,9 @@ func (strSliceType *StringSliceType) Base64RawStdEncode() *StringSliceType {
 	return strSliceType
 }
 
-// Base64RawStdDecode 对每个元素进行Base64 RawStd解码
+// Base64RawStdDecode 使用 base64.RawStdEncoding 对每个元素值解码
 func (strSliceType *StringSliceType) Base64RawStdDecode(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -165,9 +165,9 @@ func (strSliceType *StringSliceType) Base64RawStdDecode(customError ...string) *
 	return strSliceType
 }
 
-// Base64URLEncode base64 URL编码
+// Base64URLEncode 使用 base64.URLEncoding 对每个元素值编码
 func (strSliceType *StringSliceType) Base64URLEncode() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -177,9 +177,9 @@ func (strSliceType *StringSliceType) Base64URLEncode() *StringSliceType {
 	return strSliceType
 }
 
-// Base64URLDecode base64 URL解码
+// Base64URLDecode 使用 base64.URLEncoding 对每个元素值解码
 func (strSliceType *StringSliceType) Base64URLDecode(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -194,9 +194,9 @@ func (strSliceType *StringSliceType) Base64URLDecode(customError ...string) *Str
 	return strSliceType
 }
 
-// Base64RawURLEncode base64 RawURL编码
+// Base64RawURLEncode 使用 base64.RawURLEncoding 对每个元素值编码
 func (strSliceType *StringSliceType) Base64RawURLEncode() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -206,9 +206,9 @@ func (strSliceType *StringSliceType) Base64RawURLEncode() *StringSliceType {
 	return strSliceType
 }
 
-// Base64RawURLDecode base64 RawURL解码
+// Base64RawURLDecode 使用 base64.RawURLEncoding 对每个元素值解码
 func (strSliceType *StringSliceType) Base64RawURLDecode(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -223,9 +223,9 @@ func (strSliceType *StringSliceType) Base64RawURLDecode(customError ...string) *
 	return strSliceType
 }
 
-// HTMLEscape html.EscapeString
+// HTMLEscape 使用 html.EscapeString 对每个元素值编码
 func (strSliceType *StringSliceType) HTMLEscape() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -235,9 +235,9 @@ func (strSliceType *StringSliceType) HTMLEscape() *StringSliceType {
 	return strSliceType
 }
 
-// HTMLUnescape html.UnescapeString
+// HTMLUnescape 使用 html.UnescapeString 对每个元素值解码
 func (strSliceType *StringSliceType) HTMLUnescape() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -247,9 +247,9 @@ func (strSliceType *StringSliceType) HTMLUnescape() *StringSliceType {
 	return strSliceType
 }
 
-// URLPathEscape 与url.PathEscape相同
+// URLPathEscape 使用 url.PathEscape 对每个元素值编码
 func (strSliceType *StringSliceType) URLPathEscape() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -259,9 +259,9 @@ func (strSliceType *StringSliceType) URLPathEscape() *StringSliceType {
 	return strSliceType
 }
 
-// URLPathUnescape url.PathUnescape
+// URLPathUnescape 使用 url.PathUnescape 对每个元素值解码
 func (strSliceType *StringSliceType) URLPathUnescape(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -276,9 +276,9 @@ func (strSliceType *StringSliceType) URLPathUnescape(customError ...string) *Str
 	return strSliceType
 }
 
-// URLQueryEscape 与url.QueryEscape相同
+// URLQueryEscape 使用 url.QueryEscape 对每个元素值编码
 func (strSliceType *StringSliceType) URLQueryEscape() *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -288,9 +288,9 @@ func (strSliceType *StringSliceType) URLQueryEscape() *StringSliceType {
 	return strSliceType
 }
 
-// URLQueryUnescape 与url.QueryUnescape相同
+// URLQueryUnescape 使用 url.QueryUnescape 对每个元素值解码
 func (strSliceType *StringSliceType) URLQueryUnescape(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 

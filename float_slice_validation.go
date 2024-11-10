@@ -2,66 +2,60 @@ package filter
 
 import "slices"
 
-// Require 不能为零值
-func (floatSliceType *FloatSliceType) Require(customError ...string) *FloatSliceType {
-	if len(floatSliceType.value) == 0 {
+// Contains 存在指定值的元素
+func (floatSliceType *FloatSliceType) Contains(values float64, customError ...string) *FloatSliceType {
+	if floatSliceType.err != nil {
+		return floatSliceType
+	}
+
+	if !slices.Contains(floatSliceType.value, values) {
 		floatSliceType.err = wrapError(floatSliceType.name, customError...)
+	}
+	return floatSliceType
+}
+
+// NotContains 不存在指定值的元素
+func (floatSliceType *FloatSliceType) NotContains(values float64, customError ...string) *FloatSliceType {
+	if floatSliceType.err != nil {
+		return floatSliceType
+	}
+
+	if slices.Contains(floatSliceType.value, values) {
+		floatSliceType.err = wrapError(floatSliceType.name, customError...)
+	}
+	return floatSliceType
+}
+
+// AllowedValues 每个元素都只能是列表中的值
+func (floatSliceType *FloatSliceType) AllowedValues(values []float64, customError ...string) *FloatSliceType {
+	if floatSliceType.err != nil {
+		return floatSliceType
+	}
+
+	for k := range floatSliceType.value {
+		if !slices.Contains(values, floatSliceType.value[k]) {
+			floatSliceType.err = wrapError(floatSliceType.name, customError...)
+			break
+		}
+	}
+	return floatSliceType
+}
+
+// DisallowedValues 每个元素都不能是列表中的值
+func (floatSliceType *FloatSliceType) DisallowedValues(values []float64, customError ...string) *FloatSliceType {
+	if floatSliceType.err != nil {
 		return floatSliceType
 	}
 	for k := range floatSliceType.value {
-		if floatSliceType.value[k] != 0 {
-			return floatSliceType
+		if slices.Contains(values, floatSliceType.value[k]) {
+			floatSliceType.err = wrapError(floatSliceType.name, customError...)
+			break
 		}
 	}
-	floatSliceType.err = wrapError(floatSliceType.name, customError...)
 	return floatSliceType
 }
 
-// MinCount 元素数量不能小于指定值
-func (floatSliceType *FloatSliceType) MinCount(value int, customError ...string) *FloatSliceType {
-	if floatSliceType.err != nil {
-		return floatSliceType
-	}
-	if len(floatSliceType.value) < value {
-		floatSliceType.err = wrapError(floatSliceType.name, customError...)
-	}
-	return floatSliceType
-}
-
-// MaxCount 元素数量不能大于指定值
-func (floatSliceType *FloatSliceType) MaxCount(value int, customError ...string) *FloatSliceType {
-	if floatSliceType.err != nil {
-		return floatSliceType
-	}
-	if len(floatSliceType.value) > value {
-		floatSliceType.err = wrapError(floatSliceType.name, customError...)
-	}
-	return floatSliceType
-}
-
-// EqualCount 元素数量必须等于指定值
-func (floatSliceType *FloatSliceType) EqualCount(value int, customError ...string) *FloatSliceType {
-	if floatSliceType.err != nil {
-		return floatSliceType
-	}
-	if len(floatSliceType.value) != value {
-		floatSliceType.err = wrapError(floatSliceType.name, customError...)
-	}
-	return floatSliceType
-}
-
-// NotEqualCount 元素数量不能等于指定值
-func (floatSliceType *FloatSliceType) NotEqualCount(value int, customError ...string) *FloatSliceType {
-	if floatSliceType.err != nil {
-		return floatSliceType
-	}
-	if len(floatSliceType.value) == value {
-		floatSliceType.err = wrapError(floatSliceType.name, customError...)
-	}
-	return floatSliceType
-}
-
-// MinValue 切片中不能存在小于指定值的元素
+// MinValue 每个元素值都不能小于
 func (floatSliceType *FloatSliceType) MinValue(value float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
@@ -75,7 +69,7 @@ func (floatSliceType *FloatSliceType) MinValue(value float64, customError ...str
 	return floatSliceType
 }
 
-// MaxValue 切片中不能存在大于指定值的元素
+// MaxValue 每个元素值都不能大于
 func (floatSliceType *FloatSliceType) MaxValue(value float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
@@ -89,30 +83,46 @@ func (floatSliceType *FloatSliceType) MaxValue(value float64, customError ...str
 	return floatSliceType
 }
 
-// AllowedValues 只允许存在指定的值
-func (floatSliceType *FloatSliceType) AllowedValues(values []float64, customError ...string) *FloatSliceType {
+// CountLessThan 元素数量小于
+func (floatSliceType *FloatSliceType) CountLessThan(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
-	for k := range floatSliceType.value {
-		if !slices.Contains(values, floatSliceType.value[k]) {
-			floatSliceType.err = wrapError(floatSliceType.name, customError...)
-			break
-		}
+	if len(floatSliceType.value) > value {
+		floatSliceType.err = wrapError(floatSliceType.name, customError...)
 	}
 	return floatSliceType
 }
 
-// DeniedValues 禁止存在指定的值
-func (floatSliceType *FloatSliceType) DeniedValues(values []float64, customError ...string) *FloatSliceType {
+// CountGreaterThan 元素数量大于
+func (floatSliceType *FloatSliceType) CountGreaterThan(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
-	for k := range floatSliceType.value {
-		if slices.Contains(values, floatSliceType.value[k]) {
-			floatSliceType.err = wrapError(floatSliceType.name, customError...)
-			break
-		}
+	if len(floatSliceType.value) < value {
+		floatSliceType.err = wrapError(floatSliceType.name, customError...)
+	}
+	return floatSliceType
+}
+
+// CountEquals 元素数量等于
+func (floatSliceType *FloatSliceType) CountEquals(value int, customError ...string) *FloatSliceType {
+	if floatSliceType.err != nil {
+		return floatSliceType
+	}
+	if len(floatSliceType.value) != value {
+		floatSliceType.err = wrapError(floatSliceType.name, customError...)
+	}
+	return floatSliceType
+}
+
+// CountNotEquals 元素数量不等于
+func (floatSliceType *FloatSliceType) CountNotEquals(value int, customError ...string) *FloatSliceType {
+	if floatSliceType.err != nil {
+		return floatSliceType
+	}
+	if len(floatSliceType.value) == value {
+		floatSliceType.err = wrapError(floatSliceType.name, customError...)
 	}
 	return floatSliceType
 }

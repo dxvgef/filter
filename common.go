@@ -3,6 +3,7 @@ package filter
 import (
 	"errors"
 	"reflect"
+	"strconv"
 	"strings"
 	"unicode"
 	"unsafe"
@@ -149,4 +150,43 @@ func isUUID(str string) bool {
 		uuid[i] = v
 	}
 	return true
+}
+
+// 校验中国大陆身份证
+func isChineseIDCard(str string) bool {
+	var idV int
+	var err error
+	if str[17:] == "X" {
+		idV = 88
+	} else {
+		if idV, err = strconv.Atoi(str[17:]); err != nil {
+			return false
+		}
+	}
+
+	var verify int
+	id := str[:17]
+	arr := make([]int, 17)
+	for i := 0; i < 17; i++ {
+		arr[i], err = strconv.Atoi(string(id[i]))
+		if err != nil {
+			return false
+		}
+	}
+	wi := [17]int{7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2}
+	var res int
+	for i := 0; i < 17; i++ {
+		res += arr[i] * wi[i]
+	}
+	verify = res % 11
+
+	var temp int
+	a18 := [11]int{1, 0, 88 /* 'X' */, 9, 8, 7, 6, 5, 4, 3, 2}
+	for i := 0; i < 11; i++ {
+		if i == verify {
+			temp = a18[i]
+			break
+		}
+	}
+	return temp == idV
 }

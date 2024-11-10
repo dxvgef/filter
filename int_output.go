@@ -143,7 +143,7 @@ func (intType *IntegerType) Int8(customError ...string) (value int8, err error) 
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return int8(intType.value), nil
+	return int8(intType.value), nil //nolint:gosec
 }
 
 // DefaultInt8 转为int8类型，出错则用默认值替代
@@ -164,7 +164,7 @@ func (intType *IntegerType) Int16(customError ...string) (value int16, err error
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return int16(intType.value), nil
+	return int16(intType.value), nil //nolint:gosec
 }
 
 // DefaultInt16 转为int16类型，出错则用默认值替代
@@ -185,7 +185,7 @@ func (intType *IntegerType) Int32(customError ...string) (value int32, err error
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return int32(intType.value), nil
+	return int32(intType.value), nil //nolint:gosec
 }
 
 // DefaultInt32 转为int32类型，出错则用默认值替代
@@ -241,7 +241,7 @@ func (intType *IntegerType) Uint8(customError ...string) (value uint8, err error
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return uint8(intType.value), nil
+	return uint8(intType.value), nil //nolint:gosec
 }
 
 // DefaultUint8 转为uint8类型，出错则用默认值替代
@@ -262,7 +262,7 @@ func (intType *IntegerType) Uint16(customError ...string) (value uint16, err err
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return uint16(intType.value), nil
+	return uint16(intType.value), nil //nolint:gosec
 }
 
 // DefaultUint16 转为uint16类型，出错则用默认值替代
@@ -283,7 +283,7 @@ func (intType *IntegerType) Uint32(customError ...string) (value uint32, err err
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return uint32(intType.value), nil
+	return uint32(intType.value), nil //nolint:gosec
 }
 
 // DefaultUint32 转为uint32类型，出错则用默认值替代
@@ -304,7 +304,7 @@ func (intType *IntegerType) Uint64(customError ...string) (value uint64, err err
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return uint64(intType.value), nil
+	return uint64(intType.value), nil //nolint:gosec
 }
 
 // DefaultUint64 转为uint64类型，出错则用默认值替代
@@ -325,7 +325,7 @@ func (intType *IntegerType) Uint(customError ...string) (value uint, err error) 
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}
-	return uint(intType.value), nil
+	return uint(intType.value), nil //nolint:gosec
 }
 
 // DefaultUint 转为uint类型，出错则用默认值替代

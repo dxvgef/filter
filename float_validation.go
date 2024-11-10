@@ -2,28 +2,24 @@ package filter
 
 import "slices"
 
-// Require 不能为零值
-func (floatType *FloatType) Require(customError ...string) *FloatType {
-	if floatType.value == 0 {
-		floatType.err = wrapError(floatType.name, customError...)
-		return floatType
-	}
-	return floatType
-}
-
-// MinValue 不能小于最小值
-func (floatType *FloatType) MinValue(value float64, customError ...string) *FloatType {
-	if floatType.err != nil {
-		return floatType
-	}
-	if floatType.value < value {
+// Equals 等于
+func (floatType *FloatType) Equals(value float64, customError ...string) *FloatType {
+	if floatType.value != value {
 		floatType.err = wrapError(floatType.name, customError...)
 	}
 	return floatType
 }
 
-// MaxValue 不能大于最大值
-func (floatType *FloatType) MaxValue(value float64, customError ...string) *FloatType {
+// NotEquals 不等于
+func (floatType *FloatType) NotEquals(value float64, customError ...string) *FloatType {
+	if floatType.value == value {
+		floatType.err = wrapError(floatType.name, customError...)
+	}
+	return floatType
+}
+
+// LessThan 小于
+func (floatType *FloatType) LessThan(value float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}
@@ -33,7 +29,18 @@ func (floatType *FloatType) MaxValue(value float64, customError ...string) *Floa
 	return floatType
 }
 
-// AllowedValues 只允许存在指定的值
+// GreaterThan 大于
+func (floatType *FloatType) GreaterThan(value float64, customError ...string) *FloatType {
+	if floatType.err != nil {
+		return floatType
+	}
+	if floatType.value < value {
+		floatType.err = wrapError(floatType.name, customError...)
+	}
+	return floatType
+}
+
+// AllowedValues 只能是数组中的值
 func (floatType *FloatType) AllowedValues(values []float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
@@ -44,8 +51,8 @@ func (floatType *FloatType) AllowedValues(values []float64, customError ...strin
 	return floatType
 }
 
-// DeniedValues 禁止存在指定的值
-func (floatType *FloatType) DeniedValues(values []float64, customError ...string) *FloatType {
+// DisallowedValues 不能是数组中的值
+func (floatType *FloatType) DisallowedValues(values []float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}

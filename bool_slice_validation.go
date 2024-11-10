@@ -1,7 +1,7 @@
 package filter
 
-// Has 必须存在指定的值
-func (boolSliceType *BooleanSliceType) Has(value bool, customError ...string) *BooleanSliceType {
+// Contains 存在指定值的元素
+func (boolSliceType *BooleanSliceType) Contains(value bool, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
@@ -14,8 +14,23 @@ func (boolSliceType *BooleanSliceType) Has(value bool, customError ...string) *B
 	return boolSliceType
 }
 
-// Count 必须存在指定数量的元素
-func (boolSliceType *BooleanSliceType) Count(value int, customError ...string) *BooleanSliceType {
+// NotContains 不存在指定值的元素
+func (boolSliceType *BooleanSliceType) NotContains(value bool, customError ...string) *BooleanSliceType {
+	if boolSliceType.err != nil {
+		return boolSliceType
+	}
+
+	for k := range boolSliceType.value {
+		if value == boolSliceType.value[k] {
+			boolSliceType.err = wrapError(boolSliceType.name, customError...)
+			break
+		}
+	}
+	return boolSliceType
+}
+
+// CountEquals 元素数量等于
+func (boolSliceType *BooleanSliceType) CountEquals(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
@@ -25,23 +40,34 @@ func (boolSliceType *BooleanSliceType) Count(value int, customError ...string) *
 	return boolSliceType
 }
 
-// MinCount 元素的数量不能小于指定值
-func (boolSliceType *BooleanSliceType) MinCount(value int, customError ...string) *BooleanSliceType {
+// CountNotEquals 元素数量不等于
+func (boolSliceType *BooleanSliceType) CountNotEquals(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
-	if len(boolSliceType.value) < value {
+	if len(boolSliceType.value) == value {
 		boolSliceType.err = wrapError(boolSliceType.name, customError...)
 	}
 	return boolSliceType
 }
 
-// MaxCount 元素的数量不能大于指定值
-func (boolSliceType *BooleanSliceType) MaxCount(value int, customError ...string) *BooleanSliceType {
+// CountLessThan 元素数量小于
+func (boolSliceType *BooleanSliceType) CountLessThan(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
 	if len(boolSliceType.value) > value {
+		boolSliceType.err = wrapError(boolSliceType.name, customError...)
+	}
+	return boolSliceType
+}
+
+// CountGreaterThan 元素数量大于
+func (boolSliceType *BooleanSliceType) CountGreaterThan(value int, customError ...string) *BooleanSliceType {
+	if boolSliceType.err != nil {
+		return boolSliceType
+	}
+	if len(boolSliceType.value) < value {
 		boolSliceType.err = wrapError(boolSliceType.name, customError...)
 	}
 	return boolSliceType

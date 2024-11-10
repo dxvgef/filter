@@ -13,16 +13,16 @@ func (boolSliceType *BooleanSliceType) Value() []bool {
 }
 
 // DefaultValue 获得当前值，如果出错则输出默认值
-func (boolSiceType *BooleanSliceType) DefaultValue(def []bool) []bool {
-	if boolSiceType.err != nil {
+func (boolSliceType *BooleanSliceType) DefaultValue(def []bool) []bool {
+	if boolSliceType.err != nil {
 		return def
 	}
-	return boolSiceType.value
+	return boolSliceType.value
 }
 
 // Error 获得错误信息
-func (boolSiceType *BooleanSliceType) Error() error {
-	return boolSiceType.err
+func (boolSliceType *BooleanSliceType) Error() error {
+	return boolSliceType.err
 }
 
 // Set 使用反射赋值到变量
@@ -30,6 +30,7 @@ func (boolSliceType *BooleanSliceType) Set(target interface{}, customError ...st
 	if boolSliceType.err != nil {
 		return boolSliceType.err
 	}
+
 	targetValueOf, checkErr := setCheck(target)
 	if checkErr != nil {
 		boolSliceType.err = wrapError(boolSliceType.name, customError...)

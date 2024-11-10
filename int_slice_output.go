@@ -123,7 +123,7 @@ func (intSliceType *IntegerSliceType) Int8Slice(customError ...string) ([]int8, 
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = int8(intSliceType.value[k])
+		value[k] = int8(intSliceType.value[k]) //nolint:gosec
 	}
 	return value, nil
 }
@@ -134,11 +134,11 @@ func (intSliceType *IntegerSliceType) DefaultInt8Slice(def []int8) []int8 {
 		return def
 	}
 
-	if value, err := intSliceType.Int8Slice(); err == nil {
+	value, err := intSliceType.Int8Slice()
+	if err == nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // Int16Slice 转为[]int16类型
@@ -153,7 +153,7 @@ func (intSliceType *IntegerSliceType) Int16Slice(customError ...string) ([]int16
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = int16(intSliceType.value[k])
+		value[k] = int16(intSliceType.value[k]) //nolint:gosec
 	}
 
 	return value, nil
@@ -165,11 +165,11 @@ func (intSliceType *IntegerSliceType) DefaultInt16Slice(def []int16) []int16 {
 		return def
 	}
 
-	if value, err := intSliceType.Int16Slice(); err == nil {
+	value, err := intSliceType.Int16Slice()
+	if err == nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // Int32Slice 转为[]int32类型
@@ -184,7 +184,7 @@ func (intSliceType *IntegerSliceType) Int32Slice(customError ...string) ([]int32
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = int32(intSliceType.value[k])
+		value[k] = int32(intSliceType.value[k]) //nolint:gosec
 	}
 
 	return value, nil
@@ -196,11 +196,11 @@ func (intSliceType *IntegerSliceType) DefaultInt32Slice(def []int32) []int32 {
 		return def
 	}
 
-	if value, err := intSliceType.Int32Slice(); err != nil {
+	value, err := intSliceType.Int32Slice()
+	if err != nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // Int64Slice 转为[]int64类型
@@ -214,11 +214,11 @@ func (intSliceType *IntegerSliceType) DefaultInt64Slice(def []int64) []int64 {
 		return def
 	}
 
-	if value, err := intSliceType.Result(); err != nil {
+	value, err := intSliceType.Result()
+	if err != nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // IntSlice 转为[]int类型
@@ -263,7 +263,7 @@ func (intSliceType *IntegerSliceType) Uint8Slice(customError ...string) ([]uint8
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = uint8(intSliceType.value[k])
+		value[k] = uint8(intSliceType.value[k]) //nolint:gosec
 	}
 	return value, nil
 }
@@ -274,11 +274,11 @@ func (intSliceType *IntegerSliceType) DefaultUint8Slice(def []uint8) []uint8 {
 		return def
 	}
 
-	if value, err := intSliceType.Uint8Slice(); err != nil {
+	value, err := intSliceType.Uint8Slice()
+	if err != nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // Uint16Slice 转为[]uint16类型
@@ -293,7 +293,7 @@ func (intSliceType *IntegerSliceType) Uint16Slice(customError ...string) ([]uint
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = uint16(intSliceType.value[k])
+		value[k] = uint16(intSliceType.value[k]) //nolint:gosec
 	}
 	return value, nil
 }
@@ -304,11 +304,11 @@ func (intSliceType *IntegerSliceType) DefaultUint16Slice(def []uint16) []uint16 
 		return def
 	}
 
-	if value, err := intSliceType.Uint16Slice(); err != nil {
+	value, err := intSliceType.Uint16Slice()
+	if err != nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // Uint32Slice 转为[]uint32类型
@@ -323,7 +323,7 @@ func (intSliceType *IntegerSliceType) Uint32Slice(customError ...string) ([]uint
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = uint32(intSliceType.value[k])
+		value[k] = uint32(intSliceType.value[k]) //nolint:gosec
 	}
 	return value, nil
 }
@@ -334,11 +334,11 @@ func (intSliceType *IntegerSliceType) DefaultUint32Slice(def []uint32) []uint32 
 		return def
 	}
 
-	if value, err := intSliceType.Uint32Slice(); err != nil {
+	value, err := intSliceType.Uint32Slice()
+	if err != nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // Uint64Slice 转为[]uint64类型
@@ -353,7 +353,7 @@ func (intSliceType *IntegerSliceType) Uint64Slice(customError ...string) ([]uint
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = uint64(intSliceType.value[k])
+		value[k] = uint64(intSliceType.value[k]) //nolint:gosec
 	}
 	return value, nil
 }
@@ -364,11 +364,11 @@ func (intSliceType *IntegerSliceType) DefaultUint64Slice(def []uint64) []uint64 
 		return def
 	}
 
-	if value, err := intSliceType.Uint64Slice(); err != nil {
+	value, err := intSliceType.Uint64Slice()
+	if err != nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }
 
 // UintSlice 转为[]uint类型
@@ -383,7 +383,7 @@ func (intSliceType *IntegerSliceType) UintSlice(customError ...string) ([]uint, 
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
-		value[k] = uint(intSliceType.value[k])
+		value[k] = uint(intSliceType.value[k]) //nolint:gosec
 	}
 	return value, nil
 }
@@ -394,9 +394,9 @@ func (intSliceType *IntegerSliceType) DefaultUintSlice(def []uint) []uint {
 		return def
 	}
 
-	if value, err := intSliceType.UintSlice(); err != nil {
+	value, err := intSliceType.UintSlice()
+	if err != nil {
 		return def
-	} else {
-		return value
 	}
+	return value
 }

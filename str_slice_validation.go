@@ -3,41 +3,336 @@ package filter
 import (
 	"net"
 	"net/mail"
+	"net/url"
 	"slices"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 )
 
-// Require 长度不能为0，值不能全是空字符串
-func (strSliceType *StringSliceType) Require(customError ...string) *StringSliceType {
-	strSliceType.isRequired = true
+// Contains 每个元素值都包含了指定的字符串
+func (strSliceType *StringSliceType) AllContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
-	if len(strSliceType.value) == 0 {
-		strSliceType.err = wrapError(strSliceType.name, customError...)
-		return strSliceType
+
+	for k := range strSliceType.value {
+		if !strings.Contains(strSliceType.value[k], sub) {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
 	}
 	return strSliceType
 }
 
-// MinCount 切片元素的数量不能小于指定值
-func (strSliceType *StringSliceType) MinCount(value int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// Contains 每个元素值都没有包含指定的字符串
+func (strSliceType *StringSliceType) AllNotContains(sub string, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
-	if len(strSliceType.value) < value {
-		strSliceType.err = wrapError(strSliceType.name, customError...)
-		return strSliceType
+	for k := range strSliceType.value {
+		if strings.Contains(strSliceType.value[k], sub) {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
 	}
 	return strSliceType
 }
 
-// MaxCount 切片元素的数量不能大于指定值
-func (strSliceType *StringSliceType) MaxCount(value int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// AnyContains 有元素值包含了指定的字符串
+func (strSliceType *StringSliceType) AnyContains(sub string, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if strings.Contains(strSliceType.value[k], sub) {
+			return strSliceType
+		}
+	}
+	strSliceType.err = wrapError(strSliceType.name, customError...)
+	return strSliceType
+}
+
+// AnyNotContains 有元素值没有包含指定的字符串
+func (strSliceType *StringSliceType) AnyNotContains(sub string, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if !strings.Contains(strSliceType.value[k], sub) {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+	return strSliceType
+}
+
+// AllowedValues 元素值只能有数组中的值
+func (strSliceType *StringSliceType) AllowedValues(values []string, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if !slices.Contains(values, strSliceType.value[k]) {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+	return strSliceType
+}
+
+// DisallowedValues 元素值不能有数组中的值
+func (strSliceType *StringSliceType) DisallowedValues(values []string, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		for i := range values {
+			if values[i] == strSliceType.value[k] {
+				strSliceType.err = wrapError(strSliceType.name, customError...)
+				return strSliceType
+			}
+		}
+	}
+	return strSliceType
+}
+
+// AllowedChars 元素值只能有数组中的字符
+func (strSliceType *StringSliceType) AllowedChars(values []rune, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		for _, r := range strSliceType.value[k] {
+			if !slices.Contains(values, r) {
+				strSliceType.err = wrapError(strSliceType.name, customError...)
+				return strSliceType
+			}
+		}
+	}
+
+	return strSliceType
+}
+
+// DisallowedChars 元素值不能有数组中的字符
+func (strSliceType *StringSliceType) DisallowedChars(values []rune, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		for _, r := range strSliceType.value[k] {
+			if slices.Contains(values, r) {
+				strSliceType.err = wrapError(strSliceType.name, customError...)
+				return strSliceType
+			}
+		}
+	}
+	return strSliceType
+}
+
+// AllowedSymbols 元素值如果有符号，只能有数组中的符号
+func (strSliceType *StringSliceType) AllowedSymbols(values []rune, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		for _, r := range strSliceType.value[k] {
+			// 如果是符号
+			if unicode.IsPunct(r) {
+				if !slices.Contains(values, r) {
+					strSliceType.err = wrapError(strSliceType.name, customError...)
+					return strSliceType
+				}
+			}
+		}
+	}
+
+	return strSliceType
+}
+
+// DisallowedSymbols 元素值如果有符号，不能有数组中的符号
+func (strSliceType *StringSliceType) DisallowedSymbols(values []rune, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		for _, r := range strSliceType.value[k] {
+			// 如果是符号
+			if unicode.IsPunct(r) {
+				if slices.Contains(values, r) {
+					strSliceType.err = wrapError(strSliceType.name, customError...)
+					return strSliceType
+				}
+			}
+		}
+	}
+	return strSliceType
+}
+
+// HasLetter 每个元素值都包含了字母(不区分大小写)
+func (strSliceType *StringSliceType) HasLetter(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		has := false
+		for _, v := range strSliceType.value[k] {
+			if unicode.IsLetter(v) {
+				has = true
+				break // 停止遍历当前字符串元素
+			}
+		}
+		if !has {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			return strSliceType
+		}
+	}
+	return strSliceType
+}
+
+// HasLower 每个元素值都包含了小写字母
+func (strSliceType *StringSliceType) HasLower(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		has := false
+		for _, v := range strSliceType.value[k] {
+			if unicode.IsLower(v) {
+				has = true
+				break // 停止遍历当前字符串元素
+			}
+		}
+		if !has {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			return strSliceType
+		}
+	}
+	return strSliceType
+}
+
+// HasUpper 每个元素值都包含了大写字母
+func (strSliceType *StringSliceType) HasUpper(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		has := false
+		for _, v := range strSliceType.value[k] {
+			if unicode.IsUpper(v) {
+				has = true
+				break // 停止遍历当前字符串元素
+			}
+		}
+		if !has {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			return strSliceType
+		}
+	}
+	return strSliceType
+}
+
+// HasNumber 每个元素值都包含了数字
+func (strSliceType *StringSliceType) HasNumber(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		has := false
+		for _, v := range strSliceType.value[k] {
+			if unicode.IsDigit(v) {
+				has = true
+				break // 停止遍历当前字符串元素
+			}
+		}
+		if !has {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			return strSliceType
+		}
+	}
+	return strSliceType
+}
+
+// HasSymbol 每个元素值都包含了符号
+func (strSliceType *StringSliceType) HasSymbol(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		has := false
+		for _, v := range strSliceType.value[k] {
+			if !unicode.IsDigit(v) && !unicode.IsLetter(v) && !unicode.Is(unicode.Han, v) {
+				has = true
+				break // 停止遍历当前字符串元素
+			}
+		}
+		if !has {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			return strSliceType
+		}
+	}
+	return strSliceType
+}
+
+// HasPrefix 每个元素值都包含了指定的前缀字符串
+func (strSliceType *StringSliceType) HasPrefix(sub string, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if !strings.HasPrefix(strSliceType.value[k], sub) {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+	return strSliceType
+}
+
+// HasSuffix 每个元素值都包含了指定的后缀字符串
+func (strSliceType *StringSliceType) HasSuffix(sub string, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if !strings.HasSuffix(strSliceType.value[k], sub) {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+	return strSliceType
+}
+
+// CountLessThan 元素的数量小于
+func (strSliceType *StringSliceType) CountLessThan(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	if len(strSliceType.value) > value {
+		strSliceType.err = wrapError(strSliceType.name, customError...)
+	}
+	return strSliceType
+}
+
+// CountGreaterThan 元素的数量大于
+func (strSliceType *StringSliceType) CountGreaterThan(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -48,9 +343,9 @@ func (strSliceType *StringSliceType) MaxCount(value int, customError ...string) 
 	return strSliceType
 }
 
-// EqualCount 切片元素的数量必须是指定值
-func (strSliceType *StringSliceType) EqualCount(value int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// CountEquals 元素的数量等于
+func (strSliceType *StringSliceType) CountEquals(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -61,9 +356,9 @@ func (strSliceType *StringSliceType) EqualCount(value int, customError ...string
 	return strSliceType
 }
 
-// NotEqualCount 切片元素的数量不能是指定值
-func (strSliceType *StringSliceType) NotEqualCount(value int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// CountNotEquals 元素的数量不等于
+func (strSliceType *StringSliceType) CountNotEquals(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -74,9 +369,9 @@ func (strSliceType *StringSliceType) NotEqualCount(value int, customError ...str
 	return strSliceType
 }
 
-// StringLength 元素值必须是指定的长度
-func (strSliceType *StringSliceType) StringLength(value int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// LengthEquals 每个元素值的长度都等于
+func (strSliceType *StringSliceType) LengthEquals(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -90,9 +385,57 @@ func (strSliceType *StringSliceType) StringLength(value int, customError ...stri
 	return strSliceType
 }
 
-// UTF8StringLength 元素值必须是按UTF8编码的指定长度
-func (strSliceType *StringSliceType) UTF8StringLength(value int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// LengthNotEquals 每个元素值的长度都不等于
+func (strSliceType *StringSliceType) LengthNotEquals(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if len(strSliceType.value[k]) == value {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+
+	return strSliceType
+}
+
+// LengthLessThan 每个元素值的长度都小于
+func (strSliceType *StringSliceType) LengthLessThan(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if len(strSliceType.value[k]) > value {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+
+	return strSliceType
+}
+
+// LengthGreaterThan 每个元素值的长度都大于
+func (strSliceType *StringSliceType) LengthGreaterThan(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		if len(strSliceType.value[k]) < value {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+
+	return strSliceType
+}
+
+// UTF8LengthEquals 每个元素值的UTF8编码的长度都等于
+func (strSliceType *StringSliceType) UTF8LengthEquals(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -106,14 +449,14 @@ func (strSliceType *StringSliceType) UTF8StringLength(value int, customError ...
 	return strSliceType
 }
 
-// StringMinLength 元素值的最小长度
-func (strSliceType *StringSliceType) StringMinLength(min int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// UTF8LengthNotEquals 每个元素值的UTF8编码的长度都不等于
+func (strSliceType *StringSliceType) UTF8LengthNotEquals(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
 	for k := range strSliceType.value {
-		if len(strSliceType.value[k]) < min {
+		if utf8.RuneCountInString(strSliceType.value[k]) == value {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
@@ -122,14 +465,14 @@ func (strSliceType *StringSliceType) StringMinLength(min int, customError ...str
 	return strSliceType
 }
 
-// StringUTF8MinLength 按UTF8编码校验最小长度
-func (strSliceType *StringSliceType) StringUTF8MinLength(min int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// UTF8LengthLessThan 每个元素值的UTF8编码的长度都小于
+func (strSliceType *StringSliceType) UTF8LengthLessThan(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
 	for k := range strSliceType.value {
-		if utf8.RuneCountInString(strSliceType.value[k]) < min {
+		if utf8.RuneCountInString(strSliceType.value[k]) > value {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
@@ -138,14 +481,14 @@ func (strSliceType *StringSliceType) StringUTF8MinLength(min int, customError ..
 	return strSliceType
 }
 
-// StringMaxLength 元素值允许的最大长度
-func (strSliceType *StringSliceType) StringMaxLength(max int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// UTF8LengthGreaterThan 每个元素的UTF8编码的长度都大于
+func (strSliceType *StringSliceType) UTF8LengthGreaterThan(value int, customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
 	for k := range strSliceType.value {
-		if len(strSliceType.value[k]) > max {
+		if utf8.RuneCountInString(strSliceType.value[k]) < value {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
@@ -154,25 +497,9 @@ func (strSliceType *StringSliceType) StringMaxLength(max int, customError ...str
 	return strSliceType
 }
 
-// StringUTF8MaxLength 元素值按UTF8编码校验允许的最大长度
-func (strSliceType *StringSliceType) StringUTF8MaxLength(max int, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		if utf8.RuneCountInString(strSliceType.value[k]) > max {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			break
-		}
-	}
-
-	return strSliceType
-}
-
-// IsLower 小写字母
+// IsLower 每个元素值都是小写字母
 func (strSliceType *StringSliceType) IsLower(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -187,9 +514,9 @@ func (strSliceType *StringSliceType) IsLower(customError ...string) *StringSlice
 	return strSliceType
 }
 
-// IsUpper 大写字母
+// IsUpper 每个元素值都是大写字母
 func (strSliceType *StringSliceType) IsUpper(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -204,9 +531,9 @@ func (strSliceType *StringSliceType) IsUpper(customError ...string) *StringSlice
 	return strSliceType
 }
 
-// IsLetter 大小写字母
+// IsLetter 每个元素值都是大小写字母
 func (strSliceType *StringSliceType) IsLetter(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -221,9 +548,9 @@ func (strSliceType *StringSliceType) IsLetter(customError ...string) *StringSlic
 	return strSliceType
 }
 
-// IsLowerOrNumber 小写字母或数字
+// IsLowerOrNumber 每个元素值都是小写字母或数字
 func (strSliceType *StringSliceType) IsLowerOrNumber(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -238,9 +565,9 @@ func (strSliceType *StringSliceType) IsLowerOrNumber(customError ...string) *Str
 	return strSliceType
 }
 
-// IsUpperOrNumber 大写字母或数字
+// IsUpperOrNumber 每个元素值都是大写字母或数字
 func (strSliceType *StringSliceType) IsUpperOrNumber(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -255,9 +582,9 @@ func (strSliceType *StringSliceType) IsUpperOrNumber(customError ...string) *Str
 	return strSliceType
 }
 
-// IsLetterOrNumber 字母或数字
+// IsLetterOrNumber 每个元素值都是字母或数字
 func (strSliceType *StringSliceType) IsLetterOrNumber(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -272,9 +599,9 @@ func (strSliceType *StringSliceType) IsLetterOrNumber(customError ...string) *St
 	return strSliceType
 }
 
-// IsChinese 汉字
+// IsChinese 每个元素值都是汉字
 func (strSliceType *StringSliceType) IsChinese(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -289,9 +616,9 @@ func (strSliceType *StringSliceType) IsChinese(customError ...string) *StringSli
 	return strSliceType
 }
 
-// IsMail 电邮地址
+// IsMail 每个元素值都是电邮地址
 func (strSliceType *StringSliceType) IsMail(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -304,9 +631,41 @@ func (strSliceType *StringSliceType) IsMail(customError ...string) *StringSliceT
 	return strSliceType
 }
 
-// IsIP IPv4/v6地址
+// IsIPv4 每个元素值都是IPv4地址
+func (strSliceType *StringSliceType) IsIPv4(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		ip := net.ParseIP(strSliceType.value[k])
+		if ip == nil || ip.To4() == nil {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+	return strSliceType
+}
+
+// IsIPv6 每个元素值都是IPv6地址
+func (strSliceType *StringSliceType) IsIPv6(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		ip := net.ParseIP(strSliceType.value[k])
+		if ip == nil || ip.To16() == nil {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			break
+		}
+	}
+	return strSliceType
+}
+
+// IsIP 每个元素值都是IPv4或IPv6地址
 func (strSliceType *StringSliceType) IsIP(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -319,9 +678,9 @@ func (strSliceType *StringSliceType) IsIP(customError ...string) *StringSliceTyp
 	return strSliceType
 }
 
-// IsTCPAddr IP:Port
+// IsTCPAddr 每个元素值都是 IP:Port 格式
 func (strSliceType *StringSliceType) IsTCPAddr(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -334,9 +693,9 @@ func (strSliceType *StringSliceType) IsTCPAddr(customError ...string) *StringSli
 	return strSliceType
 }
 
-// IsMAC MAC地址
+// IsMAC 每个元素值都是MAC地址
 func (strSliceType *StringSliceType) IsMAC(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -349,9 +708,9 @@ func (strSliceType *StringSliceType) IsMAC(customError ...string) *StringSliceTy
 	return strSliceType
 }
 
-// IsSQLObject SQL对象（库名、表名、字段名）
+// IsSQLObject 每个元素值都是有效的SQL对象名
 func (strSliceType *StringSliceType) IsSQLObject(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -364,9 +723,9 @@ func (strSliceType *StringSliceType) IsSQLObject(customError ...string) *StringS
 	return strSliceType
 }
 
-// IsUUID UUID格式
+// IsUUID 每个元素值都是UUID格式
 func (strSliceType *StringSliceType) IsUUID(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -379,9 +738,9 @@ func (strSliceType *StringSliceType) IsUUID(customError ...string) *StringSliceT
 	return strSliceType
 }
 
-// IsULID ULID格式
+// IsULID 每个元素值都是ULID格式
 func (strSliceType *StringSliceType) IsULID(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
@@ -402,265 +761,34 @@ func (strSliceType *StringSliceType) IsULID(customError ...string) *StringSliceT
 	return strSliceType
 }
 
-// AllowedChars 仅允许字符串中包启allowValues内的字符
-func (strSliceType *StringSliceType) AllowedChars(allowValues []rune, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// IsURL 每个元素值都是有效的URL
+func (strSliceType *StringSliceType) IsURL(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
 	for k := range strSliceType.value {
-		for _, r := range strSliceType.value[k] {
-			if !slices.Contains(allowValues, r) {
-				strSliceType.err = wrapError(strSliceType.name, customError...)
-				return strSliceType
-			}
-		}
-	}
-
-	return strSliceType
-}
-
-// AllowedSymbols 如果有符号，只允许存在指定的符号
-func (strSliceType *StringSliceType) AllowedSymbols(allowValues []rune, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		for _, r := range strSliceType.value[k] {
-			// 如果是符号
-			if unicode.IsPunct(r) {
-				if !slices.Contains(allowValues, r) {
-					strSliceType.err = wrapError(strSliceType.name, customError...)
-					return strSliceType
-				}
-			}
-		}
-	}
-
-	return strSliceType
-}
-
-// AllowedStrings 只允许存在指定的字符串（枚举）
-func (strSliceType *StringSliceType) AllowedStrings(allowedValues []string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		if !slices.Contains(allowedValues, strSliceType.value[k]) {
+		if _, err := url.ParseRequestURI(strSliceType.value[k]); err != nil {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
 	}
+
 	return strSliceType
 }
 
-// DeniedChars 阻止deniedValues中的值
-func (strSliceType *StringSliceType) DeniedChars(deniedValues []rune, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+// IsChineseIDCard 每个元素值都是中国大陆身份证
+func (strSliceType *StringSliceType) IsChineseIDCard(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 
 	for k := range strSliceType.value {
-		for _, r := range strSliceType.value[k] {
-			if slices.Contains(deniedValues, r) {
-				strSliceType.err = wrapError(strSliceType.name, customError...)
-				return strSliceType
-			}
-		}
-	}
-	return strSliceType
-}
-
-// DeniedSymbols 如果有符号，阻止存在指定的符号
-func (strSliceType *StringSliceType) DeniedSymbols(deniedValues []rune, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		for _, r := range strSliceType.value[k] {
-			// 如果是符号
-			if unicode.IsPunct(r) {
-				if slices.Contains(deniedValues, r) {
-					strSliceType.err = wrapError(strSliceType.name, customError...)
-					return strSliceType
-				}
-			}
-		}
-	}
-	return strSliceType
-}
-
-// DeniedStrings 禁止存在指定的字符串
-func (strSliceType *StringSliceType) DeniedStrings(deniedValues []string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		for i := range deniedValues {
-			if deniedValues[i] == strSliceType.value[k] {
-				strSliceType.err = wrapError(strSliceType.name, customError...)
-				return strSliceType
-			}
-		}
-	}
-	return strSliceType
-}
-
-// 包含了字母(不区分大小写)
-func (strSliceType *StringSliceType) HasLetter(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		has := false
-		for _, v := range strSliceType.value[k] {
-			if unicode.IsLetter(v) {
-				has = true
-				break // 停止遍历当前字符串元素
-			}
-		}
-		if !has {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			return strSliceType
-		}
-	}
-	return strSliceType
-}
-
-// HasLower 包含了小写字母
-func (strSliceType *StringSliceType) HasLower(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		has := false
-		for _, v := range strSliceType.value[k] {
-			if unicode.IsLower(v) {
-				has = true
-				break // 停止遍历当前字符串元素
-			}
-		}
-		if !has {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			return strSliceType
-		}
-	}
-	return strSliceType
-}
-
-// HasUpper 包含了大写字母
-func (strSliceType *StringSliceType) HasUpper(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		has := false
-		for _, v := range strSliceType.value[k] {
-			if unicode.IsUpper(v) {
-				has = true
-				break // 停止遍历当前字符串元素
-			}
-		}
-		if !has {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			return strSliceType
-		}
-	}
-	return strSliceType
-}
-
-// HasNumber 包含了数字
-func (strSliceType *StringSliceType) HasNumber(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		has := false
-		for _, v := range strSliceType.value[k] {
-			if unicode.IsDigit(v) {
-				has = true
-				break // 停止遍历当前字符串元素
-			}
-		}
-		if !has {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			return strSliceType
-		}
-	}
-	return strSliceType
-}
-
-// HasSymbol 包含了符号
-func (strSliceType *StringSliceType) HasSymbol(customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		has := false
-		for _, v := range strSliceType.value[k] {
-			if !unicode.IsDigit(v) && !unicode.IsLetter(v) && !unicode.Is(unicode.Han, v) {
-				has = true
-				break // 停止遍历当前字符串元素
-			}
-		}
-		if !has {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			return strSliceType
-		}
-	}
-	return strSliceType
-}
-
-// Contains 必须包含指定的字符串
-func (strSliceType *StringSliceType) Contains(sub string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		if !strings.Contains(strSliceType.value[k], sub) {
+		if !isChineseIDCard(strSliceType.value[k]) {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
 	}
-	return strSliceType
-}
 
-// HasPrefix 包含了指定的前缀字符串
-func (strSliceType *StringSliceType) HasPrefix(sub string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		if !strings.HasPrefix(strSliceType.value[k], sub) {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			break
-		}
-	}
-	return strSliceType
-}
-
-// HasSuffix 包含了指定的后缀字符串
-func (strSliceType *StringSliceType) HasSuffix(sub string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		if !strings.HasSuffix(strSliceType.value[k], sub) {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			break
-		}
-	}
 	return strSliceType
 }

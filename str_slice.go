@@ -2,10 +2,9 @@ package filter
 
 // StringSliceType 字符串切片类型
 type StringSliceType struct {
-	name       string   // 字段名称，用于拼接错误消息
-	value      []string // 原始值
-	err        error    // 错误
-	isRequired bool     // 是否必须
+	name  string   // 字段名称，用于拼接错误消息
+	value []string // 原始值
+	err   error    // 错误
 }
 
 // FromStringSlice 输入[]string类型的值
@@ -28,13 +27,8 @@ CustomStringSliceFunc 自定义字符串切片处理函数
 type CustomStringSliceFunc func(*StringSliceType) ([]string, error)
 
 // Custom 自定义[]string处理方法
-func (strSliceType *StringSliceType) IsRequired() bool {
-	return strSliceType.isRequired
-}
-
-// Custom 自定义[]string处理方法
 func (strSliceType *StringSliceType) Custom(f CustomStringSliceFunc) *StringSliceType {
-	if strSliceType.err != nil || (!strSliceType.isRequired && len(strSliceType.value) == 0) {
+	if strSliceType.err != nil {
 		return strSliceType
 	}
 

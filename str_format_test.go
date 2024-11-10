@@ -1,234 +1,70 @@
 package filter
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
-// 测试 FromString().ToUpper()
-func TestStrToUpper(t *testing.T) {
-	t.Log(FromString("    A1bc     ").ToUpper().Result())
-}
-
-// 测试 FromString().ToLower()
-func TestStrToLower(t *testing.T) {
-	t.Log(FromString("    A1Bc     ").ToLower().Result())
-}
-
-// 测试 FromString().Trim()
-func TestStrTrim(t *testing.T) {
-	t.Log("abc")
-	t.Log(FromString("     abc      ").Trim(" ").Result())
-}
-
-// 测试 FromString().TrimSpace()
-func TestStrTrimSpace(t *testing.T) {
-	t.Log(FromString("   abc   ").TrimSpace().Result())
-}
-
-// 测试 FromString().TrimLeft()
-func TestStrTrimLeft(t *testing.T) {
-	value, err := FromString("0x0xabc").TrimLeft("0x").Result()
-	if err != nil {
-		t.Error(err)
-		return
+// 字母转为大写
+func TestStringType_ToUpper(t *testing.T) {
+	cases := []struct {
+		name     string
+		value    string
+		expected *StringType
+	}{
+		{name: "empty", value: "", expected: &StringType{value: "", name: "empty", err: nil}},
+		{name: "大写", value: "testValue", expected: &StringType{value: "TESTVALUE", name: "大写", err: nil}},
 	}
-	t.Log(value)
+
+	for _, testCase := range cases {
+		t.Run(testCase.value, func(t *testing.T) {
+			result := FromString(testCase.value, testCase.name).ToUpper()
+			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
+				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			}
+		})
+	}
 }
 
-// 测试 FromString().TrimRight()
-func TestStrTrimRight(t *testing.T) {
-	value, err := FromString("abc0x0x").TrimRight("0x").Result()
-	if err != nil {
-		t.Error(err)
-		return
+// 字母转为小写
+func TestStringType_ToLower(t *testing.T) {
+	cases := []struct {
+		name     string
+		value    string
+		expected *StringType
+	}{
+		{name: "empty", value: "", expected: &StringType{value: "", name: "empty", err: nil}},
+		{name: "ToLower", value: "TestValue", expected: &StringType{value: "testvalue", name: "ToLower", err: nil}},
 	}
-	t.Log(value)
+
+	for _, testCase := range cases {
+		t.Run(testCase.value, func(t *testing.T) {
+			result := FromString(testCase.value, testCase.name).ToLower()
+			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
+				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			}
+		})
+	}
 }
 
-// 测试 FromString().TrimPrefix()
-func TestStrTrimPrefix(t *testing.T) {
-	value, err := FromString("0x0xabc").TrimPrefix("0x").Result()
-	if err != nil {
-		t.Error(err)
-		return
+// 删除左右的指定字符串
+func TestStringType_Trim(t *testing.T) {
+	cases := []struct {
+		value    string
+		expected *StringType
+	}{
+		{value: "", expected: &StringType{value: "", err: nil}},
+		{value: "oTestValue", expected: &StringType{value: "TestValue", err: nil}},
+		{value: "oooTestValue", expected: &StringType{value: "TestValue", err: nil}},
+		{value: "okoTestValue", expected: &StringType{value: "koTestValue", err: nil}},
 	}
-	t.Log(value)
-}
 
-// 测试 FromString().TrimSuffix()
-func TestStrTrimSuffix(t *testing.T) {
-	value, err := FromString("abc0x0x").TrimSuffix("0x").Result()
-	if err != nil {
-		t.Error(err)
-		return
+	for _, testCase := range cases {
+		t.Run(testCase.value, func(t *testing.T) {
+			result := FromString(testCase.value).Trim("o")
+			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
+				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			}
+		})
 	}
-	t.Log(value)
-}
-
-// 测试 FromString().Replace()
-func TestStrReplace(t *testing.T) {
-	value, err := FromString("abc0x0x").Replace("0x", "", 1).Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().ReplaceAll()
-func TestStrReplaceAll(t *testing.T) {
-	value, err := FromString("abc0x0x").ReplaceAll("0x", "").Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().RemoveSpace()
-func TestStrRemoveSpace(t *testing.T) {
-	value, err := FromString("   a  b  c    ").RemoveSpace().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64StdEncode()
-func TestStrBase64StdEncode(t *testing.T) {
-	value, err := FromString("abc").Base64StdEncode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64StdDecode()
-func TestStrBase64StdDecode(t *testing.T) {
-	value, err := FromString("YWJj").Base64StdDecode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64RawStdEncode()
-func TestStrBase64RawStdEncode(t *testing.T) {
-	value, err := FromString("abc").Base64RawStdEncode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64RawStdDecode()
-func TestStrBase64RawStdDecode(t *testing.T) {
-	value, err := FromString("YWJj").Base64RawStdDecode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64URLEncode()
-func TestStrBase64URLEncode(t *testing.T) {
-	value, err := FromString("abc").Base64URLEncode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64URLDecode()
-func TestStrBase64URLDecode(t *testing.T) {
-	value, err := FromString("YWJj").Base64URLDecode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64RawURLEncode()
-func TestStrBase64RawURLEncode(t *testing.T) {
-	value, err := FromString("abc").Base64RawURLEncode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().Base64RawURLDecode()
-func TestStrBase64RawURLDecode(t *testing.T) {
-	value, err := FromString("YWJj").Base64RawURLDecode().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().HTMLUnescape()
-func TestStrHTMLEscape(t *testing.T) {
-	value, err := FromString("abc").HTMLEscape().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().HTMLUnescape()
-func TestStrHTMLUnescape(t *testing.T) {
-	value, err := FromString("abc").HTMLUnescape().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().URLPathEscape()
-func TestStrURLPathEscape(t *testing.T) {
-	value, err := FromString("龙").URLPathEscape().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().URLPathUnescape()
-func TestStrURLPathUnescape(t *testing.T) {
-	value, err := FromString("%E9%BE%99").URLPathUnescape().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().URLQueryEscape()
-func TestStrURLQueryEscape(t *testing.T) {
-	value, err := FromString("龙").URLQueryEscape().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
-}
-
-// 测试 FromString().URLQueryUnescape()
-func TestStrURLQueryUnescape(t *testing.T) {
-	value, err := FromString("%E9%BE%99").URLQueryUnescape().Result()
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	t.Log(value)
 }

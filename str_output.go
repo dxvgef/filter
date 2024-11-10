@@ -30,7 +30,7 @@ func (strType *StringType) Error() error {
 
 // Set 使用反射赋值到变量
 func (strType *StringType) Set(target interface{}, customError ...string) error {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType.err
 	}
 

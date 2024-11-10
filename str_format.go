@@ -9,7 +9,7 @@ import (
 
 // ToUpper 字母转为大写
 func (strType *StringType) ToUpper() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -19,7 +19,7 @@ func (strType *StringType) ToUpper() *StringType {
 
 // ToLower 字母转为小写
 func (strType *StringType) ToLower() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -29,7 +29,7 @@ func (strType *StringType) ToLower() *StringType {
 
 // Trim 删除左右的指定字符串
 func (strType *StringType) Trim(sub string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -39,7 +39,7 @@ func (strType *StringType) Trim(sub string) *StringType {
 
 // TrimSpace 删除左右所有的空格
 func (strType *StringType) TrimSpace() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -47,9 +47,9 @@ func (strType *StringType) TrimSpace() *StringType {
 	return strType
 }
 
-// TrimLeft 删除左边指定的字符串
+// TrimLeft 删除左边所有指定的字符串
 func (strType *StringType) TrimLeft(sub string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -57,9 +57,9 @@ func (strType *StringType) TrimLeft(sub string) *StringType {
 	return strType
 }
 
-// TrimRight 删除右边指定的字符串
+// TrimRight 删除右边所有指定的字符串
 func (strType *StringType) TrimRight(sub string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -69,7 +69,7 @@ func (strType *StringType) TrimRight(sub string) *StringType {
 
 // TrimPrefix 删除指定的前缀字符串
 func (strType *StringType) TrimPrefix(sub string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -79,7 +79,7 @@ func (strType *StringType) TrimPrefix(sub string) *StringType {
 
 // TrimSuffix 删除指定的后缀字符串
 func (strType *StringType) TrimSuffix(sub string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -89,7 +89,7 @@ func (strType *StringType) TrimSuffix(sub string) *StringType {
 
 // Replace 替换指定的字符串，可指定替换次数
 func (strType *StringType) Replace(oldStr, newStr string, n int) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -99,7 +99,7 @@ func (strType *StringType) Replace(oldStr, newStr string, n int) *StringType {
 
 // ReplaceAll 替换所有指定的字符串
 func (strType *StringType) ReplaceAll(oldStr, newStr string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -109,7 +109,7 @@ func (strType *StringType) ReplaceAll(oldStr, newStr string) *StringType {
 
 // RemoveSpace 删除所有空格
 func (strType *StringType) RemoveSpace() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -117,9 +117,9 @@ func (strType *StringType) RemoveSpace() *StringType {
 	return strType
 }
 
-// Base64StdEncode Base64 std编码
+// Base64StdEncode 使用base64.StdEncoding编码
 func (strType *StringType) Base64StdEncode() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -127,9 +127,9 @@ func (strType *StringType) Base64StdEncode() *StringType {
 	return strType
 }
 
-// Base64StdDecode Base64 std解码
+// Base64StdDecode 使用base64.StdEncoding解码
 func (strType *StringType) Base64StdDecode(customError ...string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -143,9 +143,9 @@ func (strType *StringType) Base64StdDecode(customError ...string) *StringType {
 	return strType
 }
 
-// base64 RawStd编码
+// Base64RawStdEncode 使用base64.RawStdEncoding编码
 func (strType *StringType) Base64RawStdEncode() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -153,9 +153,9 @@ func (strType *StringType) Base64RawStdEncode() *StringType {
 	return strType
 }
 
-// base64 RawStd解码
+// Base64RawStdDecode 使用base64.RawStdEncoding解码
 func (strType *StringType) Base64RawStdDecode(customError ...string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -169,9 +169,9 @@ func (strType *StringType) Base64RawStdDecode(customError ...string) *StringType
 	return strType
 }
 
-// base64 URL编码
+// Base64URLEncode 使用 base64.URLEncoding 编码
 func (strType *StringType) Base64URLEncode() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -179,9 +179,9 @@ func (strType *StringType) Base64URLEncode() *StringType {
 	return strType
 }
 
-// base64 URL解码
+// Base64URLDecode 使用 base64.URLEncoding 解码
 func (strType *StringType) Base64URLDecode(customError ...string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -195,9 +195,9 @@ func (strType *StringType) Base64URLDecode(customError ...string) *StringType {
 	return strType
 }
 
-// base64 RawURL编码
+// Base64RawURLEncode 使用 base64.RawURLEncoding 编码
 func (strType *StringType) Base64RawURLEncode() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -205,9 +205,9 @@ func (strType *StringType) Base64RawURLEncode() *StringType {
 	return strType
 }
 
-// base64 RawURL解码
+// Base64RawURLDecode 使用 base64.RawURLEncoding 解码
 func (strType *StringType) Base64RawURLDecode(customError ...string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -221,9 +221,9 @@ func (strType *StringType) Base64RawURLDecode(customError ...string) *StringType
 	return strType
 }
 
-// html.EscapeString
+// HTMLEscape 使用 html.EscapeString 编码
 func (strType *StringType) HTMLEscape() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -231,9 +231,9 @@ func (strType *StringType) HTMLEscape() *StringType {
 	return strType
 }
 
-// html.UnescapeString
+// HTMLUnescape 使用 html.UnescapeString 解码
 func (strType *StringType) HTMLUnescape() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -241,9 +241,9 @@ func (strType *StringType) HTMLUnescape() *StringType {
 	return strType
 }
 
-// 与url.PathEscape相同
+// URLPathEscape 使用 url.PathEscape 编码
 func (strType *StringType) URLPathEscape() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -251,9 +251,9 @@ func (strType *StringType) URLPathEscape() *StringType {
 	return strType
 }
 
-// url.PathUnescape
+// URLPathUnescape 使用 url.PathUnescape 解码
 func (strType *StringType) URLPathUnescape(customError ...string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -267,9 +267,9 @@ func (strType *StringType) URLPathUnescape(customError ...string) *StringType {
 	return strType
 }
 
-// URLQueryEscape 与url.QueryEscape相同
+// URLQueryEscape 使用 url.QueryEscape 编码
 func (strType *StringType) URLQueryEscape() *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 
@@ -277,9 +277,9 @@ func (strType *StringType) URLQueryEscape() *StringType {
 	return strType
 }
 
-// 与url.QueryUnescape相同
+// URLQueryUnescape 使用 url.QueryUnescape 解码
 func (strType *StringType) URLQueryUnescape(customError ...string) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 

@@ -11,7 +11,7 @@ func (strType *StringType) ToStringSlice(sep string) *StringSliceType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strSliceType
 	}
 
@@ -30,7 +30,7 @@ func (strType *StringType) ToInteger(customError ...string) *IntegerType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return intType
 	}
 
@@ -49,7 +49,7 @@ func (strType *StringType) ToIntegerSlice(sep string, customError ...string) *In
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return intSliceType
 	}
 
@@ -73,7 +73,7 @@ func (strType *StringType) ToBoolean(customError ...string) *BooleanType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return boolType
 	}
 
@@ -92,7 +92,7 @@ func (strType *StringType) ToBooleanSlice(sep string, customError ...string) *Bo
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return boolSliceType
 	}
 
@@ -116,7 +116,7 @@ func (strType *StringType) ToFloat(customError ...string) *FloatType {
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return floatType
 	}
 
@@ -135,7 +135,7 @@ func (strType *StringType) ToFloatSlice(sep string, customError ...string) *Floa
 		name: strType.name,
 		err:  strType.err,
 	}
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return floatSliceType
 	}
 

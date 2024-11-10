@@ -2,10 +2,9 @@ package filter
 
 // StringType 字符串类型
 type StringType struct {
-	name       string // 字段名称，用于拼接错误消息
-	value      string // 原始值
-	err        error  // 错误
-	isRequired bool   // 是否必须
+	name  string // 字段名称，用于拼接错误消息
+	value string // 原始值
+	err   error  // 错误
 }
 
 // FromString 输入string类型的值
@@ -27,14 +26,9 @@ CustomStringFunc 自定义字符串处理函数
 */
 type CustomStringFunc func(*StringType) (string, error)
 
-// IsRequired 是否必须
-func (strType *StringType) IsRequired() bool {
-	return strType.isRequired
-}
-
 // Custom 自定义string处理方法
 func (strType *StringType) Custom(f CustomStringFunc) *StringType {
-	if strType.err != nil || (!strType.isRequired && strType.value == "") {
+	if strType.err != nil {
 		return strType
 	}
 

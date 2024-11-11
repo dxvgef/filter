@@ -68,3 +68,23 @@ func TestStringType_Trim(t *testing.T) {
 		})
 	}
 }
+
+// 删除所有空格
+func TestStringType_RemoveSpace(t *testing.T) {
+	cases := []struct {
+		value    string
+		expected *StringType
+	}{
+		{value: "", expected: &StringType{value: "", err: nil}},
+		{value: "    test      Value        ", expected: &StringType{value: "testValue", err: nil}},
+	}
+
+	for _, testCase := range cases {
+		t.Run(testCase.value, func(t *testing.T) {
+			result := FromString(testCase.value).RemoveSpace()
+			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
+				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			}
+		})
+	}
+}

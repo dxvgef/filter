@@ -6,7 +6,7 @@ import (
 )
 
 // ToStringSlice 转为[]string类型
-func (strType *StringType) ToStringSlice(sep string) *StringSliceType {
+func (strType *StringType) ToStringSlice(sep string, clean bool) *StringSliceType {
 	strSliceType := &StringSliceType{
 		name: strType.name,
 		err:  strType.err,
@@ -14,11 +14,15 @@ func (strType *StringType) ToStringSlice(sep string) *StringSliceType {
 	if strType.err != nil {
 		return strSliceType
 	}
-
-	value := strings.Split(strType.value, sep)
-	for k := range value {
-		if value[k] != "" {
-			strSliceType.value = append(strSliceType.value, value[k])
+	strSlice := strings.Split(strType.value, sep)
+	if !clean {
+		strSliceType.value = strSlice
+	} else {
+		for k := range strSlice {
+			v := strings.Trim(strSlice[k], " ")
+			if v != "" {
+				strSliceType.value = append(strSliceType.value, strSlice[k])
+			}
 		}
 	}
 	return strSliceType

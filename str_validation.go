@@ -648,7 +648,9 @@ func (strType *StringType) IsHexColor(customError ...string) *StringType {
 		return strType
 	}
 
-	length := len(strType.value)
+	color := strings.TrimPrefix(strType.value, "#")
+
+	length := len(color)
 
 	// 检查长度是否符合规则
 	if length != 3 && length != 6 && length != 8 && length != 4 {
@@ -657,7 +659,7 @@ func (strType *StringType) IsHexColor(customError ...string) *StringType {
 	}
 
 	// 遍历字符串检查每个字符是否为有效的十六进制字符
-	for _, char := range strType.value {
+	for _, char := range color {
 		if !isHexChar(char) {
 			strType.err = wrapError(strType.name, customError...)
 			return strType

@@ -641,3 +641,28 @@ func (strType *StringType) IsChineseIDCard(customError ...string) *StringType {
 
 	return strType
 }
+
+// IsHexColor 是Hex颜色值
+func (strType *StringType) IsHexColor(customError ...string) *StringType {
+	if strType.err != nil {
+		return strType
+	}
+
+	length := len(strType.value)
+
+	// 检查长度是否符合规则
+	if length != 3 && length != 6 && length != 8 && length != 4 {
+		strType.err = wrapError(strType.name, customError...)
+		return strType
+	}
+
+	// 遍历字符串检查每个字符是否为有效的十六进制字符
+	for _, char := range strType.value {
+		if !isHexChar(char) {
+			strType.err = wrapError(strType.name, customError...)
+			return strType
+		}
+	}
+
+	return strType
+}

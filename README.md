@@ -110,6 +110,7 @@ golang 的数据处理包，由 **数据输入、格式化、校验、输出** �
 |             | `IsUUID`                | 是UUID格式                                 |
 |             | `IsULID`                | 是ULID格式                                 |
 |             | `IsChineseIDCard`       | 中国大陆地区身份证号码                             |
+|             | `IsHexColor`            | 是HEX颜色值（不含#）                            |
 | **自定义处理函数** |                         |                                         |
 |             | `Custom`                | 自定义字符串处理函数                              |
 | **类型转换函数**  |                         |                                         |

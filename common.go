@@ -190,3 +190,8 @@ func isChineseIDCard(str string) bool {
 	}
 	return temp == idV
 }
+
+// 判断字符是否为十六进制字符
+func isHexChar(char rune) bool {
+	return (char >= '0' && char <= '9') || (char >= 'a' && char <= 'f') || (char >= 'A' && char <= 'F')
+}

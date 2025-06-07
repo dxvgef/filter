@@ -77,8 +77,8 @@ func (strType *StringType) LengthNotEquals(value int, customError ...string) *St
 	return strType
 }
 
-// LengthLessThan 长度小于
-func (strType *StringType) LengthLessThan(value int, customError ...string) *StringType {
+// LengthMax 长度最大值
+func (strType *StringType) LengthMax(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -90,8 +90,8 @@ func (strType *StringType) LengthLessThan(value int, customError ...string) *Str
 	return strType
 }
 
-// LengthGreaterThan 长度大于
-func (strType *StringType) LengthGreaterThan(value int, customError ...string) *StringType {
+// LengthMin 长度最小值
+func (strType *StringType) LengthMin(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -142,8 +142,8 @@ func (strType *StringType) UTF8LengthNotEquals(value int, customError ...string)
 	return strType
 }
 
-// UTF8LengthLessThan UTF8编码长度小于
-func (strType *StringType) UTF8LengthLessThan(value int, customError ...string) *StringType {
+// UTF8LengthMax UTF8编码长度最大值
+func (strType *StringType) UTF8LengthMax(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -155,8 +155,8 @@ func (strType *StringType) UTF8LengthLessThan(value int, customError ...string) 
 	return strType
 }
 
-// UTF8LengthGreaterThan UTF8编码长度大于
-func (strType *StringType) UTF8LengthGreaterThan(value int, customError ...string) *StringType {
+// UTF8LengthMin UTF8编码长度最小值
+func (strType *StringType) UTF8LengthMin(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -181,8 +181,8 @@ func (strType *StringType) UTF8LengthRange(minValue, maxValue int, customError .
 	return strType
 }
 
-// AllowedValues 只能是数组中的值
-func (strType *StringType) AllowedValues(values []string, customError ...string) *StringType {
+// Enum 只能是数组中的值
+func (strType *StringType) Enum(values []string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -193,8 +193,8 @@ func (strType *StringType) AllowedValues(values []string, customError ...string)
 	return strType
 }
 
-// DisallowedValues 不能是数组中的值
-func (strType *StringType) DisallowedValues(values []string, customError ...string) *StringType {
+// Block 不能是数组中的值
+func (strType *StringType) Block(values []string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -222,7 +222,7 @@ func (strType *StringType) AllowedChars(values []rune, customError ...string) *S
 }
 
 // InRuneSet 不能是数组中的字符
-func (strType *StringType) DisallowedChars(values []rune, customError ...string) *StringType {
+func (strType *StringType) BlockChars(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -253,8 +253,8 @@ func (strType *StringType) AllowedSymbols(values []rune, customError ...string) 
 	return strType
 }
 
-// DisallowedSymbols 如果有符号，不能是数组中的符号
-func (strType *StringType) DisallowedSymbols(values []rune, customError ...string) *StringType {
+// BlockSymbols 如果有符号，不能是数组中的符号
+func (strType *StringType) BlockSymbols(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}

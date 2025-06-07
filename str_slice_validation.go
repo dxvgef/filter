@@ -10,7 +10,7 @@ import (
 	"unicode/utf8"
 )
 
-// Contains 每个元素值都包含了指定的字符串
+// Contains 所有元素值都必须包含指定的字符串
 func (strSliceType *StringSliceType) AllContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
@@ -25,7 +25,7 @@ func (strSliceType *StringSliceType) AllContains(sub string, customError ...stri
 	return strSliceType
 }
 
-// Contains 每个元素值都没有包含指定的字符串
+// Contains 所有元素值都没有包含指定的字符串
 func (strSliceType *StringSliceType) AllNotContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
@@ -40,8 +40,8 @@ func (strSliceType *StringSliceType) AllNotContains(sub string, customError ...s
 	return strSliceType
 }
 
-// AnyContains 有元素值包含了指定的字符串
-func (strSliceType *StringSliceType) AnyContains(sub string, customError ...string) *StringSliceType {
+// ContainString 有元素包含指定的字符串
+func (strSliceType *StringSliceType) ContainString(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -55,8 +55,8 @@ func (strSliceType *StringSliceType) AnyContains(sub string, customError ...stri
 	return strSliceType
 }
 
-// AnyNotContains 有元素值没有包含指定的字符串
-func (strSliceType *StringSliceType) AnyNotContains(sub string, customError ...string) *StringSliceType {
+// BlockString 阻止任何元素包含指定的字符串
+func (strSliceType *StringSliceType) BlockString(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -70,8 +70,8 @@ func (strSliceType *StringSliceType) AnyNotContains(sub string, customError ...s
 	return strSliceType
 }
 
-// AllowedValues 元素值只能有数组中的值
-func (strSliceType *StringSliceType) AllowedValues(values []string, customError ...string) *StringSliceType {
+// Enum 元素值只能有数组中的值
+func (strSliceType *StringSliceType) Enum(values []string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -85,8 +85,8 @@ func (strSliceType *StringSliceType) AllowedValues(values []string, customError 
 	return strSliceType
 }
 
-// DisallowedValues 元素值不能有数组中的值
-func (strSliceType *StringSliceType) DisallowedValues(values []string, customError ...string) *StringSliceType {
+// Block 元素值不能有数组中的值
+func (strSliceType *StringSliceType) Block(values []string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -120,8 +120,8 @@ func (strSliceType *StringSliceType) AllowedChars(values []rune, customError ...
 	return strSliceType
 }
 
-// DisallowedChars 元素值不能有数组中的字符
-func (strSliceType *StringSliceType) DisallowedChars(values []rune, customError ...string) *StringSliceType {
+// BlockChars 元素值不能有数组中的字符
+func (strSliceType *StringSliceType) BlockChars(values []rune, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -158,8 +158,8 @@ func (strSliceType *StringSliceType) AllowedSymbols(values []rune, customError .
 	return strSliceType
 }
 
-// DisallowedSymbols 元素值如果有符号，不能有数组中的符号
-func (strSliceType *StringSliceType) DisallowedSymbols(values []rune, customError ...string) *StringSliceType {
+// BlockSymbols 元素值如果有符号，不能有数组中的符号
+func (strSliceType *StringSliceType) BlockSymbols(values []rune, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -401,8 +401,8 @@ func (strSliceType *StringSliceType) LengthNotEquals(value int, customError ...s
 	return strSliceType
 }
 
-// LengthLessThan 每个元素值的长度都小于
-func (strSliceType *StringSliceType) LengthLessThan(value int, customError ...string) *StringSliceType {
+// LengthMax 每个元素值的长度最大值
+func (strSliceType *StringSliceType) LengthMax(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -417,8 +417,8 @@ func (strSliceType *StringSliceType) LengthLessThan(value int, customError ...st
 	return strSliceType
 }
 
-// LengthGreaterThan 每个元素值的长度都大于
-func (strSliceType *StringSliceType) LengthGreaterThan(value int, customError ...string) *StringSliceType {
+// LengthMin 每个元素值的长度最小值
+func (strSliceType *StringSliceType) LengthMin(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -482,8 +482,8 @@ func (strSliceType *StringSliceType) UTF8LengthNotEquals(value int, customError 
 	return strSliceType
 }
 
-// UTF8LengthLessThan 每个元素值的UTF8编码的长度都小于
-func (strSliceType *StringSliceType) UTF8LengthLessThan(value int, customError ...string) *StringSliceType {
+// UTF8LengthMax UTF8编码，每个元素的字符串长度最大值
+func (strSliceType *StringSliceType) UTF8LengthMax(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -498,8 +498,8 @@ func (strSliceType *StringSliceType) UTF8LengthLessThan(value int, customError .
 	return strSliceType
 }
 
-// UTF8LengthGreaterThan 每个元素的UTF8编码的长度都大于
-func (strSliceType *StringSliceType) UTF8LengthGreaterThan(value int, customError ...string) *StringSliceType {
+// UTF8LengthMin 每个元素的字符串长度最小值
+func (strSliceType *StringSliceType) UTF8LengthMin(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}

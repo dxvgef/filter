@@ -18,8 +18,8 @@ func (intType *IntegerType) NotEquals(value int64, customError ...string) *Integ
 	return intType
 }
 
-// LessThan 小于
-func (intType *IntegerType) LessThan(value int64, customError ...string) *IntegerType {
+// Max 最大值
+func (intType *IntegerType) Max(value int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
@@ -29,8 +29,8 @@ func (intType *IntegerType) LessThan(value int64, customError ...string) *Intege
 	return intType
 }
 
-// GreaterThan 大于
-func (intType *IntegerType) GreaterThan(value int64, customError ...string) *IntegerType {
+// Min 最小值
+func (intType *IntegerType) Min(value int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
@@ -51,8 +51,8 @@ func (intType *IntegerType) Range(minValue, maxValue int64, customError ...strin
 	return intType
 }
 
-// AllowedValues 只能是数组中的值
-func (intType *IntegerType) AllowedValues(values []int64, customError ...string) *IntegerType {
+// Enum 只能是数组中的值
+func (intType *IntegerType) Enum(values []int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
@@ -62,8 +62,8 @@ func (intType *IntegerType) AllowedValues(values []int64, customError ...string)
 	return intType
 }
 
-// DisallowedValues 不能是数组中的值
-func (intType *IntegerType) DisallowedValues(values []int64, customError ...string) *IntegerType {
+// Block 不能是数组中的值
+func (intType *IntegerType) Block(values []int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}

@@ -26,8 +26,8 @@ func (floatSliceType *FloatSliceType) NotContains(values float64, customError ..
 	return floatSliceType
 }
 
-// AllowedValues 每个元素都只能是列表中的值
-func (floatSliceType *FloatSliceType) AllowedValues(values []float64, customError ...string) *FloatSliceType {
+// Enum 元素中只能使用列表中的值
+func (floatSliceType *FloatSliceType) Enum(values []float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -41,8 +41,8 @@ func (floatSliceType *FloatSliceType) AllowedValues(values []float64, customErro
 	return floatSliceType
 }
 
-// DisallowedValues 每个元素都不能是列表中的值
-func (floatSliceType *FloatSliceType) DisallowedValues(values []float64, customError ...string) *FloatSliceType {
+// Block 元素中不能存在列表中的值
+func (floatSliceType *FloatSliceType) Block(values []float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -55,8 +55,8 @@ func (floatSliceType *FloatSliceType) DisallowedValues(values []float64, customE
 	return floatSliceType
 }
 
-// MinValue 每个元素值都不能小于
-func (floatSliceType *FloatSliceType) MinValue(value float64, customError ...string) *FloatSliceType {
+// Min 元素中不能出现小于指定的值
+func (floatSliceType *FloatSliceType) Min(value float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -69,8 +69,8 @@ func (floatSliceType *FloatSliceType) MinValue(value float64, customError ...str
 	return floatSliceType
 }
 
-// MaxValue 每个元素值都不能大于
-func (floatSliceType *FloatSliceType) MaxValue(value float64, customError ...string) *FloatSliceType {
+// Max 元素中不能出现大于指定的值
+func (floatSliceType *FloatSliceType) Max(value float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -83,8 +83,8 @@ func (floatSliceType *FloatSliceType) MaxValue(value float64, customError ...str
 	return floatSliceType
 }
 
-// RangeValue 每个元素值的范围
-func (floatSliceType *FloatSliceType) RangeValue(minValue, maxValue float64, customError ...string) *FloatSliceType {
+// Range 元素中只能使用指定范围的值
+func (floatSliceType *FloatSliceType) Range(minValue, maxValue float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -97,8 +97,8 @@ func (floatSliceType *FloatSliceType) RangeValue(minValue, maxValue float64, cus
 	return floatSliceType
 }
 
-// CountLessThan 元素数量小于
-func (floatSliceType *FloatSliceType) CountLessThan(value int, customError ...string) *FloatSliceType {
+// CountMax 元素数量不能大于指定的值
+func (floatSliceType *FloatSliceType) CountMax(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -108,8 +108,8 @@ func (floatSliceType *FloatSliceType) CountLessThan(value int, customError ...st
 	return floatSliceType
 }
 
-// CountGreaterThan 元素数量大于
-func (floatSliceType *FloatSliceType) CountGreaterThan(value int, customError ...string) *FloatSliceType {
+// CountMin 元素数量不能小于指定的值
+func (floatSliceType *FloatSliceType) CountMin(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}

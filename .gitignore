@@ -6,3 +6,4 @@ bin/
 *.log
 
 go.sum
+commit-prompt.txt

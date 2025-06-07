@@ -2,8 +2,8 @@ package filter
 
 import "slices"
 
-// CountLessThan 元素数量小于
-func (intSliceType *IntegerSliceType) CountLessThan(value int, customError ...string) *IntegerSliceType {
+// CountMax 元素数量不能大于指定的值
+func (intSliceType *IntegerSliceType) CountMax(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -13,8 +13,8 @@ func (intSliceType *IntegerSliceType) CountLessThan(value int, customError ...st
 	return intSliceType
 }
 
-// CountGreaterThan 元素数量大于
-func (intSliceType *IntegerSliceType) CountGreaterThan(value int, customError ...string) *IntegerSliceType {
+// CountMin 元素数量不能小于指定的值
+func (intSliceType *IntegerSliceType) CountMin(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -24,7 +24,7 @@ func (intSliceType *IntegerSliceType) CountGreaterThan(value int, customError ..
 	return intSliceType
 }
 
-// CountEquals 元素数量等于
+// CountEquals 元素数量必须等于指定的值
 func (intSliceType *IntegerSliceType) CountEquals(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
@@ -35,7 +35,7 @@ func (intSliceType *IntegerSliceType) CountEquals(value int, customError ...stri
 	return intSliceType
 }
 
-// CountNotEquals 元素数量不等于
+// CountNotEquals 元素数量不能等于指定的值
 func (intSliceType *IntegerSliceType) CountNotEquals(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
@@ -70,8 +70,8 @@ func (intSliceType *IntegerSliceType) NotContains(values int64, customError ...s
 	return intSliceType
 }
 
-// MinValue 每个元素值都不能小于
-func (intSliceType *IntegerSliceType) MinValue(value int64, customError ...string) *IntegerSliceType {
+// Min 每个元素值都不能小于
+func (intSliceType *IntegerSliceType) Min(value int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -84,8 +84,8 @@ func (intSliceType *IntegerSliceType) MinValue(value int64, customError ...strin
 	return intSliceType
 }
 
-// MaxValue 每个元素值都不能大于
-func (intSliceType *IntegerSliceType) MaxValue(value int64, customError ...string) *IntegerSliceType {
+// Max 每个元素值都不能大于
+func (intSliceType *IntegerSliceType) Max(value int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -98,8 +98,8 @@ func (intSliceType *IntegerSliceType) MaxValue(value int64, customError ...strin
 	return intSliceType
 }
 
-// RangeValue 每个元素值的范围
-func (intSliceType *IntegerSliceType) RangeValue(minValue, maxValue int64, customError ...string) *IntegerSliceType {
+// Range 每个元素值的范围
+func (intSliceType *IntegerSliceType) Range(minValue, maxValue int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -112,8 +112,8 @@ func (intSliceType *IntegerSliceType) RangeValue(minValue, maxValue int64, custo
 	return intSliceType
 }
 
-// AllowedValues 元素只能是数组中的值
-func (intSliceType *IntegerSliceType) AllowedValues(values []int64, customError ...string) *IntegerSliceType {
+// Enum 元素只能是数组中的值
+func (intSliceType *IntegerSliceType) Enum(values []int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -127,8 +127,8 @@ func (intSliceType *IntegerSliceType) AllowedValues(values []int64, customError 
 	return intSliceType
 }
 
-// DisallowedValues 元素不能有数组中的值
-func (intSliceType *IntegerSliceType) DisallowedValues(values []int64, customError ...string) *IntegerSliceType {
+// Block 元素不能有数组中的值
+func (intSliceType *IntegerSliceType) Block(values []int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}

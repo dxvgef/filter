@@ -18,8 +18,8 @@ func (floatType *FloatType) NotEquals(value float64, customError ...string) *Flo
 	return floatType
 }
 
-// LessThan 小于
-func (floatType *FloatType) LessThan(value float64, customError ...string) *FloatType {
+// Max 不能大于指定的值
+func (floatType *FloatType) Max(value float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}
@@ -29,8 +29,8 @@ func (floatType *FloatType) LessThan(value float64, customError ...string) *Floa
 	return floatType
 }
 
-// GreaterThan 大于
-func (floatType *FloatType) GreaterThan(value float64, customError ...string) *FloatType {
+// Min 不能小于指定的值
+func (floatType *FloatType) Min(value float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}
@@ -40,7 +40,7 @@ func (floatType *FloatType) GreaterThan(value float64, customError ...string) *F
 	return floatType
 }
 
-// Range 范围
+// Range 只能是指定范围的值
 func (floatType *FloatType) Range(minValue, maxValue float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
@@ -51,8 +51,8 @@ func (floatType *FloatType) Range(minValue, maxValue float64, customError ...str
 	return floatType
 }
 
-// AllowedValues 只能是数组中的值
-func (floatType *FloatType) AllowedValues(values []float64, customError ...string) *FloatType {
+// Enum 只能是数组中的值
+func (floatType *FloatType) Enum(values []float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}
@@ -62,8 +62,8 @@ func (floatType *FloatType) AllowedValues(values []float64, customError ...strin
 	return floatType
 }
 
-// DisallowedValues 不能是数组中的值
-func (floatType *FloatType) DisallowedValues(values []float64, customError ...string) *FloatType {
+// Block 不能是指定的值
+func (floatType *FloatType) Block(values []float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}

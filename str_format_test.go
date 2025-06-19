@@ -88,3 +88,43 @@ func TestStringType_RemoveSpace(t *testing.T) {
 		})
 	}
 }
+
+// 转为蛇形命名
+func TestStringType_ToSnakeCase(t *testing.T) {
+	cases := []struct {
+		value    string
+		expected *StringType
+	}{
+		{value: "aaBB", expected: &StringType{value: "aa_bb", err: nil}},
+		{value: "aaBb", expected: &StringType{value: "aa_bb", err: nil}},
+	}
+
+	for _, testCase := range cases {
+		t.Run(testCase.value, func(t *testing.T) {
+			result := FromString(testCase.value).ToSnakeCase()
+			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
+				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			}
+		})
+	}
+}
+
+// 转为驼峰命名
+func TestStringType_ToCamelCase(t *testing.T) {
+	cases := []struct {
+		value    string
+		expected *StringType
+	}{
+		{value: "aa_BB", expected: &StringType{value: "aaBB", err: nil}},
+		{value: "aa_Bb", expected: &StringType{value: "aaBb", err: nil}},
+	}
+
+	for _, testCase := range cases {
+		t.Run(testCase.value, func(t *testing.T) {
+			result := FromString(testCase.value).ToCamelCase()
+			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
+				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			}
+		})
+	}
+}

@@ -5,6 +5,7 @@ import (
 	"html"
 	"net/url"
 	"strings"
+	"unicode"
 )
 
 // ToUpper 字母转为大写
@@ -290,5 +291,75 @@ func (strType *StringType) URLQueryUnescape(customError ...string) *StringType {
 	}
 
 	strType.value = value
+	return strType
+}
+
+func toSnakeCase(str string) string {
+	if str == "" {
+		return ""
+	}
+
+	var result []rune
+	for i, r := range str {
+		if unicode.IsUpper(r) {
+			if i > 0 {
+				prev := rune(str[i-1])
+				if prev != '_' && !unicode.IsUpper(prev) && !unicode.IsDigit(prev) {
+					result = append(result, '_')
+				}
+			}
+			result = append(result, unicode.ToLower(r))
+		} else {
+			result = append(result, r)
+		}
+	}
+	return string(result)
+}
+
+// ToSnakeCase 转换为蛇形命名 aa_bb
+func (strType *StringType) ToSnakeCase() *StringType {
+	if strType.err != nil || strType.value == "" {
+		return strType
+	}
+
+	strType.value = toSnakeCase(strType.value)
+	return strType
+}
+
+func toCamelCase(str string) string {
+	if str == "" {
+		return ""
+	}
+
+	// 按下划线分割字符串
+	parts := strings.Split(str, "_")
+	if len(parts) == 0 {
+		return ""
+	}
+
+	var result strings.Builder
+
+	// 处理首段的第一个字符：强制小写
+	firstPart := parts[0]
+	if len(firstPart) > 0 {
+		result.WriteRune(unicode.ToLower(rune(firstPart[0])))
+		result.WriteString(firstPart[1:])
+	}
+
+	// 拼接其余部分（保留原有大小写）
+	for _, part := range parts[1:] {
+		result.WriteString(part)
+	}
+
+	return result.String()
+}
+
+// toCamelCase 将单个蛇形命名字符串转为驼峰命名 aaBB
+func (strType *StringType) ToCamelCase() *StringType {
+	if strType.err != nil || strType.value == "" {
+		return strType
+	}
+
+	strType.value = toCamelCase(strType.value)
 	return strType
 }

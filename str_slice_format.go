@@ -304,3 +304,31 @@ func (strSliceType *StringSliceType) URLQueryUnescape(customError ...string) *St
 	}
 	return strSliceType
 }
+
+// ToSnakeCase 转换为蛇形命名（aa_bb）
+func (strSliceType *StringSliceType) ToSnakeCase() *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	result := make([]string, len(strSliceType.value))
+	for i, field := range strSliceType.value {
+		result[i] = toSnakeCase(field)
+	}
+	strSliceType.value = result
+	return strSliceType
+}
+
+// ToCamelCase 转换为驼峰命名（aaBB）
+func (strSliceType *StringSliceType) ToCamelCase() *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	result := make([]string, len(strSliceType.value))
+	for i, field := range strSliceType.value {
+		result[i] = toCamelCase(field)
+	}
+	strSliceType.value = result
+	return strSliceType
+}

@@ -11,17 +11,20 @@ golang 的数据处理包，由 **数据输入、格式化、校验、输出** �
 ## 注意：
 
 校验函数必须是字面语义上的条件成立，才算通过校验，例如：
+
 - `Equals(1)`的通过条件是值等于 1
 - `NotEquals(1)`的通过条件是值不等于 1
 
 请参考单元测试代码获得使用帮助，其它问题请在 Issues 里提出。
 
 ## 安装
+
 > github.com/dxvgef/filter/v3
 
 ---
 
 ## 目录
+
 - [字符串处理](#string)
 - [字符串切片处理](#stringslice)
 - [整数处理](#integer)
@@ -63,6 +66,8 @@ golang 的数据处理包，由 **数据输入、格式化、校验、输出** �
 |             | `URLPathUnescape`     | 使用 url.PathUnescape 解码                  |
 |             | `URLQueryEscape`      | 使用 url.QueryEscape 编码                   |
 |             | `URLQueryUnescape`    | 使用 url.QueryUnescape 解码                 |
+|             | `ToSnakeCase`         | 转为小写蛇形命名风格                              |
+|             | `ToCamelCase`         | 转为小写开头的驼峰命名风格                           |
 | **校验函数**    |                       |                                         |
 |             | `Equals`              | 等于                                      |
 |             | `NotEquals`           | 不等于                                     |
@@ -132,287 +137,287 @@ golang 的数据处理包，由 **数据输入、格式化、校验、输出** �
 
 ## <span id="stringslice">字符串切片处理</span>
 
-| 分类         | 函数名                   | 描述                                    |
-|--------------|-----------------------|---------------------------------------|
-| **输入函数** |                       |                                       |
-|              | `FromStringSlice`     | 输入`[]string`类型的数据                     |
-| **格式化函数** |                       |                                       |
-|              | `Trim`                | 删除每个元素值左右的指定字符串                       |
-|              | `TrimSpace`           | 删除每个元素值左右所有的空格                        |
-|              | `TrimLeft`            | 删除每个元素值左边所有指定的字符串                     |
-|              | `TrimRight`           | 删除每个元素值右边所有指定的字符串                     |
-|              | `TrimPrefix`          | 删除每个元素值指定的前缀字符串                       |
-|              | `TrimSuffix`          | 删除每个元素值指定的后缀字符串                       |
-|              | `DeleteEmpty`         | 删除空字符串的元素                             |
-|              | `RemoveSpace`         | 删除每个元素值中的所有空格                         |
-|              | `Base64StdEncode`     | 使用 base64.StdEncoding 对每个元素值编码        |
-|              | `Base64StdDecode`     | 使用 base64.StdEncoding 对每个元素值解码        |
-|              | `Base64RawStdEncode`  | 使用 base64.RawStdEncoding 对每个元素值编码     |
-|              | `Base64RawStdDecode`  | 使用 base64.RawStdEncoding 对每个元素值解码     |
-|              | `Base64URLEncode`     | 使用 base64.URLEncoding 对每个元素值编码        |
-|              | `Base64URLDecode`     | 使用 base64.URLEncoding 对每个元素值解码        |
-|              | `Base64RawURLEncode`  | 使用 base64.RawURLEncoding 对每个元素值编码     |
-|              | `Base64RawURLDecode`  | 使用 base64.RawURLEncoding 对每个元素值解码     |
-|              | `HTMLEscape`          | 使用 html.EscapeString 对每个元素值编码         |
-|              | `HTMLUnescape`        | 使用 html.UnescapeString 对每个元素值解码       |
-|              | `URLPathEscape`       | 使用 url.PathEscape 对每个元素值编码            |
-|              | `URLPathUnescape`     | 使用 url.PathUnescape 对每个元素值解码          |
-|              | `URLQueryEscape`      | 使用 url.QueryEscape 对每个元素值编码           |
-|              | `URLQueryUnescape`    | 使用 url.QueryUnescape 对每个元素值解码         |
-| **校验函数** |                       |                                       |
-|              | `AllContains`         | 每个元素值都包含指定的子字符串                       |
-|              | `AllNotContains`      | 每个元素值都不包含指定的子字符串                      |
-|              | `ContainString`       | 至少有一个元素值包含指定的子字符串                     |
-|              | `BlockString`         | 至少有一个元素值不包含指定的子字符串                    |
-|              | `Enum`                | 每个元素都只能是指定列表中的值                       |
-|              | `Block`               | 每个元素都不能是指定列表中的值                       |
-|              | `AllowedChars`        | 每个元素都只能有指定列表中的字符                      |
-|              | `BlockChars`          | 每个元素都不能有指定列表中的字符                      |
-|              | `AllowedSymbols`      | 每个元素值都只能有指定列表中的符号                     |
-|              | `BlockSymbols`        | 每个元素值是不能有指定列表中的符号                     |
-|              | `HasLetter`           | 每个元素值都包含字母                            |
-|              | `HasLower`            | 每个元素值都包含小写字母                          |
-|              | `HasUpper`            | 每个元素值都包含大写字母                          |
-|              | `HasNumber`           | 每个元素值都包含数字                            |
-|              | `HasSymbol`           | 每个元素值都包含符号                            |
-|              | `HasPrefix`           | 每个元素值都有指定的前缀字符串                       |
-|              | `HasSuffix`           | 每个元素值都有指定的后缀字符串                       |
-|              | `CountMin`            | 元素数量最小值                               |
-|              | `CountMax`            | 元素数量最大值                               |
-|              | `CountEquals`         | 元素数量等于                                |
-|              | `CountNotEquals`      | 元素数量不等于                               |
-|              | `LengthEquals`        | 每个元素值的长度都等于                           |
-|              | `LengthNotEquals`     | 每个元素值的长度都不等于                          |
-|              | `LengthMin`           | 每个元素值的长度最小值                           |
-|              | `LengthMax`           | 每个元素值的长度最大值                           |
-|              | `LengthRange`         | 每个元素值的长度范围                            |
-|              | `UTF8LengthEquals`    | 每个元素值的UTF-8编码长度都等于                    |
-|              | `UTF8LengthNotEquals` | 每个元素值的UTF-8编码长度都不等于                   |
-|              | `UTF8LengthMin`       | 每个元素值的UTF-8编码长度最小值                    |
-|              | `UTF8LengthMax`       | 每个元素值的UTF-8编码长度最大值                    |
-|              | `UTF8LengthRange`     | 每个元素值的UTF-8编码长度范围                     |
-|              | `IsLower`             | 每个元素值都是小写字母                           |
-|              | `IsUpper`             | 每个元素值都是大写字母                           |
-|              | `IsLetter`            | 每个元素值都是字母                             |
-|              | `IsLowerOrNumber`     | 每个元素值都是小写字母或数字                        |
-|              | `IsUpperOrNumber`     | 每个元素值都是大写字母或数字                        |
-|              | `IsLetterOrNumber`    | 每个元素值都是字母或数字                          |
-|              | `IsChinese`           | 每个元素值都是汉字                             |
-|              | `IsMail`              | 每个元素值都是电邮地址                           |
-|              | `IsIPv4`              | 每个元素值都是IPv4地址                         |
-|              | `IsIPv6`              | 每个元素值都是IPv6地址                         |
-|              | `IsIP`                | 每个元素值都是IPv4或IPv6地址                    |
-|              | `IsTCPAddr`           | 每个元素值都是 IP:Port 格式                    |
-|              | `IsMAC`               | 每个元素值都是MAC地址                          |
-|              | `IsSQLObject`         | 每个元素值都是有效的SQL对象名                      |
-|              | `IsUUID`              | 每个元素值都是UUID格式                         |
-|              | `IsULID`              | 每个元素值都是ULID格式                         |
-|              | `IsURL`               | 每个元素值都是URL格式                          |
-|              | `IsChineseIDCard`     | 每个元素值都是中国大陆身份证号码                      |
+| 分类          | 函数名                   | 描述                                    |
+|-------------|-----------------------|---------------------------------------|
+| **输入函数**    |                       |                                       |
+|             | `FromStringSlice`     | 输入`[]string`类型的数据                     |
+| **格式化函数**   |                       |                                       |
+|             | `Trim`                | 删除每个元素值左右的指定字符串                       |
+|             | `TrimSpace`           | 删除每个元素值左右所有的空格                        |
+|             | `TrimLeft`            | 删除每个元素值左边所有指定的字符串                     |
+|             | `TrimRight`           | 删除每个元素值右边所有指定的字符串                     |
+|             | `TrimPrefix`          | 删除每个元素值指定的前缀字符串                       |
+|             | `TrimSuffix`          | 删除每个元素值指定的后缀字符串                       |
+|             | `DeleteEmpty`         | 删除空字符串的元素                             |
+|             | `RemoveSpace`         | 删除每个元素值中的所有空格                         |
+|             | `Base64StdEncode`     | 使用 base64.StdEncoding 对每个元素值编码        |
+|             | `Base64StdDecode`     | 使用 base64.StdEncoding 对每个元素值解码        |
+|             | `Base64RawStdEncode`  | 使用 base64.RawStdEncoding 对每个元素值编码     |
+|             | `Base64RawStdDecode`  | 使用 base64.RawStdEncoding 对每个元素值解码     |
+|             | `Base64URLEncode`     | 使用 base64.URLEncoding 对每个元素值编码        |
+|             | `Base64URLDecode`     | 使用 base64.URLEncoding 对每个元素值解码        |
+|             | `Base64RawURLEncode`  | 使用 base64.RawURLEncoding 对每个元素值编码     |
+|             | `Base64RawURLDecode`  | 使用 base64.RawURLEncoding 对每个元素值解码     |
+|             | `HTMLEscape`          | 使用 html.EscapeString 对每个元素值编码         |
+|             | `HTMLUnescape`        | 使用 html.UnescapeString 对每个元素值解码       |
+|             | `URLPathEscape`       | 使用 url.PathEscape 对每个元素值编码            |
+|             | `URLPathUnescape`     | 使用 url.PathUnescape 对每个元素值解码          |
+|             | `URLQueryEscape`      | 使用 url.QueryEscape 对每个元素值编码           |
+|             | `URLQueryUnescape`    | 使用 url.QueryUnescape 对每个元素值解码         |
+|             | `ToSnakeCase`         | 将所有元素值转为小写蛇形命名风格                      |
+|             | `ToCamelCase`         | 将所有元素值转为小写开头的驼峰命名风格                   |
+| **校验函数**    |                       |                                       |
+|             | `AllContains`         | 每个元素值都包含指定的子字符串                       |
+|             | `AllNotContains`      | 每个元素值都不包含指定的子字符串                      |
+|             | `ContainString`       | 至少有一个元素值包含指定的子字符串                     |
+|             | `BlockString`         | 至少有一个元素值不包含指定的子字符串                    |
+|             | `Enum`                | 每个元素都只能是指定列表中的值                       |
+|             | `Block`               | 每个元素都不能是指定列表中的值                       |
+|             | `AllowedChars`        | 每个元素都只能有指定列表中的字符                      |
+|             | `BlockChars`          | 每个元素都不能有指定列表中的字符                      |
+|             | `AllowedSymbols`      | 每个元素值都只能有指定列表中的符号                     |
+|             | `BlockSymbols`        | 每个元素值是不能有指定列表中的符号                     |
+|             | `HasLetter`           | 每个元素值都包含字母                            |
+|             | `HasLower`            | 每个元素值都包含小写字母                          |
+|             | `HasUpper`            | 每个元素值都包含大写字母                          |
+|             | `HasNumber`           | 每个元素值都包含数字                            |
+|             | `HasSymbol`           | 每个元素值都包含符号                            |
+|             | `HasPrefix`           | 每个元素值都有指定的前缀字符串                       |
+|             | `HasSuffix`           | 每个元素值都有指定的后缀字符串                       |
+|             | `CountMin`            | 元素数量最小值                               |
+|             | `CountMax`            | 元素数量最大值                               |
+|             | `CountEquals`         | 元素数量等于                                |
+|             | `CountNotEquals`      | 元素数量不等于                               |
+|             | `LengthEquals`        | 每个元素值的长度都等于                           |
+|             | `LengthNotEquals`     | 每个元素值的长度都不等于                          |
+|             | `LengthMin`           | 每个元素值的长度最小值                           |
+|             | `LengthMax`           | 每个元素值的长度最大值                           |
+|             | `LengthRange`         | 每个元素值的长度范围                            |
+|             | `UTF8LengthEquals`    | 每个元素值的UTF-8编码长度都等于                    |
+|             | `UTF8LengthNotEquals` | 每个元素值的UTF-8编码长度都不等于                   |
+|             | `UTF8LengthMin`       | 每个元素值的UTF-8编码长度最小值                    |
+|             | `UTF8LengthMax`       | 每个元素值的UTF-8编码长度最大值                    |
+|             | `UTF8LengthRange`     | 每个元素值的UTF-8编码长度范围                     |
+|             | `IsLower`             | 每个元素值都是小写字母                           |
+|             | `IsUpper`             | 每个元素值都是大写字母                           |
+|             | `IsLetter`            | 每个元素值都是字母                             |
+|             | `IsLowerOrNumber`     | 每个元素值都是小写字母或数字                        |
+|             | `IsUpperOrNumber`     | 每个元素值都是大写字母或数字                        |
+|             | `IsLetterOrNumber`    | 每个元素值都是字母或数字                          |
+|             | `IsChinese`           | 每个元素值都是汉字                             |
+|             | `IsMail`              | 每个元素值都是电邮地址                           |
+|             | `IsIPv4`              | 每个元素值都是IPv4地址                         |
+|             | `IsIPv6`              | 每个元素值都是IPv6地址                         |
+|             | `IsIP`                | 每个元素值都是IPv4或IPv6地址                    |
+|             | `IsTCPAddr`           | 每个元素值都是 IP:Port 格式                    |
+|             | `IsMAC`               | 每个元素值都是MAC地址                          |
+|             | `IsSQLObject`         | 每个元素值都是有效的SQL对象名                      |
+|             | `IsUUID`              | 每个元素值都是UUID格式                         |
+|             | `IsULID`              | 每个元素值都是ULID格式                         |
+|             | `IsURL`               | 每个元素值都是URL格式                          |
+|             | `IsChineseIDCard`     | 每个元素值都是中国大陆身份证号码                      |
 | **自定义处理函数** |                       |                                       |
-|              | `Custom`              | 自定义字符串处理函数，详见 `CustomStringSliceFunc` |
-| **输出函数** |                       |                                       |
+|             | `Custom`              | 自定义字符串处理函数，详见 `CustomStringSliceFunc` |
+| **输出函数**    |                       |                                       |
 |             | `Error`               | 错误消息，`error`类型                        |
 |             | `Value`               | 处理后的值，`[]string`类型                    |
 |             | `Result`              | `Value(), Error()`                    |
 |             | `DefaultValue`        | 没有错误时返回`Value()`，否则返回指定值              |
 |             | `Set`                 | 赋值到`[]string`类型的变量，并返回处理结果(`Error()`) |
 
-
 ---
 
 ## <span id="integer">整数处理</span>
 
-| 分类         | 函数名             | 描述                                |
-|--------------|-----------------|-----------------------------------|
-| **输入函数** |                 |                                   |
-|              | `FromInteger`   | 输入`int64`类型的数据                    |
-| **格式化函数** |                 |                                   |
-|              | `Replace`       | 替换指定的值                            |
-| **校验函数** |                 |                                   |
-|              | `Equals`        | 等于                                |
-|              | `NotEquals`     | 不等于                               |
-|              | `Min`           | 最小值                               |
-|              | `Max`           | 最大值                               |
-|              | `Range`         | 范围                                |
-|              | `Enum`          | 只能是指定列表中的值                        |
-|              | `Block`           | 不能是指定列表中的值                        |
+| 分类          | 函数名             | 描述                                |
+|-------------|-----------------|-----------------------------------|
+| **输入函数**    |                 |                                   |
+|             | `FromInteger`   | 输入`int64`类型的数据                    |
+| **格式化函数**   |                 |                                   |
+|             | `Replace`       | 替换指定的值                            |
+| **校验函数**    |                 |                                   |
+|             | `Equals`        | 等于                                |
+|             | `NotEquals`     | 不等于                               |
+|             | `Min`           | 最小值                               |
+|             | `Max`           | 最大值                               |
+|             | `Range`         | 范围                                |
+|             | `Enum`          | 只能是指定列表中的值                        |
+|             | `Block`         | 不能是指定列表中的值                        |
 | **自定义处理函数** |                 |                                   |
-|              | `Custom`        | 自定义整数值处理函数，详见 `CustomIntegerFunc` |
-| **输出函数** |                 |                                   |
+|             | `Custom`        | 自定义整数值处理函数，详见 `CustomIntegerFunc` |
+| **输出函数**    |                 |                                   |
 |             | `Error`         | 错误消息，`error`类型                    |
 |             | `Value`         | 处理后的值，`int64`类型                   |
 |             | `Result`        | `Value(), Error()`                |
 |             | `DefaultValue`  | 没有错误时返回`Value()`，否则返回指定值          |
 |             | `Set`           | 赋值到整数类型的变量，并返回处理结果(`Error()`)     |
-|              | `Int`           | 返回`uint`类型的数值                     |
-|              | `DefaultInt`    | 返回`int`类型的数值，失败返回指定的值             |
-|              | `Int8`          | 返回`int8`类型的数值                     |
-|              | `DefaultInt8`   | 返回`int8`类型的数值，失败返回指定的值            |
-|              | `Int16`         | 返回`int16`类型的数值                    |
-|              | `DefaultInt16`  | 返回`int16`类型的数值，失败返回指定的值           |
-|              | `Int32`         | 返回`int32`类型的数值                    |
-|              | `DefaultInt32`  | 返回`int32`类型的数值，失败返回指定的值           |
-|              | `Int64`         | 返回`int64`类型的数值                    |
-|              | `DefaultInt64`  | 返回`int64`类型的数值，失败返回指定的值           |
-|              | `Uint`          | 返回`uint`类型的数值                     |
-|              | `DefaultUint`   | 返回`uint`类型的数值，失败返回指定的值            |
-|              | `Uint8`         | 返回`uint8`类型的数值                    |
-|              | `DefaultUint8`  | 返回`uint8`类型的数值，失败返回指定的值           |
-|              | `Uint16`        | 返回`uint16`类型的数值                   |
-|              | `DefaultUint16` | 返回`uint16`类型的数值，失败返回指定的值          |
-|              | `Uint32`        | 返回`uint32`类型的数值                   |
-|              | `DefaultUint32` | 返回`uint32`类型的数值，失败返回指定的值          |
-|              | `Uint64`        | 返回`uint64`类型的数值                   |
-|              | `DefaultUint64` | 返回`uint64`类型的数值，失败返回指定的值          |
+|             | `Int`           | 返回`uint`类型的数值                     |
+|             | `DefaultInt`    | 返回`int`类型的数值，失败返回指定的值             |
+|             | `Int8`          | 返回`int8`类型的数值                     |
+|             | `DefaultInt8`   | 返回`int8`类型的数值，失败返回指定的值            |
+|             | `Int16`         | 返回`int16`类型的数值                    |
+|             | `DefaultInt16`  | 返回`int16`类型的数值，失败返回指定的值           |
+|             | `Int32`         | 返回`int32`类型的数值                    |
+|             | `DefaultInt32`  | 返回`int32`类型的数值，失败返回指定的值           |
+|             | `Int64`         | 返回`int64`类型的数值                    |
+|             | `DefaultInt64`  | 返回`int64`类型的数值，失败返回指定的值           |
+|             | `Uint`          | 返回`uint`类型的数值                     |
+|             | `DefaultUint`   | 返回`uint`类型的数值，失败返回指定的值            |
+|             | `Uint8`         | 返回`uint8`类型的数值                    |
+|             | `DefaultUint8`  | 返回`uint8`类型的数值，失败返回指定的值           |
+|             | `Uint16`        | 返回`uint16`类型的数值                   |
+|             | `DefaultUint16` | 返回`uint16`类型的数值，失败返回指定的值          |
+|             | `Uint32`        | 返回`uint32`类型的数值                   |
+|             | `DefaultUint32` | 返回`uint32`类型的数值，失败返回指定的值          |
+|             | `Uint64`        | 返回`uint64`类型的数值                   |
+|             | `DefaultUint64` | 返回`uint64`类型的数值，失败返回指定的值          |
 
 ---
 
 ## <span id="integerslice">整数切片处理</span>
 
-| 分类         | 函数名                | 描述                                 |
-|--------------|--------------------|------------------------------------|
-| **输入函数** |                    |                                    |
-|              | `FromIntegerSlice` | 输入`[]int64`类型的数据                   |
-| **校验函数** |                    |                                    |
-|              | `CountMin`         | 元素数量最小值                            |
-|              | `CountMax`         | 元素数量最大值                            |
-|              | `CountEquals`      | 元素数量等于                             |
-|              | `CountNotEquals`   | 元素数量不等于                            |
-|              | `Contains`         | 存在指定值的元素                           |
-|              | `NotContains`      | 不存在指定值的元素                          |
-|              | `Min`              | 元素的最小值                             |
-|              | `Max`              | 元素的最大值                             |
-|              | `Range`            | 元素的值范围                             |
-|              | `Enum`             | 元素只能是指定的值                        |
-|              | `Block`            | 元素不能是指定的值                      |
-| **自定义处理函数** |                    |                                    |
-|              | `Custom`           | 自定义整数值处理函数，详见 `CustomIntegerSliceFunc` |
-| **输出函数** |                    |                                    |
-|             | `Error`            | 错误消息，`error`类型                     |
-|             | `Value`            | 处理后的值，`[]int64`类型                  |
-|             | `Result`           | `Value(), Error()`                 |
-|             | `Set`              | 赋值到整数切片类型的变量，并返回处理结果(`Error()`)    |
-|              | `Int`              | 返回`[]uint`类型的数值                    |
-|              | `DefaultInt`       | 返回`[]int`类型的数值，失败返回指定的值            |
-|              | `Int8`             | 返回`[]int8`类型的数值                    |
-|              | `DefaultInt8`      | 返回`[]int8`类型的数值，失败返回指定的值           |
-|              | `Int16`            | 返回`[]int16`类型的数值                   |
-|              | `DefaultInt16`     | 返回`[]int16`类型的数值，失败返回指定的值          |
-|              | `Int32`            | 返回`[]int32`类型的数值                   |
-|              | `DefaultInt32`     | 返回`[]int32`类型的数值，失败返回指定的值          |
-|              | `Int64`            | 返回`[]int64`类型的数值                   |
-|              | `DefaultInt64`     | 返回`[]int64`类型的数值，失败返回指定的值          |
-|              | `Uint`             | 返回`[]uint`类型的数值                    |
-|              | `DefaultUint`      | 返回`[]uint`类型的数值，失败返回指定的值           |
-|              | `Uint8`            | 返回`[]uint8`类型的数值                   |
-|              | `DefaultUint8`     | 返回`[]uint8`类型的数值，失败返回指定的值          |
-|              | `Uint16`           | 返回`[]uint16`类型的数值                  |
-|              | `DefaultUint16`    | 返回`[]uint16`类型的数值，失败返回指定的值         |
-|              | `Uint32`           | 返回`[]uint32`类型的数值                  |
-|              | `DefaultUint32`    | 返回`[]uint32`类型的数值，失败返回指定的值         |
-|              | `Uint64`           | 返回`[]uint64`类型的数值                  |
-|              | `DefaultUint64`    | 返回`[]uint64`类型的数值，失败返回指定的值         |
-
+| 分类          | 函数名                | 描述                                     |
+|-------------|--------------------|----------------------------------------|
+| **输入函数**    |                    |                                        |
+|             | `FromIntegerSlice` | 输入`[]int64`类型的数据                       |
+| **校验函数**    |                    |                                        |
+|             | `CountMin`         | 元素数量最小值                                |
+|             | `CountMax`         | 元素数量最大值                                |
+|             | `CountEquals`      | 元素数量等于                                 |
+|             | `CountNotEquals`   | 元素数量不等于                                |
+|             | `Contains`         | 存在指定值的元素                               |
+|             | `NotContains`      | 不存在指定值的元素                              |
+|             | `Min`              | 元素的最小值                                 |
+|             | `Max`              | 元素的最大值                                 |
+|             | `Range`            | 元素的值范围                                 |
+|             | `Enum`             | 元素只能是指定的值                              |
+|             | `Block`            | 元素不能是指定的值                              |
+| **自定义处理函数** |                    |                                        |
+|             | `Custom`           | 自定义整数值处理函数，详见 `CustomIntegerSliceFunc` |
+| **输出函数**    |                    |                                        |
+|             | `Error`            | 错误消息，`error`类型                         |
+|             | `Value`            | 处理后的值，`[]int64`类型                      |
+|             | `Result`           | `Value(), Error()`                     |
+|             | `Set`              | 赋值到整数切片类型的变量，并返回处理结果(`Error()`)        |
+|             | `Int`              | 返回`[]uint`类型的数值                        |
+|             | `DefaultInt`       | 返回`[]int`类型的数值，失败返回指定的值                |
+|             | `Int8`             | 返回`[]int8`类型的数值                        |
+|             | `DefaultInt8`      | 返回`[]int8`类型的数值，失败返回指定的值               |
+|             | `Int16`            | 返回`[]int16`类型的数值                       |
+|             | `DefaultInt16`     | 返回`[]int16`类型的数值，失败返回指定的值              |
+|             | `Int32`            | 返回`[]int32`类型的数值                       |
+|             | `DefaultInt32`     | 返回`[]int32`类型的数值，失败返回指定的值              |
+|             | `Int64`            | 返回`[]int64`类型的数值                       |
+|             | `DefaultInt64`     | 返回`[]int64`类型的数值，失败返回指定的值              |
+|             | `Uint`             | 返回`[]uint`类型的数值                        |
+|             | `DefaultUint`      | 返回`[]uint`类型的数值，失败返回指定的值               |
+|             | `Uint8`            | 返回`[]uint8`类型的数值                       |
+|             | `DefaultUint8`     | 返回`[]uint8`类型的数值，失败返回指定的值              |
+|             | `Uint16`           | 返回`[]uint16`类型的数值                      |
+|             | `DefaultUint16`    | 返回`[]uint16`类型的数值，失败返回指定的值             |
+|             | `Uint32`           | 返回`[]uint32`类型的数值                      |
+|             | `DefaultUint32`    | 返回`[]uint32`类型的数值，失败返回指定的值             |
+|             | `Uint64`           | 返回`[]uint64`类型的数值                      |
+|             | `DefaultUint64`    | 返回`[]uint64`类型的数值，失败返回指定的值             |
 
 ---
 
 ## <span id="float">浮点值处理</span>
 
-| 分类         | 函数名              | 描述                        |
-|--------------|------------------|---------------------------|
-| **输入函数** |                  |                           |
-|              | `FromFloat`      | 输入`float64`类型的数据          |
-| **校验函数** |                  |                           |
-|              | `Equals`         | 等于                        |
-|              | `NotEquals`      | 不等于                       |
-|              | `Min`            | 最小值                       |
-|              | `Max`            | 最大值                       |
-|              | `Range`          | 范围                        |
-|              | `Enum`           | 只能是指定的值                   |
-|              | `Block`          | 不能是指定的值                   |
-| **自定义处理函数** |                  |                           |
-|              | `Custom`         | 自定义浮点值处理函数，详见 `CustomFloatFunc` |
-| **输出函数** |                  |                           |
-|             | `Error`          | 错误消息，`error`类型            |
-|             | `Value`          | 处理后的值，`float64`类型         |
-|             | `Result`         | `Value(), Error()`        |
-|             | `Set`            | 赋值到浮点类型的变量，并返回处理结果(`Error()`) |
-|              | `Float32`        | 返回`float32`类型的数值          |
-|              | `DefaultFloat32` | 返回`float32`类型的数值，失败返回指定的值 |
-|              | `Float64`        | 返回`float64`类型的数值          |
-|              | `DefaultFloat64` | 返回`float64`类型的数值，失败返回指定的值 |
+| 分类          | 函数名              | 描述                              |
+|-------------|------------------|---------------------------------|
+| **输入函数**    |                  |                                 |
+|             | `FromFloat`      | 输入`float64`类型的数据                |
+| **校验函数**    |                  |                                 |
+|             | `Equals`         | 等于                              |
+|             | `NotEquals`      | 不等于                             |
+|             | `Min`            | 最小值                             |
+|             | `Max`            | 最大值                             |
+|             | `Range`          | 范围                              |
+|             | `Enum`           | 只能是指定的值                         |
+|             | `Block`          | 不能是指定的值                         |
+| **自定义处理函数** |                  |                                 |
+|             | `Custom`         | 自定义浮点值处理函数，详见 `CustomFloatFunc` |
+| **输出函数**    |                  |                                 |
+|             | `Error`          | 错误消息，`error`类型                  |
+|             | `Value`          | 处理后的值，`float64`类型               |
+|             | `Result`         | `Value(), Error()`              |
+|             | `Set`            | 赋值到浮点类型的变量，并返回处理结果(`Error()`)   |
+|             | `Float32`        | 返回`float32`类型的数值                |
+|             | `DefaultFloat32` | 返回`float32`类型的数值，失败返回指定的值       |
+|             | `Float64`        | 返回`float64`类型的数值                |
+|             | `DefaultFloat64` | 返回`float64`类型的数值，失败返回指定的值       |
 
 ---
 
 ## <span id="floatslice">浮点切片处理</span>
 
-| 分类         | 函数名              | 描述                                   |
-|--------------|------------------|--------------------------------------|
-| **输入函数** |                  |                                      |
-|              | `FromFloatSlice` | 输入`[]float64`类型的数据                   |
-| **校验函数** |                  |                                      |
-|              | `Contains`       | 存在指定值的元素                             |
-|              | `NotContains`    | 不存在指定值的元素                            |
-|              | `Enum`           | 元素只能是指定的值                            |
-|              | `Block`          | 元素不能是指定的值                            |
-|              | `Min`            | 元素的最小值                               |
-|              | `MaxMax`         | 元素的最大值                               |
-|              | `Range`          | 元素的值范围                               |
-|              | `CountMin`       | 元素数量最小值                              |
-|              | `CountMax`       | 元素数量最大值                              |
-|              | `CountEquals`    | 元素数量等于                               |
-|              | `CountNotEquals` | 元素数量不等于                              |
+| 分类          | 函数名              | 描述                                   |
+|-------------|------------------|--------------------------------------|
+| **输入函数**    |                  |                                      |
+|             | `FromFloatSlice` | 输入`[]float64`类型的数据                   |
+| **校验函数**    |                  |                                      |
+|             | `Contains`       | 存在指定值的元素                             |
+|             | `NotContains`    | 不存在指定值的元素                            |
+|             | `Enum`           | 元素只能是指定的值                            |
+|             | `Block`          | 元素不能是指定的值                            |
+|             | `Min`            | 元素的最小值                               |
+|             | `MaxMax`         | 元素的最大值                               |
+|             | `Range`          | 元素的值范围                               |
+|             | `CountMin`       | 元素数量最小值                              |
+|             | `CountMax`       | 元素数量最大值                              |
+|             | `CountEquals`    | 元素数量等于                               |
+|             | `CountNotEquals` | 元素数量不等于                              |
 | **自定义处理函数** |                  |                                      |
-|              | `Custom`         | 自定义浮点值处理函数，详见 `CustomFloatSliceFunc` |
-| **输出函数** |                  |                                      |
+|             | `Custom`         | 自定义浮点值处理函数，详见 `CustomFloatSliceFunc` |
+| **输出函数**    |                  |                                      |
 |             | `Error`          | 错误消息，`error`类型                       |
 |             | `Value`          | 处理后的值，`[]float64`类型                  |
 |             | `Result`         | `Value(), Error()`                   |
 |             | `Set`            | 赋值到浮点切片类型的变量，并返回处理结果(`Error()`)      |
-|              | `Float32`        | 返回`[]float32`类型的数值                   |
-|              | `DefaultFloat32` | 返回`[]float32`类型的数值，失败返回指定的值          |
-|              | `Float64`        | 返回`[]float64`类型的数值                   |
-|              | `DefaultFloat64` | 返回`[]float64`类型的数值，失败返回指定的值          |
+|             | `Float32`        | 返回`[]float32`类型的数值                   |
+|             | `DefaultFloat32` | 返回`[]float32`类型的数值，失败返回指定的值          |
+|             | `Float64`        | 返回`[]float64`类型的数值                   |
+|             | `DefaultFloat64` | 返回`[]float64`类型的数值，失败返回指定的值          |
 
 ---
 
 ## <span id="boolean">布尔值处理</span>
 
-| 分类         | 函数名                            | 描述                                |
-|--------------|-----------------------------------|-----------------------------------|
-| **输入函数** |                                   |                                   |
-|              | `FromBoolean`                     | 输入`bool`类型的数据                     |
-| **校验函数** |                                   |                                   |
-|              | `Equals`                          | 等于指定值                             |
-|              | `NotEquals`                       | 不等于指定值                            |
-| **自定义处理函数** |                                   |                                   |
-|              | `Custom`                          | 自定义布尔值处理函数，详见 `CustomBooleanFunc` |
-| **输出函数** |                                   |                                   |
-|             | `Error`                 | 错误消息，`error`类型                    |
-|             | `Value`                 | 处理后的值，`bool`类型                    |
-|             | `Result`                | `Value(), Error()`                |
-|             | `DefaultValue`          | 没有错误时返回`Value()`，否则返回指定值          |
-|             | `Set`                   | 赋值到`bool`类型的变量，并返回处理结果(`Error()`) |
+| 分类          | 函数名            | 描述                                |
+|-------------|----------------|-----------------------------------|
+| **输入函数**    |                |                                   |
+|             | `FromBoolean`  | 输入`bool`类型的数据                     |
+| **校验函数**    |                |                                   |
+|             | `Equals`       | 等于指定值                             |
+|             | `NotEquals`    | 不等于指定值                            |
+| **自定义处理函数** |                |                                   |
+|             | `Custom`       | 自定义布尔值处理函数，详见 `CustomBooleanFunc` |
+| **输出函数**    |                |                                   |
+|             | `Error`        | 错误消息，`error`类型                    |
+|             | `Value`        | 处理后的值，`bool`类型                    |
+|             | `Result`       | `Value(), Error()`                |
+|             | `DefaultValue` | 没有错误时返回`Value()`，否则返回指定值          |
+|             | `Set`          | 赋值到`bool`类型的变量，并返回处理结果(`Error()`) |
 
 ---
 
 ## <span id="booleanslice">布尔切片处理</span>
 
-| 分类         | 函数名                | 描述                                     |
-|--------------|--------------------|----------------------------------------|
-| **输入函数** |                    |                                        |
-|              | `FromBooleanSlice` | 输入`[]bool`类型的数据                        |
-| **校验函数** |                    |                                        |
-|              | `Contains`         | 存在指定值的元素                               |
-|              | `NotContains`      | 不存在指定值的元素                              |
-|              | `CountEquals`      | 元素数量等于                                 |
-|              | `CountNotEquals`   | 元素数量不等于                                |
-|              | `CountMin`         | 元素数量最小值                                |
-|              | `CountMax`         | 元素数量最大值                                |
+| 分类          | 函数名                | 描述                                     |
+|-------------|--------------------|----------------------------------------|
+| **输入函数**    |                    |                                        |
+|             | `FromBooleanSlice` | 输入`[]bool`类型的数据                        |
+| **校验函数**    |                    |                                        |
+|             | `Contains`         | 存在指定值的元素                               |
+|             | `NotContains`      | 不存在指定值的元素                              |
+|             | `CountEquals`      | 元素数量等于                                 |
+|             | `CountNotEquals`   | 元素数量不等于                                |
+|             | `CountMin`         | 元素数量最小值                                |
+|             | `CountMax`         | 元素数量最大值                                |
 | **自定义处理函数** |                    |                                        |
-|              | `Custom`           | 自定义布尔值处理函数，详见 `CustomBooleanSliceFunc` |
-| **输出函数** |                    |                                        |
+|             | `Custom`           | 自定义布尔值处理函数，详见 `CustomBooleanSliceFunc` |
+| **输出函数**    |                    |                                        |
 |             | `Error`            | 错误消息，`error`类型                         |
 |             | `Value`            | 处理后的值，`[]bool`类型                       |
 |             | `Result`           | `Value(), Error()`                     |

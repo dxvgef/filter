@@ -1,100 +1,17 @@
-# 运行配置
-run:
-  # 要使用的CPU核心数
-  # concurrency: 4
-  # 分析超时，30m, 5m, 默认1m
-  timeout: 1m
-  # 退出代码, default is 1
-  issues-exit-code: 1
-  # 是否包含单元测试文件, default is true
-  tests: true
-  # 跳过默认目录：vendor$, third_party$, testdata$, examples$, Godeps$, builtin$
-  skip-dirs-use-default: true
-  # 包管理模式，go modules使用readonly
-  modules-download-mode: readonly
+version: "2"
 
-# 输出配置
-output:
-  # 输出格式：colored-line-number|line-number|json|tab|checkstyle|code-climate, default is "colored-line-number"
-  formats: colored-line-number
-  # 打印有问题的代码行号, default is true
-  print-issued-lines: true
-  # 在问题文本的未尾打印检查器名称, default is true
-  print-linter-name: true
-  # 使问题的输出逐行唯一, default is true
-  uniq-by-line: true
-
-# 质量检查配置
-linters-settings:
-  # 错误检查
-  errcheck:
-    # 检查类型错误
-    check-type-assertions: false
-    # 检查空标识符
-    check-blank: true
-    # 忽略文件
-    exclude-functions: fmt:.*,io/ioutil:^Read.*
-  govet:
-    enable-all: true
-  # 检查函数的复杂程度
-  gocyclo:
-    # 最小复杂性
-    min-complexity: 30
-  lll:
-    line-length: 120
-    tab-width: 1
-  unparam:
-    check-exported: false
-  gocritic:
-    enabled-tags:
-      - performance
-    settings: # settings passed to gocritic
-      captLocal: # must be valid enabled check name
-        paramsOnly: true
-      rangeValCopy:
-        sizeThreshold: 32
 linters:
-  enable-all: true
-  #  enable:
-  #    - bodyclose
-  #    - depguard
-  #    - dogsled
-  #    - dupl
-  #    - errcheck
-  #    - exportloopref
-  #    - exhaustive
-  #    - gochecknoinits
-  #    - goconst
-  #    - gocritic
-  #    - gofmt
-  #    - govet
-  #    - goimports
-  #    - goprintffuncname
-  #    - gosec
-  #    - gosimple
-  #    - ineffassign
-  #    - lll
-  #    - misspell
-  #    - noctx
-  #    - rowserrcheck
-  #    - staticcheck
-  #    - stylecheck
-  #    - typecheck
-  #    - unconvert
-  #    - unparam
-  #    - unused
-  #    - whitespace
+  # The value can be: `standard`, `all`, `none`, or `fast`.
+  default: all
   disable:
-    - execinquery
+    - gomoddirectives
     - intrange
     - copyloopvar
     - err113
     - paralleltest
     - nlreturn
-    - gofumpt
     - wsl
     - godot
-    - gomnd
     - dupl
     - mnd
     - nonamedreturns
@@ -106,133 +23,104 @@ linters:
     - nakedret
     - exhaustruct
     - tagalign
-  disable-all: false
-  #  presets:
-  #    - bugs
-  # 只运行所有启用的 linter 中支持快速检查的 linter
-  fast: false
+    - varnamelen
+    - nestif
+    - lll
+    - gosmopolitan
+    - gocognit
+    - maintidx
+    - zerologlint
+    - recvcheck
+  settings:
+    depguard:
+      rules:
+        main:
+          # - `original`: allowed if it doesn't match the deny list and either matches the allow list or the allow list is empty.
+          # - `strict`: allowed only if it matches the allow list and either doesn't match the deny list or the allow rule is more specific (longer) than the deny rule.
+          # - `lax`: allowed if it doesn't match the deny list or the allow rule is more specific (longer) than the deny rule.
+          # Default: "original"
+          list-mode: lax
+          # 不允许的依赖包列表
+          deny:
+            - pkg: "math/rand$"
+              desc: use math/rand/v2
+            - pkg: "github.com/pkg/errors"
+              desc: Should be replaced by standard lib errors package
+  exclusions:
+    # Default: lax
+    generated: lax
+    # Log a warning if an exclusion rule is unused.
+    # Default: false
+    warn-unused: false
+    # Predefined exclusion rules.
+    # Default: []
+    presets:
+      - comments
+      - std-error-handling
+      - common-false-positives
+      - legacy
+    paths:
+      - vendor
+      - .idea
+      - .vscode
+      - bin
+      - output
+    rules:
+      # 设置某个目录的排除规则
+      - path: _test\.go
+        linters:
+          - depguard
+#      - linters:
+#          - depguard
+#        text: "is not allowed from list 'Main'"
+      - linters:
+          - gocritic
+        text: "unnecessaryDefer:"
+      - linters:
+          - gocyclo
+        text: "is high"
+      - linters:
+          - wrapcheck
+        text: "error returned from external package is unwrapped"
+      - linters:
+          - gosec
+        text: "G401"
+      - linters:
+          - gosec
+        text: "G501"
 
-issues:
-#  exclude:
-#    - /bin
-#    - /output
-#    - /.idea
-  exclude-dirs:
-    - vendor
-    - .idea
-    - bin
-    - output
-  exclude-rules:
-    # 设置某个目录的排除规则
-    - path: _test\.go
-      linters:
-        - depguard
-    - path: internal/hmac/
-      text: "weak cryptographic primitive"
-      linters:
-        - gosec
-    - linters:
-        - revive
-      text: "package-comments:"
-    - linters:
-        - stylecheck
-      text: "ST1016:"
-    - linters:
-        - maintidx
-      text: "Cyclomatic Complexity:"
-    - linters:
-        - canonicalheader
-      text: "X-Real-IP"
-    - linters:
-        - unused
-      text: "tableName"
-    - linters:
-        - revive
-      text: "exported:"
-    - linters:
-        - govet
-      text: "fieldalignment"
-    - linters:
-        - varnamelen
-      text: "too short"
-    - linters:
-        - gosmopolitan
-      text: "string literal contains rune in Han script"
-    - linters:
-        - nestif
-      text: "has complex nested blocks"
-    - linters:
-        - gocritic
-      text: "hugeParam:"
-    - linters:
-        - wastedassign
-      text: "assigned to err, but reassigned without using the value"
-    - linters:
-        - staticcheck
-      text: "SA6002:"
-    - linters:
-        - staticcheck
-      text: "SA9003:"
-    - linters:
-        - gosec
-      text: "G103:"
-    # 排除stylecheck的导出未注释的消息
-    - linters:
-        - stylecheck
-      text: "ST1020:"
-    # 排除stylecheck的导出未注释的消息
-    - linters:
-        - stylecheck
-      text: "ST1006:"
-    - linters:
-        - depguard
-      text: "is not allowed from list 'Main'"
-    - linters:
-        - gci
-      text: "File is not `gci`-ed with --skip-generated -s standard -s default"
-    - linters:
-        - wrapcheck
-      text: "error returned from external package is unwrapped"
-    - linters:
-        - stylecheck
-      text: "ST1000:"
-    # 排除stylecheck的导出未注释的消息
-    - linters:
-        - stylecheck
-      text: "ST1021:"
-    # 排除stylecheck的导出未注释的消息
-    - linters:
-        - stylecheck
-      text: "ST1022:"
-    - linters:
-        - revive
-      text: "receiver-naming:"
-    - linters:
-        - lll
-      text: "line is"
-    - linters:
-        - gocognit
-      text: "is high"
-    - linters:
-        - gocritic
-      text: "unnecessaryDefer:"
-    - linters:
-        - gocyclo
-      text: "is high"
+# Output configuration options.
+output:
+  formats:
+    text:
+      path: stdout
+      print-linter-name: true
+      print-issued-lines: true
+      colors: true
 
-    # Exclude lll issues for long lines with go:generate
-  #    - linters:
-  #        - lll
-  #      source: "^//go:generate "
+  # Default: ""
+  path-prefix: ""
 
-  # Independently from option `exclude` we use default exclude patterns,
-  # it can be disabled by this option. To list all
-  # excluded by default patterns execute `golangci-lint run --help`.
-  # Default value for this option is true.
-  exclude-use-default: false
+  sort-order:
+    - linter
+    - severity
+    - file # filepath, line, and column.
+  show-stats: false
 
-  # Maximum issues count per one linter. Set to 0 to disable. Default is 50.
-  max-issues-per-linter: 0
 
-  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
-  max-same-issues: 0
+run:
+  timeout: 5m
+  relative-path-mode: gomod
+  tests: false
+  # Allowed values: readonly|vendor|mod
+  modules-download-mode: mod
+  allow-parallel-runners: true
+  allow-serial-runners: true
+  concurrency: 0
+
+severity:
+  default: error
+  rules:
+    - linters:
+        - dupl
+      severity: info

@@ -19,7 +19,7 @@ golang 的数据处理包，由 **数据输入、格式化、校验、输出** �
 
 ## 安装
 
-> github.com/dxvgef/filter/v3
+> github.com/dxvgef/filter/v2
 
 ---
 

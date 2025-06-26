@@ -68,12 +68,45 @@ func setCheck(target interface{}) (*reflect.Value, error) {
 	return &targetValueOf, nil
 }
 
-func isSQLObject(value string) bool {
-	for _, v := range value {
-		if !unicode.IsLetter(v) && !unicode.IsDigit(v) && v != '_' {
+// 常见 SQL 关键字
+var sqlKeywords = map[string]struct{}{
+	"SELECT": {}, "FROM": {}, "WHERE": {}, "INSERT": {},
+	"UPDATE": {}, "DELETE": {}, "CREATE": {}, "DROP": {},
+	"TABLE": {}, "COLUMN": {}, "INDEX": {}, "VIEW": {},
+	"TRIGGER": {}, "FUNCTION": {}, "PROCEDURE": {}, "JOIN": {},
+	"ON": {}, "AND": {}, "OR": {}, "NOT": {}, "ORDER": {},
+	"GROUP": {}, "BY": {}, "HAVING": {}, "LIMIT": {}, "OFFSET": {},
+	"SET": {}, "INTO": {}, "VALUES": {}, "AS": {}, "USING": {},
+	"NULL": {}, "TRUE": {}, "FALSE": {}, "CASE": {}, "WHEN": {},
+	"THEN": {}, "ELSE": {}, "END": {}, "FOR": {}, "LOOP": {},
+}
+
+// 检查字符串是否可以作为合法的 SQL 字段名/表名（不区分大小写）
+func isSQLObject(s string) bool {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return false
+	}
+
+	if _, exists := sqlKeywords[strings.ToUpper(s)]; exists {
+		return false
+	}
+
+	if len(s) > 64 {
+		return false
+	}
+
+	firstChar := rune(s[0])
+	if !(unicode.IsLetter(firstChar) || firstChar == '_') {
+		return false
+	}
+
+	for _, r := range s {
+		if !(unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_') {
 			return false
 		}
 	}
+
 	return true
 }
 

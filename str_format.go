@@ -354,7 +354,7 @@ func toCamelCase(str string) string {
 	return result.String()
 }
 
-// toCamelCase 将单个蛇形命名字符串转为驼峰命名 aaBB
+// ToCamelCase 将单个蛇形命名字符串转为驼峰命名 aaBB
 func (strType *StringType) ToCamelCase() *StringType {
 	if strType.err != nil || strType.value == "" {
 		return strType

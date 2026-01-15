@@ -221,7 +221,7 @@ func (strType *StringType) AllowedChars(values []rune, customError ...string) *S
 	return strType
 }
 
-// InRuneSet 不能是数组中的字符
+// BlockChars 不能是数组中的字符
 func (strType *StringType) BlockChars(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -271,7 +271,7 @@ func (strType *StringType) BlockSymbols(values []rune, customError ...string) *S
 	return strType
 }
 
-// 包含了字母(不区分大小写)
+// HasLetter 包含了字母(不区分大小写)
 func (strType *StringType) HasLetter(customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -489,7 +489,8 @@ func (strType *StringType) IsMail(customError ...string) *StringType {
 		return strType
 	}
 
-	if _, err := mail.ParseAddress(strType.value); err != nil {
+	_, err := mail.ParseAddress(strType.value)
+	if err != nil {
 		strType.err = wrapError(strType.name, customError...)
 	}
 	return strType
@@ -537,7 +538,7 @@ func (strType *StringType) IsTCPAddr(customError ...string) *StringType {
 		return strType
 	}
 
-	if _, err := net.ResolveTCPAddr("tcp", strType.value); err != nil {
+	if !isTCPAddr(strType.value) {
 		strType.err = wrapError(strType.name, customError...)
 	}
 	return strType
@@ -549,7 +550,8 @@ func (strType *StringType) IsMAC(customError ...string) *StringType {
 		return strType
 	}
 
-	if _, err := net.ParseMAC(strType.value); err != nil {
+	_, err := net.ParseMAC(strType.value)
+	if err != nil {
 		strType.err = wrapError(strType.name, customError...)
 	}
 
@@ -587,7 +589,8 @@ func (strType *StringType) IsURL(customError ...string) *StringType {
 		return strType
 	}
 
-	if _, err := url.ParseRequestURI(strType.value); err != nil {
+	_, err := url.ParseRequestURI(strType.value)
+	if err != nil {
 		strType.err = wrapError(strType.name, customError...)
 	}
 	return strType

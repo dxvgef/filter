@@ -2,10 +2,10 @@ package filter
 
 import (
 	"errors"
+	"net"
 	"reflect"
 	"strconv"
 	"strings"
-	"unicode"
 	"unsafe"
 )
 
@@ -68,41 +68,30 @@ func setCheck(target interface{}) (*reflect.Value, error) {
 	return &targetValueOf, nil
 }
 
-// 常见 SQL 关键字
-var sqlKeywords = map[string]struct{}{
-	"SELECT": {}, "FROM": {}, "WHERE": {}, "INSERT": {},
-	"UPDATE": {}, "DELETE": {}, "CREATE": {}, "DROP": {},
-	"TABLE": {}, "COLUMN": {}, "INDEX": {}, "VIEW": {},
-	"TRIGGER": {}, "FUNCTION": {}, "PROCEDURE": {}, "JOIN": {},
-	"ON": {}, "AND": {}, "OR": {}, "NOT": {}, "ORDER": {},
-	"GROUP": {}, "BY": {}, "HAVING": {}, "LIMIT": {}, "OFFSET": {},
-	"SET": {}, "INTO": {}, "VALUES": {}, "AS": {}, "USING": {},
-	"NULL": {}, "TRUE": {}, "FALSE": {}, "CASE": {}, "WHEN": {},
-	"THEN": {}, "ELSE": {}, "END": {}, "FOR": {}, "LOOP": {},
-}
-
 // 检查字符串是否可以作为合法的 SQL 字段名/表名（不区分大小写）
 func isSQLObject(s string) bool {
-	s = strings.TrimSpace(s)
 	if s == "" {
 		return false
 	}
 
-	if _, exists := sqlKeywords[strings.ToUpper(s)]; exists {
-		return false
-	}
-
-	if len(s) > 64 {
-		return false
-	}
-
-	firstChar := rune(s[0])
-	if !(unicode.IsLetter(firstChar) || firstChar == '_') {
-		return false
-	}
-
-	for _, r := range s {
-		if !(unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_') {
+	startOfSegment := true
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		switch {
+		case startOfSegment:
+			// 每一段的开头必须是字母或下划线
+			if (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && c != '_' {
+				return false
+			}
+			startOfSegment = false
+		case c == '.':
+			// 点号不能连续，且不能是最后一个字符
+			if i+1 == len(s) {
+				return false
+			}
+			startOfSegment = true
+		case (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') && c != '_':
+			// 其余部分可以是字母、数字或下划线
 			return false
 		}
 	}
@@ -192,7 +181,8 @@ func isChineseIDCard(str string) bool {
 	if str[17:] == "X" {
 		idV = 88
 	} else {
-		if idV, err = strconv.Atoi(str[17:]); err != nil {
+		idV, err = strconv.Atoi(str[17:])
+		if err != nil {
 			return false
 		}
 	}
@@ -227,4 +217,22 @@ func isChineseIDCard(str string) bool {
 // 判断字符是否为十六进制字符
 func isHexChar(char rune) bool {
 	return (char >= '0' && char <= '9') || (char >= 'a' && char <= 'f') || (char >= 'A' && char <= 'F')
+}
+
+func isTCPAddr(s string) bool {
+	host, port, err := net.SplitHostPort(s)
+	if err != nil {
+		return false
+	}
+	if host != "" && net.ParseIP(host) == nil && host != "localhost" {
+		return false
+	}
+	p, err := strconv.Atoi(port)
+	if err != nil {
+		return false
+	}
+	if p < 0 || p > 65535 {
+		return false
+	}
+	return true
 }

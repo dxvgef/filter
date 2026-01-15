@@ -10,7 +10,7 @@ import (
 	"unicode/utf8"
 )
 
-// Contains 所有元素值都必须包含指定的字符串
+// AllContains 所有元素值都必须包含指定的字符串
 func (strSliceType *StringSliceType) AllContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
@@ -25,7 +25,7 @@ func (strSliceType *StringSliceType) AllContains(sub string, customError ...stri
 	return strSliceType
 }
 
-// Contains 所有元素值都没有包含指定的字符串
+// AllNotContains 所有元素值都没有包含指定的字符串
 func (strSliceType *StringSliceType) AllNotContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
@@ -657,7 +657,8 @@ func (strSliceType *StringSliceType) IsMail(customError ...string) *StringSliceT
 	}
 
 	for k := range strSliceType.value {
-		if _, err := mail.ParseAddress(strSliceType.value[k]); err != nil {
+		_, err := mail.ParseAddress(strSliceType.value[k])
+		if err != nil {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
@@ -719,7 +720,7 @@ func (strSliceType *StringSliceType) IsTCPAddr(customError ...string) *StringSli
 	}
 
 	for k := range strSliceType.value {
-		if _, err := net.ResolveTCPAddr("tcp", strSliceType.value[k]); err != nil {
+		if !isTCPAddr(strSliceType.value[k]) {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
@@ -734,7 +735,8 @@ func (strSliceType *StringSliceType) IsMAC(customError ...string) *StringSliceTy
 	}
 
 	for k := range strSliceType.value {
-		if _, err := net.ParseMAC(strSliceType.value[k]); err != nil {
+		_, err := net.ParseMAC(strSliceType.value[k])
+		if err != nil {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
@@ -802,7 +804,8 @@ func (strSliceType *StringSliceType) IsURL(customError ...string) *StringSliceTy
 	}
 
 	for k := range strSliceType.value {
-		if _, err := url.ParseRequestURI(strSliceType.value[k]); err != nil {
+		_, err := url.ParseRequestURI(strSliceType.value[k])
+		if err != nil {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}

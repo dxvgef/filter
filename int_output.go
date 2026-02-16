@@ -70,57 +70,33 @@ func (intType *IntegerType) Set(target any, customError ...string) error {
 		}
 		targetValueOf.Elem().SetInt(intType.value)
 	case reflect.Uint:
-		var value uint64
-		_, err := intType.Uint()
+		value, err := intType.Uint()
 		if err != nil {
 			intType.err = wrapError(intType.name, customError...)
 			return intType.err
 		}
-		value, err = intType.Uint64()
-		if err != nil {
-			intType.err = wrapError(intType.name, customError...)
-			return intType.err
-		}
-		targetValueOf.Elem().SetUint(value)
+		targetValueOf.Elem().SetUint(uint64(value))
 	case reflect.Uint8:
-		var value uint64
-		_, err := intType.Uint8()
+		value, err := intType.Uint8()
 		if err != nil {
 			intType.err = wrapError(intType.name, customError...)
 			return intType.err
 		}
-		value, err = intType.Uint64()
-		if err != nil {
-			intType.err = wrapError(intType.name, customError...)
-			return intType.err
-		}
-		targetValueOf.Elem().SetUint(value)
+		targetValueOf.Elem().SetUint(uint64(value))
 	case reflect.Uint16:
-		var value uint64
-		_, err := intType.Uint16()
+		value, err := intType.Uint16()
 		if err != nil {
 			intType.err = wrapError(intType.name, customError...)
 			return intType.err
 		}
-		value, err = intType.Uint64()
-		if err != nil {
-			intType.err = wrapError(intType.name, customError...)
-			return intType.err
-		}
-		targetValueOf.Elem().SetUint(value)
+		targetValueOf.Elem().SetUint(uint64(value))
 	case reflect.Uint32:
-		var value uint64
-		_, err := intType.Uint32()
+		value, err := intType.Uint32()
 		if err != nil {
 			intType.err = wrapError(intType.name, customError...)
 			return intType.err
 		}
-		value, err = intType.Uint64()
-		if err != nil {
-			intType.err = wrapError(intType.name, customError...)
-			return intType.err
-		}
-		targetValueOf.Elem().SetUint(value)
+		targetValueOf.Elem().SetUint(uint64(value))
 	case reflect.Uint64:
 		value, err := intType.Uint64()
 		if err != nil {

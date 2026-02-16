@@ -13,6 +13,9 @@ import (
 
 // Equals 等于
 func (strType *StringType) Equals(value string, customError ...string) *StringType {
+	if strType.err != nil {
+		return strType
+	}
 	if strType.value != value {
 		strType.err = wrapError(strType.name, customError...)
 	}
@@ -21,6 +24,9 @@ func (strType *StringType) Equals(value string, customError ...string) *StringTy
 
 // NotEquals 不等于
 func (strType *StringType) NotEquals(value string, customError ...string) *StringType {
+	if strType.err != nil {
+		return strType
+	}
 	if strType.value == value {
 		strType.err = wrapError(strType.name, customError...)
 	}

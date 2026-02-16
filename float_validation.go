@@ -4,6 +4,9 @@ import "slices"
 
 // Equals 等于
 func (floatType *FloatType) Equals(value float64, customError ...string) *FloatType {
+	if floatType.err != nil {
+		return floatType
+	}
 	if floatType.value != value {
 		floatType.err = wrapError(floatType.name, customError...)
 	}
@@ -12,6 +15,9 @@ func (floatType *FloatType) Equals(value float64, customError ...string) *FloatT
 
 // NotEquals 不等于
 func (floatType *FloatType) NotEquals(value float64, customError ...string) *FloatType {
+	if floatType.err != nil {
+		return floatType
+	}
 	if floatType.value == value {
 		floatType.err = wrapError(floatType.name, customError...)
 	}

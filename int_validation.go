@@ -4,6 +4,9 @@ import "slices"
 
 // Equals 等于
 func (intType *IntegerType) Equals(value int64, customError ...string) *IntegerType {
+	if intType.err != nil {
+		return intType
+	}
 	if intType.value != value {
 		intType.err = wrapError(intType.name, customError...)
 	}
@@ -12,6 +15,9 @@ func (intType *IntegerType) Equals(value int64, customError ...string) *IntegerT
 
 // NotEquals 不等于
 func (intType *IntegerType) NotEquals(value int64, customError ...string) *IntegerType {
+	if intType.err != nil {
+		return intType
+	}
 	if intType.value == value {
 		intType.err = wrapError(intType.name, customError...)
 	}

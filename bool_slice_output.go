@@ -26,7 +26,7 @@ func (boolSliceType *BooleanSliceType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (boolSliceType *BooleanSliceType) Set(target interface{}, customError ...string) error {
+func (boolSliceType *BooleanSliceType) Set(target any, customError ...string) error {
 	if boolSliceType.err != nil {
 		return boolSliceType.err
 	}
@@ -38,11 +38,22 @@ func (boolSliceType *BooleanSliceType) Set(target interface{}, customError ...st
 	}
 
 	// 开始赋值
-	sliceType := targetValueOf.Elem().Type().String()
-	if sliceType != "[]bool" {
+	targetElem := targetValueOf.Elem()
+	switch targetElem.Kind() {
+	case reflect.Slice:
+		if targetElem.Type().String() != "[]bool" {
+			boolSliceType.err = wrapError(boolSliceType.name, customError...)
+			return boolSliceType.err
+		}
+		targetElem.Set(reflect.ValueOf(boolSliceType.value))
+	case reflect.Interface:
+		if targetElem.NumMethod() == 0 {
+			targetElem.Set(reflect.ValueOf(boolSliceType.value))
+		} else {
+			boolSliceType.err = wrapError(boolSliceType.name, customError...)
+		}
+	default:
 		boolSliceType.err = wrapError(boolSliceType.name, customError...)
-		return boolSliceType.err
 	}
-	targetValueOf.Elem().Set(reflect.ValueOf(boolSliceType.Value()))
 	return boolSliceType.err
 }

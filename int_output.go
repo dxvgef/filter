@@ -21,7 +21,7 @@ func (intType *IntegerType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (intType *IntegerType) Set(target interface{}, customError ...string) error {
+func (intType *IntegerType) Set(target any, customError ...string) error {
 	if intType.err != nil {
 		return intType.err
 	}
@@ -128,6 +128,12 @@ func (intType *IntegerType) Set(target interface{}, customError ...string) error
 			return intType.err
 		}
 		targetValueOf.Elem().SetUint(value)
+	case reflect.Interface:
+		if targetValueOf.Elem().NumMethod() == 0 {
+			targetValueOf.Elem().Set(reflect.ValueOf(intType.value))
+		} else {
+			intType.err = wrapError(intType.name, customError...)
+		}
 	default:
 		intType.err = wrapError(intType.name, customError...)
 	}

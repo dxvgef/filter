@@ -29,7 +29,7 @@ func (strType *StringType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (strType *StringType) Set(target interface{}, customError ...string) error {
+func (strType *StringType) Set(target any, customError ...string) error {
 	if strType.err != nil {
 		return strType.err
 	}
@@ -41,11 +41,18 @@ func (strType *StringType) Set(target interface{}, customError ...string) error 
 	}
 
 	// 开始赋值
-	targetTypeOf := targetValueOf.Elem().Type().Kind()
-	if targetTypeOf != reflect.String {
+	targetElem := targetValueOf.Elem()
+	switch targetElem.Kind() {
+	case reflect.String:
+		targetElem.SetString(strType.value)
+	case reflect.Interface:
+		if targetElem.NumMethod() == 0 {
+			targetElem.Set(reflect.ValueOf(strType.value))
+		} else {
+			strType.err = wrapError(strType.name, customError...)
+		}
+	default:
 		strType.err = wrapError(strType.name, customError...)
-		return strType.err
 	}
-	targetValueOf.Elem().SetString(strType.value)
 	return strType.err
 }

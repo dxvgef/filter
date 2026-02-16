@@ -21,7 +21,7 @@ func (intSliceType *IntegerSliceType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (intSliceType *IntegerSliceType) Set(target interface{}, customError ...string) error {
+func (intSliceType *IntegerSliceType) Set(target any, customError ...string) error {
 	if intSliceType.err != nil || len(intSliceType.value) == 0 {
 		return intSliceType.err
 	}
@@ -106,7 +106,11 @@ func (intSliceType *IntegerSliceType) Set(target interface{}, customError ...str
 		}
 		targetValueOf.Elem().Set(reflect.ValueOf(value))
 	default:
-		intSliceType.err = wrapError(intSliceType.name, customError...)
+		if targetValueOf.Elem().Kind() == reflect.Interface && targetValueOf.Elem().NumMethod() == 0 {
+			targetValueOf.Elem().Set(reflect.ValueOf(intSliceType.value))
+		} else {
+			intSliceType.err = wrapError(intSliceType.name, customError...)
+		}
 	}
 	return intSliceType.err
 }

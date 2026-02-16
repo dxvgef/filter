@@ -50,7 +50,7 @@ func strToBytes(s string) []byte {
 }
 
 // 检查对象能否赋值
-func setCheck(target interface{}) (*reflect.Value, error) {
+func setCheck(target any) (*reflect.Value, error) {
 	// 检查目标是否为nil
 	if target == nil {
 		return nil, errors.New(InvalidErrorText)

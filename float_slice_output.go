@@ -21,7 +21,7 @@ func (floatSliceType *FloatSliceType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (floatSliceType *FloatSliceType) Set(target interface{}, customError ...string) error {
+func (floatSliceType *FloatSliceType) Set(target any, customError ...string) error {
 	if floatSliceType.err != nil {
 		return floatSliceType.err
 	}
@@ -44,7 +44,11 @@ func (floatSliceType *FloatSliceType) Set(target interface{}, customError ...str
 		}
 		targetValueOf.Elem().Set(reflect.ValueOf(value))
 	default:
-		floatSliceType.err = wrapError(floatSliceType.name, customError...)
+		if targetValueOf.Elem().Kind() == reflect.Interface && targetValueOf.Elem().NumMethod() == 0 {
+			targetValueOf.Elem().Set(reflect.ValueOf(floatSliceType.value))
+		} else {
+			floatSliceType.err = wrapError(floatSliceType.name, customError...)
+		}
 	}
 	return floatSliceType.err
 }

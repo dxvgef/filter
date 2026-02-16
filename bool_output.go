@@ -28,7 +28,7 @@ func (boolType *BooleanType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (boolType *BooleanType) Set(target interface{}, customError ...string) error {
+func (boolType *BooleanType) Set(target any, customError ...string) error {
 	if boolType.err != nil {
 		return boolType.err
 	}
@@ -40,11 +40,18 @@ func (boolType *BooleanType) Set(target interface{}, customError ...string) erro
 	}
 
 	// 开始赋值
-	targetTypeOf := targetValueOf.Elem().Type().Kind()
-	if targetTypeOf != reflect.Bool {
+	targetElem := targetValueOf.Elem()
+	switch targetElem.Kind() {
+	case reflect.Bool:
+		targetElem.SetBool(boolType.value)
+	case reflect.Interface:
+		if targetElem.NumMethod() == 0 {
+			targetElem.Set(reflect.ValueOf(boolType.value))
+		} else {
+			boolType.err = wrapError(boolType.name, customError...)
+		}
+	default:
 		boolType.err = wrapError(boolType.name, customError...)
-		return boolType.err
 	}
-	targetValueOf.Elem().SetBool(boolType.value)
 	return boolType.err
 }

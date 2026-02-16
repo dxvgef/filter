@@ -29,7 +29,7 @@ func (strSliceType *StringSliceType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (strSliceType *StringSliceType) Set(target interface{}, customError ...string) error {
+func (strSliceType *StringSliceType) Set(target any, customError ...string) error {
 	if strSliceType.err != nil {
 		return strSliceType.err
 	}
@@ -41,11 +41,22 @@ func (strSliceType *StringSliceType) Set(target interface{}, customError ...stri
 	}
 
 	// 开始赋值
-	sliceType := targetValueOf.Elem().Type().String()
-	if sliceType != "[]string" {
+	targetElem := targetValueOf.Elem()
+	switch targetElem.Kind() {
+	case reflect.Slice:
+		if targetElem.Type().String() != "[]string" {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+			return strSliceType.err
+		}
+		targetElem.Set(reflect.ValueOf(strSliceType.value))
+	case reflect.Interface:
+		if targetElem.NumMethod() == 0 {
+			targetElem.Set(reflect.ValueOf(strSliceType.value))
+		} else {
+			strSliceType.err = wrapError(strSliceType.name, customError...)
+		}
+	default:
 		strSliceType.err = wrapError(strSliceType.name, customError...)
-		return strSliceType.err
 	}
-	targetValueOf.Elem().Set(reflect.ValueOf(strSliceType.Value()))
 	return strSliceType.err
 }

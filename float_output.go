@@ -21,7 +21,7 @@ func (floatType *FloatType) Error() error {
 }
 
 // Set 使用反射赋值到变量
-func (floatType *FloatType) Set(target interface{}, customError ...string) error {
+func (floatType *FloatType) Set(target any, customError ...string) error {
 	if floatType.err != nil {
 		return floatType.err
 	}
@@ -43,6 +43,12 @@ func (floatType *FloatType) Set(target interface{}, customError ...string) error
 			return floatType.err
 		}
 		targetValueOf.Elem().SetFloat(floatType.value)
+	case reflect.Interface:
+		if targetValueOf.Elem().NumMethod() == 0 {
+			targetValueOf.Elem().Set(reflect.ValueOf(floatType.value))
+		} else {
+			floatType.err = wrapError(floatType.name, customError...)
+		}
 	default:
 		floatType.err = wrapError(floatType.name, customError...)
 	}

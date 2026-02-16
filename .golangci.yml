@@ -1,8 +1,9 @@
 version: "2"
 
+# 检查器配置
 linters:
-  # The value can be: `standard`, `all`, `none`, or `fast`.
-  default: all
+  default: all # 默认开启：standard, all, none, fast
+  # 禁用检查器
   disable:
     - gomoddirectives
     - intrange
@@ -30,49 +31,66 @@ linters:
     - gocognit
     - maintidx
     - zerologlint
-    - recvcheck
-  settings:
-    depguard:
-      rules:
+    - ireturn
+    - errname
+  settings: # 设置检查器的参数
+    #    unused:
+    #        check-exported: true # 检查导出成员是否未使用
+    #        check-variables: true # 检查变量是否未使用
+    #        check-structs: true # 检查结构体是否未使用
+    #        check-functions: true # 检查函数是否未使用
+    interfacebloat: # 检查接口的复杂度
+      max: 100   # 最大复杂度
+    depguard: # 检查依赖包
+      deny: # 全局不允许使用的依赖包列表
+      #        - pkg: "github.com/sirupsen/logrus" # 不允许使用的包路径
+      #          desc: use zerolog instead # 不允许使用该包的原因说明
+      rules: # 定义依赖包规则
         main:
-          # - `original`: allowed if it doesn't match the deny list and either matches the allow list or the allow list is empty.
-          # - `strict`: allowed only if it matches the allow list and either doesn't match the deny list or the allow rule is more specific (longer) than the deny rule.
-          # - `lax`: allowed if it doesn't match the deny list or the allow rule is more specific (longer) than the deny rule.
-          # Default: "original"
-          list-mode: lax
+          list-mode: lax # 依赖包规则模式：original|strict|lax
           # 不允许的依赖包列表
           deny:
             - pkg: "math/rand$"
               desc: use math/rand/v2
             - pkg: "github.com/pkg/errors"
               desc: Should be replaced by standard lib errors package
-  exclusions:
+  exclusions: # 排除规则配置
     # Default: lax
-    generated: lax
-    # Log a warning if an exclusion rule is unused.
-    # Default: false
-    warn-unused: false
-    # Predefined exclusion rules.
-    # Default: []
-    presets:
-      - comments
-      - std-error-handling
-      - common-false-positives
+    generated: lax # 对生成文件使用宽松的排除规则
+    warn-unused: false # 如果排除规则未使用则记录警告
+    presets: # 预定义的排除规则
+      - comments # 注释相关
+      - std-error-handling # 标准错误处理
+      - common-false-positives # 常见误报
       - legacy
-    paths:
+    paths: # 自定义路径排除规则
       - vendor
       - .idea
       - .vscode
       - bin
       - output
-    rules:
+      - dist
+    rules: # 自定义排除规则
+      # 排除所有 Markdown 文件中的代码片段检查
+      - path: ".*\\.md$"
+        linters:
+          - revive
+          - gosec
+          - gocritic
+          - gocyclo
+          - gofmt
+          - govet
+          - ineffassign
+          - misspell
+          - unused
+          - wrapcheck
+          - vet
+          - errcheck
+          - staticcheck
       # 设置某个目录的排除规则
       - path: _test\.go
         linters:
           - depguard
-#      - linters:
-#          - depguard
-#        text: "is not allowed from list 'Main'"
       - linters:
           - gocritic
         text: "unnecessaryDefer:"
@@ -88,39 +106,66 @@ linters:
       - linters:
           - gosec
         text: "G501"
+      - linters:
+          - wsl_v5
+        text: "missing whitespace above this line"
+      - linters:
+          - recvcheck
+        text: "use pointer receiver and non-pointer receiver"
+      - linters:
+          - embeddedstructfieldcheck
+        text: "there must be an empty line separating embedded fields from regular fields"
+      - linters:
+          - recvcheck
+        text: "use pointer receiver and non-pointer receiver"
+      - linters:
+          - noinlineerr
+        text: "avoid inline error handling using `if err := ...;"
+      - linters:
+          - revive
+        text: "don't use an underscore in package name"
+      - linters:
+          - revive
+        text: "avoid meaningless package names"
 
-# Output configuration options.
-output:
+output: # 输出配置
   formats:
     text:
-      path: stdout
-      print-linter-name: true
-      print-issued-lines: true
-      colors: true
-
-  # Default: ""
+      path: stderr # 输出路径：stdout|stderr|文件路径
+      print-linter-name: true # 是否打印检查器名称
+      print-issued-lines: true # 是否打印问题代码行
+      colors: true # 是否启用颜色输出
   path-prefix: ""
 
-  sort-order:
-    - linter
-    - severity
+  sort-order: # 排序方式
+    - linter # linter, severity, file
+    - severity # severity, linter, file
     - file # filepath, line, and column.
-  show-stats: false
+  show-stats: false # 是否显示统计信息
 
 
 run:
-  timeout: 5m
-  relative-path-mode: gomod
-  tests: false
-  # Allowed values: readonly|vendor|mod
-  modules-download-mode: mod
-  allow-parallel-runners: true
-  allow-serial-runners: true
-  concurrency: 0
+  timeout: 20s # 运行超时时长
+  relative-path-mode: gomod # 相对路径模式：off|go|gomod|src
+  tests: false  # 忽略测试文件
+  modules-download-mode: mod # 模块下载模式：readonly|vendor|mod
+  allow-parallel-runners: true # 允许并行运行器
+  allow-serial-runners: true # 允许串行运行器
+  concurrency: 0  # 并发数，0表示自动检测CPU数量
+  skip-dirs: # 跳过的目录列表
+    - vendor
+    - generated
+    - bin
+    - docs
+    - migrations
+    - test
+  skip-files:
+    - "_test.go"
+    - ".*\\.md$" # 排除所有 Markdown 文件
 
-severity:
-  default: error
-  rules:
+severity: # 设置检查器的默认严重性级别
+  default: error # 默认严重性级别
+  rules: # 自定义严重性级别规则
     - linters:
-        - dupl
-      severity: info
+        - dupl # 检查器名称
+      severity: info # 自定义严重性级别

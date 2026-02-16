@@ -10,17 +10,21 @@ func TestFromString(t *testing.T) {
 	cases := []struct {
 		input    string
 		name     string
-		expected *StringType
+		hasError bool
 	}{
-		{"testValue", "", &StringType{value: "testValue", name: ""}},
-		{"testValue", "testName", &StringType{value: "testValue", name: "testName"}},
+		{"testValue", "", false},
+		{"testValue", "testName", false},
+		{"", "testEmpty", true},
 	}
 
 	for _, tt := range cases {
 		t.Run(tt.input, func(t *testing.T) {
 			result := FromString(tt.input, tt.name)
-			if result.value != tt.expected.value || result.name != tt.expected.name {
-				t.Errorf("期望：%v, 结果：%v", tt.expected, result)
+			if (result.err != nil) != tt.hasError {
+				t.Errorf("期望错误：%v, 实际结果：%v", tt.hasError, result.err)
+			}
+			if result.value != tt.input || result.name != tt.name {
+				t.Errorf("期望值：%s, 实际值：%s; 期望名称：%s, 实际名称：%s", tt.input, result.value, tt.name, result.name)
 			}
 		})
 	}

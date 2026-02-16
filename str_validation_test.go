@@ -12,7 +12,7 @@ func TestStringType_Equals(t *testing.T) {
 		value    string
 		expected *StringType
 	}{
-		{"", &StringType{value: "", err: nil}},
+		{"", &StringType{value: "", err: expectedErr}},
 		{"testValue", &StringType{value: "testValue", err: nil}},
 		{"testValue", &StringType{value: "TestValue", err: expectedErr}},
 	}
@@ -21,7 +21,7 @@ func TestStringType_Equals(t *testing.T) {
 		t.Run(testCase.value, func(t *testing.T) {
 			result := FromString(testCase.value).Equals(testCase.expected.value)
 			if (result.err != nil && testCase.expected.err == nil) || (result.err == nil && testCase.expected.err != nil) {
-				t.Errorf("期望：%v, 结果：%v", testCase.expected.err, result.err)
+				t.Errorf("输入: %s, 期望错误：%v, 实际错误：%v", testCase.value, testCase.expected.err, result.err)
 			}
 		})
 	}
@@ -56,7 +56,7 @@ func TestStringType_Contains(t *testing.T) {
 		input string
 		err   error
 	}{
-		{"", "", nil},
+		{"", "", expectedErr},
 		{"", "a", expectedErr},
 		{"testValue", "va", expectedErr},
 		{"testValue", "Va", nil},
@@ -80,7 +80,7 @@ func TestStringType_NotContains(t *testing.T) {
 		err   error
 	}{
 		{"", "", expectedErr},
-		{"", "a", nil},
+		{"", "a", expectedErr},
 		{"testValue", "va", nil},
 		{"testValue", "Va", expectedErr},
 	}

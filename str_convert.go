@@ -18,6 +18,7 @@ func (strType *StringType) ToStringSlice(sep string, clean bool) *StringSliceTyp
 	if !clean {
 		strSliceType.value = strSlice
 	} else {
+		strSliceType.value = make([]string, 0, len(strSlice))
 		for k := range strSlice {
 			v := strings.Trim(strSlice[k], " ")
 			if v != "" {

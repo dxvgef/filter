@@ -10,17 +10,21 @@ func TestStringType_ToUpper(t *testing.T) {
 	cases := []struct {
 		name     string
 		value    string
-		expected *StringType
+		hasError bool
+		expected string
 	}{
-		{name: "empty", value: "", expected: &StringType{value: "", name: "empty", err: nil}},
-		{name: "大写", value: "testValue", expected: &StringType{value: "TESTVALUE", name: "大写", err: nil}},
+		{name: "empty", value: "", hasError: true, expected: ""},
+		{name: "大写", value: "testValue", hasError: false, expected: "TESTVALUE"},
 	}
 
 	for _, testCase := range cases {
-		t.Run(testCase.value, func(t *testing.T) {
+		t.Run(testCase.name, func(t *testing.T) {
 			result := FromString(testCase.value, testCase.name).ToUpper()
-			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
-				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			if (result.Error() != nil) != testCase.hasError {
+				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
+			}
+			if !testCase.hasError && result.Value() != testCase.expected {
+				t.Errorf("期望值：%s, 实际值：%s", testCase.expected, result.Value())
 			}
 		})
 	}
@@ -31,17 +35,21 @@ func TestStringType_ToLower(t *testing.T) {
 	cases := []struct {
 		name     string
 		value    string
-		expected *StringType
+		hasError bool
+		expected string
 	}{
-		{name: "empty", value: "", expected: &StringType{value: "", name: "empty", err: nil}},
-		{name: "ToLower", value: "TestValue", expected: &StringType{value: "testvalue", name: "ToLower", err: nil}},
+		{name: "empty", value: "", hasError: true, expected: ""},
+		{name: "ToLower", value: "TestValue", hasError: false, expected: "testvalue"},
 	}
 
 	for _, testCase := range cases {
-		t.Run(testCase.value, func(t *testing.T) {
+		t.Run(testCase.name, func(t *testing.T) {
 			result := FromString(testCase.value, testCase.name).ToLower()
-			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
-				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			if (result.Error() != nil) != testCase.hasError {
+				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
+			}
+			if !testCase.hasError && result.Value() != testCase.expected {
+				t.Errorf("期望值：%s, 实际值：%s", testCase.expected, result.Value())
 			}
 		})
 	}
@@ -51,19 +59,23 @@ func TestStringType_ToLower(t *testing.T) {
 func TestStringType_Trim(t *testing.T) {
 	cases := []struct {
 		value    string
-		expected *StringType
+		hasError bool
+		expected string
 	}{
-		{value: "", expected: &StringType{value: "", err: nil}},
-		{value: "oTestValue", expected: &StringType{value: "TestValue", err: nil}},
-		{value: "oooTestValue", expected: &StringType{value: "TestValue", err: nil}},
-		{value: "okoTestValue", expected: &StringType{value: "koTestValue", err: nil}},
+		{value: "", hasError: true, expected: ""},
+		{value: "oTestValue", hasError: false, expected: "TestValue"},
+		{value: "oooTestValue", hasError: false, expected: "TestValue"},
+		{value: "okoTestValue", hasError: false, expected: "koTestValue"},
 	}
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
 			result := FromString(testCase.value).Trim("o")
-			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
-				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			if (result.Error() != nil) != testCase.hasError {
+				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
+			}
+			if !testCase.hasError && result.Value() != testCase.expected {
+				t.Errorf("期望值：%s, 实际值：%s", testCase.expected, result.Value())
 			}
 		})
 	}
@@ -73,17 +85,21 @@ func TestStringType_Trim(t *testing.T) {
 func TestStringType_RemoveSpace(t *testing.T) {
 	cases := []struct {
 		value    string
-		expected *StringType
+		hasError bool
+		expected string
 	}{
-		{value: "", expected: &StringType{value: "", err: nil}},
-		{value: "    test      Value        ", expected: &StringType{value: "testValue", err: nil}},
+		{value: "", hasError: true, expected: ""},
+		{value: "    test      Value        ", hasError: false, expected: "testValue"},
 	}
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
 			result := FromString(testCase.value).RemoveSpace()
-			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
-				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
+			if (result.Error() != nil) != testCase.hasError {
+				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
+			}
+			if !testCase.hasError && result.Value() != testCase.expected {
+				t.Errorf("期望值：%s, 实际值：%s", testCase.expected, result.Value())
 			}
 		})
 	}

@@ -71,9 +71,6 @@ func (floatSliceType *FloatSliceType) Float32Slice(customError ...string) ([]flo
 
 // DefaultFloat32Slice 转为[]float32类型，出错则用默认值替代
 func (floatSliceType *FloatSliceType) DefaultFloat32Slice(def []float32) []float32 {
-	if floatSliceType.err != nil {
-		return def
-	}
 	value, err := floatSliceType.Float32Slice()
 	if err != nil {
 		return def

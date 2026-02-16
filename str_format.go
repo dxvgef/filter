@@ -13,7 +13,6 @@ func (strType *StringType) ToUpper() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.ToUpper(strType.value)
 	return strType
 }
@@ -23,7 +22,6 @@ func (strType *StringType) ToLower() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.ToLower(strType.value)
 	return strType
 }
@@ -33,7 +31,6 @@ func (strType *StringType) Trim(sub string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.Trim(strType.value, sub)
 	return strType
 }
@@ -43,7 +40,6 @@ func (strType *StringType) TrimSpace() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.TrimSpace(strType.value)
 	return strType
 }
@@ -53,7 +49,6 @@ func (strType *StringType) TrimLeft(sub string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.TrimLeft(strType.value, sub)
 	return strType
 }
@@ -63,7 +58,6 @@ func (strType *StringType) TrimRight(sub string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.TrimRight(strType.value, sub)
 	return strType
 }
@@ -73,7 +67,6 @@ func (strType *StringType) TrimPrefix(sub string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.TrimPrefix(strType.value, sub)
 	return strType
 }
@@ -83,7 +76,6 @@ func (strType *StringType) TrimSuffix(sub string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.TrimSuffix(strType.value, sub)
 	return strType
 }
@@ -93,7 +85,6 @@ func (strType *StringType) Replace(oldStr, newStr string, n int) *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.Replace(strType.value, oldStr, newStr, n)
 	return strType
 }
@@ -103,7 +94,6 @@ func (strType *StringType) ReplaceAll(oldStr, newStr string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.ReplaceAll(strType.value, oldStr, newStr)
 	return strType
 }
@@ -113,7 +103,6 @@ func (strType *StringType) RemoveSpace() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = strings.ReplaceAll(strType.value, " ", "")
 	return strType
 }
@@ -123,7 +112,6 @@ func (strType *StringType) Base64StdEncode() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = base64.StdEncoding.EncodeToString(strToBytes(strType.value))
 	return strType
 }
@@ -149,7 +137,6 @@ func (strType *StringType) Base64RawStdEncode() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = base64.RawStdEncoding.EncodeToString(strToBytes(strType.value))
 	return strType
 }
@@ -175,7 +162,6 @@ func (strType *StringType) Base64URLEncode() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = base64.URLEncoding.EncodeToString(strToBytes(strType.value))
 	return strType
 }
@@ -201,7 +187,6 @@ func (strType *StringType) Base64RawURLEncode() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = base64.RawURLEncoding.EncodeToString(strToBytes(strType.value))
 	return strType
 }
@@ -227,7 +212,6 @@ func (strType *StringType) HTMLEscape() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = html.EscapeString(strType.value)
 	return strType
 }
@@ -237,7 +221,6 @@ func (strType *StringType) HTMLUnescape() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = html.UnescapeString(strType.value)
 	return strType
 }
@@ -247,7 +230,6 @@ func (strType *StringType) URLPathEscape() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = url.PathEscape(strType.value)
 	return strType
 }
@@ -273,7 +255,6 @@ func (strType *StringType) URLQueryEscape() *StringType {
 	if strType.err != nil {
 		return strType
 	}
-
 	strType.value = url.QueryEscape(strType.value)
 	return strType
 }

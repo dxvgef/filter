@@ -15,6 +15,9 @@ func FromString(value string, name ...string) *StringType {
 	if len(name) > 0 {
 		strType.name = name[0]
 	}
+	if value == "" {
+		strType.err = wrapError(strType.name)
+	}
 	return strType
 }
 

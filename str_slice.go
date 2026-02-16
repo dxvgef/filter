@@ -15,6 +15,9 @@ func FromStringSlice(value []string, name ...string) *StringSliceType {
 	if len(name) > 0 {
 		strType.name = name[0]
 	}
+	if len(value) == 0 {
+		strType.err = wrapError(strType.name)
+	}
 	return strType
 }
 

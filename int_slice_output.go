@@ -134,12 +134,8 @@ func (intSliceType *IntegerSliceType) Int8Slice(customError ...string) ([]int8, 
 
 // DefaultInt8Slice 转为[]int8类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultInt8Slice(def []int8) []int8 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Int8Slice()
-	if err == nil {
+	if err != nil {
 		return def
 	}
 	return value
@@ -165,12 +161,8 @@ func (intSliceType *IntegerSliceType) Int16Slice(customError ...string) ([]int16
 
 // DefaultInt16Slice 转为[]int16类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultInt16Slice(def []int16) []int16 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Int16Slice()
-	if err == nil {
+	if err != nil {
 		return def
 	}
 	return value
@@ -196,10 +188,6 @@ func (intSliceType *IntegerSliceType) Int32Slice(customError ...string) ([]int32
 
 // DefaultInt32Slice 转为[]int32类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultInt32Slice(def []int32) []int32 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Int32Slice()
 	if err != nil {
 		return def
@@ -214,10 +202,6 @@ func (intSliceType *IntegerSliceType) Int64Slice() ([]int64, error) {
 
 // DefaultInt64Slice 转为[]int64类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultInt64Slice(def []int64) []int64 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Result()
 	if err != nil {
 		return def
@@ -244,10 +228,6 @@ func (intSliceType *IntegerSliceType) IntSlice(customError ...string) ([]int, er
 
 // DefaultIntSlice 转为[]int类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultIntSlice(def []int) []int {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.IntSlice()
 	if err != nil {
 		return def
@@ -274,10 +254,6 @@ func (intSliceType *IntegerSliceType) Uint8Slice(customError ...string) ([]uint8
 
 // DefaultUint8Slice 转为[]uint8类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultUint8Slice(def []uint8) []uint8 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Uint8Slice()
 	if err != nil {
 		return def
@@ -304,10 +280,6 @@ func (intSliceType *IntegerSliceType) Uint16Slice(customError ...string) ([]uint
 
 // DefaultUint16Slice 转为[]uint16类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultUint16Slice(def []uint16) []uint16 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Uint16Slice()
 	if err != nil {
 		return def
@@ -334,10 +306,6 @@ func (intSliceType *IntegerSliceType) Uint32Slice(customError ...string) ([]uint
 
 // DefaultUint32Slice 转为[]uint32类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultUint32Slice(def []uint32) []uint32 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Uint32Slice()
 	if err != nil {
 		return def
@@ -353,7 +321,7 @@ func (intSliceType *IntegerSliceType) Uint64Slice(customError ...string) ([]uint
 
 	value := make([]uint64, len(intSliceType.value))
 	for k := range intSliceType.value {
-		if intSliceType.value[k] < 0 || intSliceType.value[k] > math.MaxUint32 {
+		if intSliceType.value[k] < 0 {
 			intSliceType.err = wrapError(intSliceType.name, customError...)
 			return nil, intSliceType.err
 		}
@@ -364,10 +332,6 @@ func (intSliceType *IntegerSliceType) Uint64Slice(customError ...string) ([]uint
 
 // DefaultUint64Slice 转为[]uint64类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultUint64Slice(def []uint64) []uint64 {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.Uint64Slice()
 	if err != nil {
 		return def
@@ -394,10 +358,6 @@ func (intSliceType *IntegerSliceType) UintSlice(customError ...string) ([]uint, 
 
 // DefaultUintSlice 转为[]uint类型，出错则用默认值替代
 func (intSliceType *IntegerSliceType) DefaultUintSlice(def []uint) []uint {
-	if intSliceType.err != nil || len(intSliceType.value) == 0 {
-		return def
-	}
-
 	value, err := intSliceType.UintSlice()
 	if err != nil {
 		return def

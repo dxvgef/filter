@@ -85,7 +85,7 @@ func (strSliceType *StringSliceType) DeleteEmpty() *StringSliceType {
 		return strSliceType
 	}
 
-	var newValue []string
+	newValue := make([]string, 0, len(strSliceType.value))
 	for k := range strSliceType.value {
 		if strSliceType.value[k] != "" {
 			newValue = append(newValue, strSliceType.value[k])

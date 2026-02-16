@@ -19,7 +19,7 @@ func FromInteger(value int64, name ...string) *IntegerType {
 }
 
 /*
-CustomStringFunc 自定义整数处理函数
+CustomIntegerFunc 自定义整数处理函数
 用StrType.Int64()获得当前参数值
 用StrType.Error()获得当前错误信息
 出参是处理后的参数值和错误信息

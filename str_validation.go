@@ -577,6 +577,22 @@ func (strType *StringType) IsJSON(customError ...string) *StringType {
 	return strType
 }
 
+// IsSQLOperator 是否是有效的 SQL 运算符
+func (strType *StringType) IsSQLOperator(customError ...string) *StringType {
+	if strType.err != nil {
+		return strType
+	}
+
+	v := strings.ToUpper(strType.value)
+	switch v {
+	case "=", "<>", "!=", ">", ">=", "<", "<=", "IN", "NOT IN", "BETWEEN", "LIKE", "NOT LIKE", "IS NULL", "IS NOT NULL":
+		return strType
+	}
+
+	strType.err = wrapError(strType.name, customError...)
+	return strType
+}
+
 // IsSQLObject 是有效的SQL对象名（可用于库、表、字段等名称）
 func (strType *StringType) IsSQLObject(customError ...string) *StringType {
 	if strType.err != nil {

@@ -25,23 +25,8 @@ func (strSliceType *StringSliceType) AllContains(sub string, customError ...stri
 	return strSliceType
 }
 
-// AllNotContains 所有元素值都没有包含指定的字符串
-func (strSliceType *StringSliceType) AllNotContains(sub string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil {
-		return strSliceType
-	}
-
-	for k := range strSliceType.value {
-		if strings.Contains(strSliceType.value[k], sub) {
-			strSliceType.err = wrapError(strSliceType.name, customError...)
-			break
-		}
-	}
-	return strSliceType
-}
-
-// ContainString 有元素包含指定的字符串
-func (strSliceType *StringSliceType) ContainString(sub string, customError ...string) *StringSliceType {
+// AnyContains 有元素包含指定的字符串
+func (strSliceType *StringSliceType) AnyContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -55,8 +40,8 @@ func (strSliceType *StringSliceType) ContainString(sub string, customError ...st
 	return strSliceType
 }
 
-// BlockString 阻止任何元素包含指定的字符串
-func (strSliceType *StringSliceType) BlockString(sub string, customError ...string) *StringSliceType {
+// NotContains 阻止任何元素都不包含指定的字符串
+func (strSliceType *StringSliceType) NotContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}

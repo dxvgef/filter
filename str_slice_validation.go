@@ -318,8 +318,8 @@ func (strSliceType *StringSliceType) HasSuffix(sub string, customError ...string
 	return strSliceType
 }
 
-// CountLessThan 元素的数量小于
-func (strSliceType *StringSliceType) CountLessThan(value int, customError ...string) *StringSliceType {
+// CountMax 元素的数量不能大于
+func (strSliceType *StringSliceType) CountMax(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -330,8 +330,8 @@ func (strSliceType *StringSliceType) CountLessThan(value int, customError ...str
 	return strSliceType
 }
 
-// CountGreaterThan 元素的数量大于
-func (strSliceType *StringSliceType) CountGreaterThan(value int, customError ...string) *StringSliceType {
+// CountMin 元素的数量不能小于
+func (strSliceType *StringSliceType) CountMin(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}

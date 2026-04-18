@@ -51,8 +51,8 @@ func (boolSliceType *BooleanSliceType) CountNotEquals(value int, customError ...
 	return boolSliceType
 }
 
-// CountLessThan 元素数量小于
-func (boolSliceType *BooleanSliceType) CountLessThan(value int, customError ...string) *BooleanSliceType {
+// CountMax 元素数量不能大于
+func (boolSliceType *BooleanSliceType) CountMax(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
@@ -62,8 +62,8 @@ func (boolSliceType *BooleanSliceType) CountLessThan(value int, customError ...s
 	return boolSliceType
 }
 
-// CountGreaterThan 元素数量大于
-func (boolSliceType *BooleanSliceType) CountGreaterThan(value int, customError ...string) *BooleanSliceType {
+// CountMin 元素数量不能小于
+func (boolSliceType *BooleanSliceType) CountMin(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}

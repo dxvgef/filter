@@ -19,7 +19,7 @@ func TestStringType_Equals(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).Equals(testCase.expected.value)
+			result := FromString(testCase.value).Is(testCase.expected.value)
 			if (result.err != nil && testCase.expected.err == nil) || (result.err == nil && testCase.expected.err != nil) {
 				t.Errorf("输入: %s, 期望错误：%v, 实际错误：%v", testCase.value, testCase.expected.err, result.err)
 			}
@@ -41,7 +41,7 @@ func TestStringType_NotEquals(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).NotEquals(testCase.input)
+			result := FromString(testCase.value).IsNot(testCase.input)
 			if (result.err != nil && testCase.err == nil) || (result.err == nil && testCase.err != nil) {
 				t.Errorf("期望：%v, 结果：%v", testCase.err, result.err)
 			}

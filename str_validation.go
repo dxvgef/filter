@@ -11,8 +11,8 @@ import (
 	"unicode/utf8"
 )
 
-// Equals 等于
-func (strType *StringType) Equals(value string, customError ...string) *StringType {
+// Is 等于
+func (strType *StringType) Is(value string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -22,8 +22,8 @@ func (strType *StringType) Equals(value string, customError ...string) *StringTy
 	return strType
 }
 
-// NotEquals 不等于
-func (strType *StringType) NotEquals(value string, customError ...string) *StringType {
+// IsNot 不等于
+func (strType *StringType) IsNot(value string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -57,8 +57,8 @@ func (strType *StringType) NotContains(sub string, customError ...string) *Strin
 	return strType
 }
 
-// LengthEquals 长度等于
-func (strType *StringType) LengthEquals(value int, customError ...string) *StringType {
+// LengthIs 长度等于
+func (strType *StringType) LengthIs(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -70,8 +70,8 @@ func (strType *StringType) LengthEquals(value int, customError ...string) *Strin
 	return strType
 }
 
-// LengthNotEquals 长度不等于
-func (strType *StringType) LengthNotEquals(value int, customError ...string) *StringType {
+// LengthIsNot 长度不等于
+func (strType *StringType) LengthIsNot(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -122,8 +122,8 @@ func (strType *StringType) LengthRange(minValue, maxValue int, customError ...st
 	return strType
 }
 
-// UTF8LengthEquals UTF8编码长度等于
-func (strType *StringType) UTF8LengthEquals(value int, customError ...string) *StringType {
+// UTF8LengthIs UTF8编码长度等于
+func (strType *StringType) UTF8LengthIs(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -135,8 +135,8 @@ func (strType *StringType) UTF8LengthEquals(value int, customError ...string) *S
 	return strType
 }
 
-// UTF8LengthNotEquals UTF8编码长度不等于
-func (strType *StringType) UTF8LengthNotEquals(value int, customError ...string) *StringType {
+// UTF8LengthIsNot UTF8编码长度不等于
+func (strType *StringType) UTF8LengthIsNot(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -187,8 +187,8 @@ func (strType *StringType) UTF8LengthRange(minValue, maxValue int, customError .
 	return strType
 }
 
-// Enum 只能是数组中的值
-func (strType *StringType) Enum(values []string, customError ...string) *StringType {
+// In 在数组中
+func (strType *StringType) In(values []string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -199,8 +199,8 @@ func (strType *StringType) Enum(values []string, customError ...string) *StringT
 	return strType
 }
 
-// Block 不能是数组中的值
-func (strType *StringType) Block(values []string, customError ...string) *StringType {
+// NotIn 不在数组中
+func (strType *StringType) NotIn(values []string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -211,7 +211,7 @@ func (strType *StringType) Block(values []string, customError ...string) *String
 	return strType
 }
 
-// AllowedChars 只能是数组中的字符
+// AllowedChars 只允许使用的字符
 func (strType *StringType) AllowedChars(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -227,7 +227,7 @@ func (strType *StringType) AllowedChars(values []rune, customError ...string) *S
 	return strType
 }
 
-// BlockChars 不能是数组中的字符
+// BlockChars 不允许使用的字符
 func (strType *StringType) BlockChars(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -243,7 +243,7 @@ func (strType *StringType) BlockChars(values []rune, customError ...string) *Str
 	return strType
 }
 
-// AllowedSymbols 如果有符号，只能是数组中的符号
+// AllowedSymbols 只允许使用的符号
 func (strType *StringType) AllowedSymbols(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -259,7 +259,7 @@ func (strType *StringType) AllowedSymbols(values []rune, customError ...string) 
 	return strType
 }
 
-// BlockSymbols 如果有符号，不能是数组中的符号
+// BlockSymbols 不允许使用的符号
 func (strType *StringType) BlockSymbols(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -277,7 +277,7 @@ func (strType *StringType) BlockSymbols(values []rune, customError ...string) *S
 	return strType
 }
 
-// HasLetter 包含了字母(不区分大小写)
+// HasLetter 包含字母(不区分大小写)
 func (strType *StringType) HasLetter(customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -309,7 +309,7 @@ func (strType *StringType) HasLower(customError ...string) *StringType {
 	return strType
 }
 
-// HasUpper 包含了大写字母
+// HasUpper 包含大写字母
 func (strType *StringType) HasUpper(customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -325,7 +325,7 @@ func (strType *StringType) HasUpper(customError ...string) *StringType {
 	return strType
 }
 
-// HasNumber 包含了数字
+// HasNumber 包含数字
 func (strType *StringType) HasNumber(customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -341,7 +341,7 @@ func (strType *StringType) HasNumber(customError ...string) *StringType {
 	return strType
 }
 
-// HasSymbol 包含了符号
+// HasSymbol 包含符号
 func (strType *StringType) HasSymbol(customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -357,7 +357,7 @@ func (strType *StringType) HasSymbol(customError ...string) *StringType {
 	return strType
 }
 
-// HasPrefix 包含了指定的前缀字符串
+// HasPrefix 包含指定的前缀字符串
 func (strType *StringType) HasPrefix(sub string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -370,7 +370,7 @@ func (strType *StringType) HasPrefix(sub string, customError ...string) *StringT
 	return strType
 }
 
-// HasSuffix 包含了指定的后缀字符串
+// HasSuffix 包含指定的后缀字符串
 func (strType *StringType) HasSuffix(sub string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType

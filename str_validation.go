@@ -33,8 +33,8 @@ func (strType *StringType) IsNot(value string, customError ...string) *StringTyp
 	return strType
 }
 
-// Has 包含
-func (strType *StringType) Has(sub string, customError ...string) *StringType {
+// Contains 包含
+func (strType *StringType) Contains(sub string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -45,8 +45,8 @@ func (strType *StringType) Has(sub string, customError ...string) *StringType {
 	return strType
 }
 
-// HasNot 没有包含
-func (strType *StringType) HasNot(sub string, customError ...string) *StringType {
+// NotContains 没有包含
+func (strType *StringType) NotContains(sub string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -187,7 +187,7 @@ func (strType *StringType) UTF8LengthRange(minValue, maxValue int, customError .
 	return strType
 }
 
-// In 在数组中
+// In 在列表中
 func (strType *StringType) In(values []string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -199,7 +199,7 @@ func (strType *StringType) In(values []string, customError ...string) *StringTyp
 	return strType
 }
 
-// NotIn 不在数组中
+// NotIn 不在列表中
 func (strType *StringType) NotIn(values []string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType

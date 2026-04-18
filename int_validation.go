@@ -2,8 +2,8 @@ package filter
 
 import "slices"
 
-// Equals 等于
-func (intType *IntegerType) Equals(value int64, customError ...string) *IntegerType {
+// Is 等于
+func (intType *IntegerType) Is(value int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
@@ -13,8 +13,8 @@ func (intType *IntegerType) Equals(value int64, customError ...string) *IntegerT
 	return intType
 }
 
-// NotEquals 不等于
-func (intType *IntegerType) NotEquals(value int64, customError ...string) *IntegerType {
+// IsNot 不等于
+func (intType *IntegerType) IsNot(value int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
@@ -57,8 +57,8 @@ func (intType *IntegerType) Range(minValue, maxValue int64, customError ...strin
 	return intType
 }
 
-// Enum 只能是数组中的值
-func (intType *IntegerType) Enum(values []int64, customError ...string) *IntegerType {
+// In 在列表中
+func (intType *IntegerType) In(values []int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}
@@ -68,8 +68,8 @@ func (intType *IntegerType) Enum(values []int64, customError ...string) *Integer
 	return intType
 }
 
-// Block 不能是数组中的值
-func (intType *IntegerType) Block(values []int64, customError ...string) *IntegerType {
+// NotIn 不在列表中
+func (intType *IntegerType) NotIn(values []int64, customError ...string) *IntegerType {
 	if intType.err != nil {
 		return intType
 	}

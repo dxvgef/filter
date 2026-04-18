@@ -2,8 +2,8 @@ package filter
 
 import "slices"
 
-// Equals 等于
-func (floatType *FloatType) Equals(value float64, customError ...string) *FloatType {
+// Is 等于
+func (floatType *FloatType) Is(value float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}
@@ -13,8 +13,8 @@ func (floatType *FloatType) Equals(value float64, customError ...string) *FloatT
 	return floatType
 }
 
-// NotEquals 不等于
-func (floatType *FloatType) NotEquals(value float64, customError ...string) *FloatType {
+// IsNot 不等于
+func (floatType *FloatType) IsNot(value float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}
@@ -24,7 +24,7 @@ func (floatType *FloatType) NotEquals(value float64, customError ...string) *Flo
 	return floatType
 }
 
-// Max 不能大于指定的值
+// Max 最大值
 func (floatType *FloatType) Max(value float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
@@ -35,7 +35,7 @@ func (floatType *FloatType) Max(value float64, customError ...string) *FloatType
 	return floatType
 }
 
-// Min 不能小于指定的值
+// Min 最小值
 func (floatType *FloatType) Min(value float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
@@ -46,7 +46,7 @@ func (floatType *FloatType) Min(value float64, customError ...string) *FloatType
 	return floatType
 }
 
-// Range 只能是指定范围的值
+// Range 范围
 func (floatType *FloatType) Range(minValue, maxValue float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
@@ -57,8 +57,8 @@ func (floatType *FloatType) Range(minValue, maxValue float64, customError ...str
 	return floatType
 }
 
-// Enum 只能是数组中的值
-func (floatType *FloatType) Enum(values []float64, customError ...string) *FloatType {
+// In 在列表中
+func (floatType *FloatType) In(values []float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}
@@ -68,8 +68,8 @@ func (floatType *FloatType) Enum(values []float64, customError ...string) *Float
 	return floatType
 }
 
-// Block 不能是指定的值
-func (floatType *FloatType) Block(values []float64, customError ...string) *FloatType {
+// NotIn 不在列表中
+func (floatType *FloatType) NotIn(values []float64, customError ...string) *FloatType {
 	if floatType.err != nil {
 		return floatType
 	}

@@ -83,8 +83,8 @@ func (strType *StringType) LengthNotEquals(value int, customError ...string) *St
 	return strType
 }
 
-// LengthMax 长度最大值
-func (strType *StringType) LengthMax(value int, customError ...string) *StringType {
+// MaxLength 长度最大值
+func (strType *StringType) MaxLength(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -96,8 +96,8 @@ func (strType *StringType) LengthMax(value int, customError ...string) *StringTy
 	return strType
 }
 
-// LengthMin 长度最小值
-func (strType *StringType) LengthMin(value int, customError ...string) *StringType {
+// MinLength 长度最小值
+func (strType *StringType) MinLength(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -148,8 +148,8 @@ func (strType *StringType) UTF8LengthNotEquals(value int, customError ...string)
 	return strType
 }
 
-// UTF8LengthMax UTF8编码长度最大值
-func (strType *StringType) UTF8LengthMax(value int, customError ...string) *StringType {
+// MaxUTF8Length UTF8编码长度最大值
+func (strType *StringType) MaxUTF8Length(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -161,8 +161,8 @@ func (strType *StringType) UTF8LengthMax(value int, customError ...string) *Stri
 	return strType
 }
 
-// UTF8LengthMin UTF8编码长度最小值
-func (strType *StringType) UTF8LengthMin(value int, customError ...string) *StringType {
+// MinUTF8Length UTF8编码长度最小值
+func (strType *StringType) MinUTF8Length(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}

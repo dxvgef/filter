@@ -386,8 +386,8 @@ func (strSliceType *StringSliceType) LengthNotEquals(value int, customError ...s
 	return strSliceType
 }
 
-// LengthMax 每个元素值的长度最大值
-func (strSliceType *StringSliceType) LengthMax(value int, customError ...string) *StringSliceType {
+// MaxLength 每个元素值的长度最大值
+func (strSliceType *StringSliceType) MaxLength(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -402,8 +402,8 @@ func (strSliceType *StringSliceType) LengthMax(value int, customError ...string)
 	return strSliceType
 }
 
-// LengthMin 每个元素值的长度最小值
-func (strSliceType *StringSliceType) LengthMin(value int, customError ...string) *StringSliceType {
+// MinLength 每个元素值的长度最小值
+func (strSliceType *StringSliceType) MinLength(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -467,8 +467,8 @@ func (strSliceType *StringSliceType) UTF8LengthNotEquals(value int, customError 
 	return strSliceType
 }
 
-// UTF8LengthMax UTF8编码，每个元素的字符串长度最大值
-func (strSliceType *StringSliceType) UTF8LengthMax(value int, customError ...string) *StringSliceType {
+// MaxUTF8Length UTF8编码，每个元素的字符串长度最大值
+func (strSliceType *StringSliceType) MaxUTF8Length(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -483,8 +483,8 @@ func (strSliceType *StringSliceType) UTF8LengthMax(value int, customError ...str
 	return strSliceType
 }
 
-// UTF8LengthMin 每个元素的字符串长度最小值
-func (strSliceType *StringSliceType) UTF8LengthMin(value int, customError ...string) *StringSliceType {
+// MinUTF8Length 每个元素的字符串长度最小值
+func (strSliceType *StringSliceType) MinUTF8Length(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}

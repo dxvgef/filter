@@ -100,8 +100,8 @@ func (strSliceType *StringSliceType) NotIn(values []string, customError ...strin
 	return strSliceType
 }
 
-// AllowedChars 只允许使用的字符
-func (strSliceType *StringSliceType) AllowedChars(values []rune, customError ...string) *StringSliceType {
+// AllowChars 只允许使用的字符
+func (strSliceType *StringSliceType) AllowChars(values []rune, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -135,8 +135,8 @@ func (strSliceType *StringSliceType) BlockChars(values []rune, customError ...st
 	return strSliceType
 }
 
-// AllowedSymbols 只允许使用的符号
-func (strSliceType *StringSliceType) AllowedSymbols(values []rune, customError ...string) *StringSliceType {
+// AllowSymbols 只允许使用的符号
+func (strSliceType *StringSliceType) AllowSymbols(values []rune, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}

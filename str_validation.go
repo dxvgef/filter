@@ -211,8 +211,8 @@ func (strType *StringType) NotIn(values []string, customError ...string) *String
 	return strType
 }
 
-// AllowedChars 只允许使用的字符
-func (strType *StringType) AllowedChars(values []rune, customError ...string) *StringType {
+// AllowChars 只允许使用的字符
+func (strType *StringType) AllowChars(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -243,8 +243,8 @@ func (strType *StringType) BlockChars(values []rune, customError ...string) *Str
 	return strType
 }
 
-// AllowedSymbols 只允许使用的符号
-func (strType *StringType) AllowedSymbols(values []rune, customError ...string) *StringType {
+// AllowSymbols 只允许使用的符号
+func (strType *StringType) AllowSymbols(values []rune, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}

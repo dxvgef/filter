@@ -55,8 +55,8 @@ func (strSliceType *StringSliceType) AnyContain(sub string, customError ...strin
 	return strSliceType
 }
 
-// In 所有元素都包含在列表中
-func (strSliceType *StringSliceType) In(values []string, customError ...string) *StringSliceType {
+// AllIn 所有元素都包含在列表中
+func (strSliceType *StringSliceType) AllIn(values []string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -354,8 +354,8 @@ func (strSliceType *StringSliceType) CountIs(value int, customError ...string) *
 	return strSliceType
 }
 
-// CountNot 元素数量不等于
-func (strSliceType *StringSliceType) CountNot(value int, customError ...string) *StringSliceType {
+// CountIsNot 元素数量不等于
+func (strSliceType *StringSliceType) CountIsNot(value int, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}

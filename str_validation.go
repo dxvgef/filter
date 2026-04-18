@@ -415,7 +415,7 @@ func (strType *StringType) IsUpper(customError ...string) *StringType {
 	return strType
 }
 
-// IsLetter 是大小写字母
+// IsLetter 是字母
 func (strType *StringType) IsLetter(customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -578,7 +578,7 @@ func (strType *StringType) IsJSON(customError ...string) *StringType {
 	return strType
 }
 
-// IsSQLOperator 是否是有效的 SQL 运算符
+// IsSQLOperator 是有效的 SQL 运算符
 func (strType *StringType) IsSQLOperator(customError ...string) *StringType {
 	if strType.err != nil {
 		return strType

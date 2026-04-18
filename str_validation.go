@@ -33,8 +33,8 @@ func (strType *StringType) IsNot(value string, customError ...string) *StringTyp
 	return strType
 }
 
-// Contains 包含了指定的字符串
-func (strType *StringType) Contains(sub string, customError ...string) *StringType {
+// Has 包含
+func (strType *StringType) Has(sub string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -45,8 +45,8 @@ func (strType *StringType) Contains(sub string, customError ...string) *StringTy
 	return strType
 }
 
-// NotContains 没有包含指定的字符串
-func (strType *StringType) NotContains(sub string, customError ...string) *StringType {
+// HasNot 没有包含
+func (strType *StringType) HasNot(sub string, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -57,7 +57,7 @@ func (strType *StringType) NotContains(sub string, customError ...string) *Strin
 	return strType
 }
 
-// LengthIs 长度等于
+// LengthIs 长度是
 func (strType *StringType) LengthIs(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
@@ -70,7 +70,7 @@ func (strType *StringType) LengthIs(value int, customError ...string) *StringTyp
 	return strType
 }
 
-// LengthIsNot 长度不等于
+// LengthIsNot 长度不是
 func (strType *StringType) LengthIsNot(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType

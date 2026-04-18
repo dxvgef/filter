@@ -2,7 +2,7 @@ package filter
 
 import "slices"
 
-// Contains 存在指定值的元素
+// Contains 包含
 func (floatSliceType *FloatSliceType) Contains(values float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
@@ -14,7 +14,7 @@ func (floatSliceType *FloatSliceType) Contains(values float64, customError ...st
 	return floatSliceType
 }
 
-// NotContains 不存在指定值的元素
+// NotContains 不包含
 func (floatSliceType *FloatSliceType) NotContains(values float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
@@ -26,8 +26,8 @@ func (floatSliceType *FloatSliceType) NotContains(values float64, customError ..
 	return floatSliceType
 }
 
-// Enum 元素中只能使用列表中的值
-func (floatSliceType *FloatSliceType) Enum(values []float64, customError ...string) *FloatSliceType {
+// In 在列表中
+func (floatSliceType *FloatSliceType) In(values []float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -41,8 +41,8 @@ func (floatSliceType *FloatSliceType) Enum(values []float64, customError ...stri
 	return floatSliceType
 }
 
-// Block 元素中不能存在列表中的值
-func (floatSliceType *FloatSliceType) Block(values []float64, customError ...string) *FloatSliceType {
+// NotIn 不在列表中
+func (floatSliceType *FloatSliceType) NotIn(values []float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -55,7 +55,7 @@ func (floatSliceType *FloatSliceType) Block(values []float64, customError ...str
 	return floatSliceType
 }
 
-// Min 元素中不能出现小于指定的值
+// Min 最小值
 func (floatSliceType *FloatSliceType) Min(value float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
@@ -69,7 +69,7 @@ func (floatSliceType *FloatSliceType) Min(value float64, customError ...string) 
 	return floatSliceType
 }
 
-// Max 元素中不能出现大于指定的值
+// Max 最大值
 func (floatSliceType *FloatSliceType) Max(value float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
@@ -83,7 +83,7 @@ func (floatSliceType *FloatSliceType) Max(value float64, customError ...string) 
 	return floatSliceType
 }
 
-// Range 元素中只能使用指定范围的值
+// Range 范围
 func (floatSliceType *FloatSliceType) Range(minValue, maxValue float64, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
@@ -97,8 +97,8 @@ func (floatSliceType *FloatSliceType) Range(minValue, maxValue float64, customEr
 	return floatSliceType
 }
 
-// CountMax 元素数量不能大于指定的值
-func (floatSliceType *FloatSliceType) CountMax(value int, customError ...string) *FloatSliceType {
+// MaxCount 元素数量最大值
+func (floatSliceType *FloatSliceType) MaxCount(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -108,8 +108,8 @@ func (floatSliceType *FloatSliceType) CountMax(value int, customError ...string)
 	return floatSliceType
 }
 
-// CountMin 元素数量不能小于指定的值
-func (floatSliceType *FloatSliceType) CountMin(value int, customError ...string) *FloatSliceType {
+// MinCount 元素数量最小值
+func (floatSliceType *FloatSliceType) MinCount(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -119,8 +119,8 @@ func (floatSliceType *FloatSliceType) CountMin(value int, customError ...string)
 	return floatSliceType
 }
 
-// CountEquals 元素数量等于
-func (floatSliceType *FloatSliceType) CountEquals(value int, customError ...string) *FloatSliceType {
+// CountIs 元素数量等于
+func (floatSliceType *FloatSliceType) CountIs(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}
@@ -130,8 +130,8 @@ func (floatSliceType *FloatSliceType) CountEquals(value int, customError ...stri
 	return floatSliceType
 }
 
-// CountNotEquals 元素数量不等于
-func (floatSliceType *FloatSliceType) CountNotEquals(value int, customError ...string) *FloatSliceType {
+// CountIsNot 元素数量不等于
+func (floatSliceType *FloatSliceType) CountIsNot(value int, customError ...string) *FloatSliceType {
 	if floatSliceType.err != nil {
 		return floatSliceType
 	}

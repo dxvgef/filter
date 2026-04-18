@@ -24,17 +24,14 @@ func Batch(errs ...error) error {
 
 // 封装错误信息
 func wrapError(name string, customError ...string) error {
-	var body strings.Builder
-	body.WriteString(name)
-	if name != "" {
-		body.WriteString(": ")
-	}
+	msg := InvalidErrorText
 	if len(customError) > 0 {
-		body.WriteString(customError[0])
-	} else {
-		body.WriteString(InvalidErrorText)
+		msg = customError[0]
 	}
-	return errors.New(body.String())
+	if name == "" {
+		return errors.New(msg)
+	}
+	return errors.New(name + ": " + msg)
 }
 
 // []byte转string
@@ -97,6 +94,15 @@ func isSQLObject(s string) bool {
 	}
 
 	return true
+}
+
+// 用于校验ULID（Crockford Base32），大小写不敏感
+var ulidValid [256]bool
+
+func init() {
+	for _, c := range "0123456789ABCDEFGHJKMNPQRSTVWXYZ" {
+		ulidValid[byte(c)] = true
+	}
 }
 
 // 用于校验uuid
@@ -180,41 +186,26 @@ func isChineseIDCard(str string) bool {
 		return false
 	}
 	var idV int
-	var err error
-	if str[17:] == "X" {
+	if str[17] == 'X' {
 		idV = 88
+	} else if str[17] >= '0' && str[17] <= '9' {
+		idV = int(str[17] - '0')
 	} else {
-		idV, err = strconv.Atoi(str[17:])
-		if err != nil {
-			return false
-		}
+		return false
 	}
 
-	var verify int
-	id := str[:17]
-	arr := make([]int, 17)
-	for i := 0; i < 17; i++ {
-		arr[i], err = strconv.Atoi(string(id[i]))
-		if err != nil {
-			return false
-		}
-	}
 	wi := [17]int{7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2}
 	var res int
 	for i := 0; i < 17; i++ {
-		res += arr[i] * wi[i]
-	}
-	verify = res % 11
-
-	var temp int
-	a18 := [11]int{1, 0, 88 /* 'X' */, 9, 8, 7, 6, 5, 4, 3, 2}
-	for i := 0; i < 11; i++ {
-		if i == verify {
-			temp = a18[i]
-			break
+		d := int(str[i]) - '0'
+		if d < 0 || d > 9 {
+			return false
 		}
+		res += d * wi[i]
 	}
-	return temp == idV
+
+	a18 := [11]int{1, 0, 88 /* 'X' */, 9, 8, 7, 6, 5, 4, 3, 2}
+	return a18[res%11] == idV
 }
 
 // 判断字符是否为十六进制字符

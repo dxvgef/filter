@@ -785,9 +785,12 @@ func (strSliceType *StringSliceType) IsULID(customError ...string) *StringSliceT
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			return strSliceType
 		}
-		validChars := "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
-		for _, char := range strSliceType.value[k] {
-			if !strings.ContainsRune(validChars, unicode.ToUpper(char)) {
+		for i := 0; i < 26; i++ {
+			c := strSliceType.value[k][i]
+			if c >= 'a' && c <= 'z' {
+				c -= 32
+			}
+			if !ulidValid[c] {
 				strSliceType.err = wrapError(strSliceType.name, customError...)
 				return strSliceType
 			}

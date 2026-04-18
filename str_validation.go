@@ -643,12 +643,14 @@ func (strType *StringType) IsULID(customError ...string) *StringType {
 		return strType
 	}
 
-	validChars := "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
-
-	for _, char := range strType.value {
-		if !strings.ContainsRune(validChars, unicode.ToUpper(char)) {
+	for i := 0; i < 26; i++ {
+		c := strType.value[i]
+		if c >= 'a' && c <= 'z' {
+			c -= 32
+		}
+		if !ulidValid[c] {
 			strType.err = wrapError(strType.name, customError...)
-			break
+			return strType
 		}
 	}
 

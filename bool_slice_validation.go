@@ -1,6 +1,6 @@
 package filter
 
-// Contains 存在指定值的元素
+// Contains 存在
 func (boolSliceType *BooleanSliceType) Contains(value bool, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
@@ -14,7 +14,7 @@ func (boolSliceType *BooleanSliceType) Contains(value bool, customError ...strin
 	return boolSliceType
 }
 
-// NotContains 不存在指定值的元素
+// NotContains 不存在
 func (boolSliceType *BooleanSliceType) NotContains(value bool, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
@@ -29,8 +29,8 @@ func (boolSliceType *BooleanSliceType) NotContains(value bool, customError ...st
 	return boolSliceType
 }
 
-// CountEquals 元素数量等于
-func (boolSliceType *BooleanSliceType) CountEquals(value int, customError ...string) *BooleanSliceType {
+// CountIs 元素数量等于
+func (boolSliceType *BooleanSliceType) CountIs(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
@@ -40,8 +40,8 @@ func (boolSliceType *BooleanSliceType) CountEquals(value int, customError ...str
 	return boolSliceType
 }
 
-// CountNotEquals 元素数量不等于
-func (boolSliceType *BooleanSliceType) CountNotEquals(value int, customError ...string) *BooleanSliceType {
+// CountIsNot 元素数量不等于
+func (boolSliceType *BooleanSliceType) CountIsNot(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
@@ -51,8 +51,8 @@ func (boolSliceType *BooleanSliceType) CountNotEquals(value int, customError ...
 	return boolSliceType
 }
 
-// CountMax 元素数量不能大于
-func (boolSliceType *BooleanSliceType) CountMax(value int, customError ...string) *BooleanSliceType {
+// MaxCount 元素数量最大值
+func (boolSliceType *BooleanSliceType) MaxCount(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}
@@ -62,8 +62,8 @@ func (boolSliceType *BooleanSliceType) CountMax(value int, customError ...string
 	return boolSliceType
 }
 
-// CountMin 元素数量不能小于
-func (boolSliceType *BooleanSliceType) CountMin(value int, customError ...string) *BooleanSliceType {
+// MinCount 元素数量最小值
+func (boolSliceType *BooleanSliceType) MinCount(value int, customError ...string) *BooleanSliceType {
 	if boolSliceType.err != nil {
 		return boolSliceType
 	}

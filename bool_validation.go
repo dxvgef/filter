@@ -1,7 +1,7 @@
 package filter
 
-// Equals 等于指定的值
-func (boolType *BooleanType) Equals(value bool, customError ...string) *BooleanType {
+// Is 等于
+func (boolType *BooleanType) Is(value bool, customError ...string) *BooleanType {
 	if boolType.err != nil {
 		return boolType
 	}
@@ -12,8 +12,8 @@ func (boolType *BooleanType) Equals(value bool, customError ...string) *BooleanT
 	return boolType
 }
 
-// NotEquals 不等于指定的值
-func (boolType *BooleanType) NotEquals(value bool, customError ...string) *BooleanType {
+// IsNot 不等于
+func (boolType *BooleanType) IsNot(value bool, customError ...string) *BooleanType {
 	if boolType.err != nil {
 		return boolType
 	}

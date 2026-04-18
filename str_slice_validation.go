@@ -10,8 +10,8 @@ import (
 	"unicode/utf8"
 )
 
-// AllContain 所有元素都包含
-func (strSliceType *StringSliceType) AllContain(sub string, customError ...string) *StringSliceType {
+// Contains 所有元素都包含
+func (strSliceType *StringSliceType) Contains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -25,8 +25,8 @@ func (strSliceType *StringSliceType) AllContain(sub string, customError ...strin
 	return strSliceType
 }
 
-// NotContain 没有元素包含
-func (strSliceType *StringSliceType) NotContain(sub string, customError ...string) *StringSliceType {
+// NotContains 没有元素包含
+func (strSliceType *StringSliceType) NotContains(sub string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -40,23 +40,8 @@ func (strSliceType *StringSliceType) NotContain(sub string, customError ...strin
 	return strSliceType
 }
 
-// AnyContain 任意元素包含
-func (strSliceType *StringSliceType) AnyContain(sub string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil {
-		return strSliceType
-	}
-
-	for i := range strSliceType.value {
-		if strings.Contains(strSliceType.value[i], sub) {
-			return strSliceType
-		}
-	}
-	strSliceType.err = wrapError(strSliceType.name, customError...)
-	return strSliceType
-}
-
-// AllIn 所有元素都包含在列表中
-func (strSliceType *StringSliceType) AllIn(values []string, customError ...string) *StringSliceType {
+// In 所有元素都在列表中
+func (strSliceType *StringSliceType) In(values []string, customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
 		return strSliceType
 	}
@@ -64,21 +49,6 @@ func (strSliceType *StringSliceType) AllIn(values []string, customError ...strin
 	for i := range strSliceType.value {
 		if !slices.Contains(values, strSliceType.value[i]) {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
-			break
-		}
-	}
-	return strSliceType
-}
-
-// AnyIn 任意元素在列表中
-func (strSliceType *StringSliceType) AnyIn(values []string, customError ...string) *StringSliceType {
-	if strSliceType.err != nil {
-		return strSliceType
-	}
-	strSliceType.err = wrapError(strSliceType.name, customError...)
-	for i := range strSliceType.value {
-		if slices.Contains(values, strSliceType.value[i]) {
-			strSliceType.err = nil
 			break
 		}
 	}

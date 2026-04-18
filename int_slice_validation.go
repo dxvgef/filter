@@ -2,8 +2,8 @@ package filter
 
 import "slices"
 
-// CountMax 元素数量不能大于指定的值
-func (intSliceType *IntegerSliceType) CountMax(value int, customError ...string) *IntegerSliceType {
+// MaxCount 元素数量最大值
+func (intSliceType *IntegerSliceType) MaxCount(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -13,8 +13,8 @@ func (intSliceType *IntegerSliceType) CountMax(value int, customError ...string)
 	return intSliceType
 }
 
-// CountMin 元素数量不能小于指定的值
-func (intSliceType *IntegerSliceType) CountMin(value int, customError ...string) *IntegerSliceType {
+// MinCount 元素数量最小值
+func (intSliceType *IntegerSliceType) MinCount(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -24,8 +24,8 @@ func (intSliceType *IntegerSliceType) CountMin(value int, customError ...string)
 	return intSliceType
 }
 
-// CountEquals 元素数量必须等于指定的值
-func (intSliceType *IntegerSliceType) CountEquals(value int, customError ...string) *IntegerSliceType {
+// CountIs 元素数量等于
+func (intSliceType *IntegerSliceType) CountIs(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -35,8 +35,8 @@ func (intSliceType *IntegerSliceType) CountEquals(value int, customError ...stri
 	return intSliceType
 }
 
-// CountNotEquals 元素数量不能等于指定的值
-func (intSliceType *IntegerSliceType) CountNotEquals(value int, customError ...string) *IntegerSliceType {
+// CountIsNot 元素数量不等于
+func (intSliceType *IntegerSliceType) CountIsNot(value int, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -46,7 +46,7 @@ func (intSliceType *IntegerSliceType) CountNotEquals(value int, customError ...s
 	return intSliceType
 }
 
-// Contains 元素中存在指定的值
+// Contains 元素中包含
 func (intSliceType *IntegerSliceType) Contains(values int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
@@ -58,7 +58,7 @@ func (intSliceType *IntegerSliceType) Contains(values int64, customError ...stri
 	return intSliceType
 }
 
-// NotContains 元素中不存在指定的值
+// NotContains 元素中不包含
 func (intSliceType *IntegerSliceType) NotContains(values int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
@@ -112,8 +112,8 @@ func (intSliceType *IntegerSliceType) Range(minValue, maxValue int64, customErro
 	return intSliceType
 }
 
-// Enum 元素只能是数组中的值
-func (intSliceType *IntegerSliceType) Enum(values []int64, customError ...string) *IntegerSliceType {
+// In 在列表中
+func (intSliceType *IntegerSliceType) In(values []int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}
@@ -127,8 +127,8 @@ func (intSliceType *IntegerSliceType) Enum(values []int64, customError ...string
 	return intSliceType
 }
 
-// Block 元素不能有数组中的值
-func (intSliceType *IntegerSliceType) Block(values []int64, customError ...string) *IntegerSliceType {
+// NotIn 不在列表中
+func (intSliceType *IntegerSliceType) NotIn(values []int64, customError ...string) *IntegerSliceType {
 	if intSliceType.err != nil {
 		return intSliceType
 	}

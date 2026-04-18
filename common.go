@@ -134,7 +134,7 @@ func isUUID(str string) bool {
 
 	// urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	case 36 + 9:
-		if strings.EqualFold(strings.ToLower(str[:9]), "urn:uuid:") {
+		if !strings.EqualFold(str[:9], "urn:uuid:") {
 			return false
 		}
 		str = str[9:]
@@ -176,6 +176,9 @@ func isUUID(str string) bool {
 
 // 校验中国大陆身份证
 func isChineseIDCard(str string) bool {
+	if len(str) != 18 {
+		return false
+	}
 	var idV int
 	var err error
 	if str[17:] == "X" {

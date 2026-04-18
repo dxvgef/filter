@@ -60,7 +60,7 @@ func (floatSliceType *FloatSliceType) Float32Slice(customError ...string) ([]flo
 	}
 	value := make([]float32, len(floatSliceType.value))
 	for k := range floatSliceType.value {
-		if floatSliceType.value[k] < -math.SmallestNonzeroFloat32 || floatSliceType.value[k] > math.MaxFloat32 {
+		if floatSliceType.value[k] < -math.MaxFloat32 || floatSliceType.value[k] > math.MaxFloat32 {
 			floatSliceType.err = wrapError(floatSliceType.name, customError...)
 			return nil, floatSliceType.err
 		}

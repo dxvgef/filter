@@ -285,10 +285,11 @@ func (strType *StringType) HasLetter(customError ...string) *StringType {
 
 	for _, v := range strType.value {
 		if unicode.IsLetter(v) {
-			strType.err = wrapError(strType.name, customError...)
-			break
+			return strType
 		}
 	}
+
+	strType.err = wrapError(strType.name, customError...)
 	return strType
 }
 
@@ -520,7 +521,7 @@ func (strType *StringType) IsIPv6(customError ...string) *StringType {
 		return strType
 	}
 	ip := net.ParseIP(strType.value)
-	if ip == nil || ip.To16() == nil {
+	if ip == nil || ip.To4() != nil {
 		strType.err = wrapError(strType.name, customError...)
 	}
 	return strType

@@ -62,7 +62,7 @@ func (strSliceType *StringSliceType) BlockString(sub string, customError ...stri
 	}
 
 	for k := range strSliceType.value {
-		if !strings.Contains(strSliceType.value[k], sub) {
+		if strings.Contains(strSliceType.value[k], sub) {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}
@@ -336,7 +336,7 @@ func (strSliceType *StringSliceType) CountGreaterThan(value int, customError ...
 		return strSliceType
 	}
 
-	if len(strSliceType.value) > value {
+	if len(strSliceType.value) < value {
 		strSliceType.err = wrapError(strSliceType.name, customError...)
 		return strSliceType
 	}
@@ -690,7 +690,7 @@ func (strSliceType *StringSliceType) IsIPv6(customError ...string) *StringSliceT
 
 	for k := range strSliceType.value {
 		ip := net.ParseIP(strSliceType.value[k])
-		if ip == nil || ip.To16() == nil {
+		if ip == nil || ip.To4() != nil {
 			strSliceType.err = wrapError(strSliceType.name, customError...)
 			break
 		}

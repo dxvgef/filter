@@ -303,7 +303,7 @@ func (intType *IntegerType) Uint(customError ...string) (value uint, err error) 
 	if intType.err != nil {
 		return 0, intType.err
 	}
-	if intType.value < 0 || intType.value > math.MaxInt {
+	if intType.value < 0 || uint64(intType.value) > uint64(^uint(0)) {
 		intType.err = wrapError(intType.name, customError...)
 		return 0, intType.err
 	}

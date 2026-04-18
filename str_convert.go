@@ -22,7 +22,7 @@ func (strType *StringType) ToStringSlice(sep string, clean bool) *StringSliceTyp
 		for k := range strSlice {
 			v := strings.Trim(strSlice[k], " ")
 			if v != "" {
-				strSliceType.value = append(strSliceType.value, strSlice[k])
+				strSliceType.value = append(strSliceType.value, v)
 			}
 		}
 	}

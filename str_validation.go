@@ -57,8 +57,8 @@ func (strType *StringType) NotContains(sub string, customError ...string) *Strin
 	return strType
 }
 
-// LengthIs 长度是
-func (strType *StringType) LengthIs(value int, customError ...string) *StringType {
+// LenIs 长度是
+func (strType *StringType) LenIs(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -70,8 +70,8 @@ func (strType *StringType) LengthIs(value int, customError ...string) *StringTyp
 	return strType
 }
 
-// LengthIsNot 长度不是
-func (strType *StringType) LengthIsNot(value int, customError ...string) *StringType {
+// LenIsNot 长度不是
+func (strType *StringType) LenIsNot(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -83,8 +83,8 @@ func (strType *StringType) LengthIsNot(value int, customError ...string) *String
 	return strType
 }
 
-// MaxLength 长度最大值
-func (strType *StringType) MaxLength(value int, customError ...string) *StringType {
+// MaxLen 长度最大值
+func (strType *StringType) MaxLen(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -96,8 +96,8 @@ func (strType *StringType) MaxLength(value int, customError ...string) *StringTy
 	return strType
 }
 
-// MinLength 长度最小值
-func (strType *StringType) MinLength(value int, customError ...string) *StringType {
+// MinLen 长度最小值
+func (strType *StringType) MinLen(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -109,8 +109,8 @@ func (strType *StringType) MinLength(value int, customError ...string) *StringTy
 	return strType
 }
 
-// LengthRange 长度范围
-func (strType *StringType) LengthRange(minValue, maxValue int, customError ...string) *StringType {
+// LenRange 长度范围
+func (strType *StringType) LenRange(minValue, maxValue int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -122,8 +122,8 @@ func (strType *StringType) LengthRange(minValue, maxValue int, customError ...st
 	return strType
 }
 
-// UTF8LengthIs UTF8编码长度等于
-func (strType *StringType) UTF8LengthIs(value int, customError ...string) *StringType {
+// UTF8LenIs UTF8编码长度等于
+func (strType *StringType) UTF8LenIs(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -135,8 +135,8 @@ func (strType *StringType) UTF8LengthIs(value int, customError ...string) *Strin
 	return strType
 }
 
-// UTF8LengthIsNot UTF8编码长度不等于
-func (strType *StringType) UTF8LengthIsNot(value int, customError ...string) *StringType {
+// UTF8LenIsNot UTF8编码长度不等于
+func (strType *StringType) UTF8LenIsNot(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -148,8 +148,8 @@ func (strType *StringType) UTF8LengthIsNot(value int, customError ...string) *St
 	return strType
 }
 
-// MaxUTF8Length UTF8编码长度最大值
-func (strType *StringType) MaxUTF8Length(value int, customError ...string) *StringType {
+// MaxUTF8Len UTF8编码长度最大值
+func (strType *StringType) MaxUTF8Len(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -161,8 +161,8 @@ func (strType *StringType) MaxUTF8Length(value int, customError ...string) *Stri
 	return strType
 }
 
-// MinUTF8Length UTF8编码长度最小值
-func (strType *StringType) MinUTF8Length(value int, customError ...string) *StringType {
+// MinUTF8Len UTF8编码长度最小值
+func (strType *StringType) MinUTF8Len(value int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -174,8 +174,8 @@ func (strType *StringType) MinUTF8Length(value int, customError ...string) *Stri
 	return strType
 }
 
-// UTF8LengthRange UTF8编码长度范围
-func (strType *StringType) UTF8LengthRange(minValue, maxValue int, customError ...string) *StringType {
+// UTF8LenRange UTF8编码长度范围
+func (strType *StringType) UTF8LenRange(minValue, maxValue int, customError ...string) *StringType {
 	if strType.err != nil {
 		return strType
 	}
@@ -678,10 +678,10 @@ func (strType *StringType) IsHexColor(customError ...string) *StringType {
 
 	color := strings.TrimPrefix(strType.value, "#")
 
-	length := len(color)
+	Len := len(color)
 
 	// 检查长度是否符合规则
-	if length != 3 && length != 6 && length != 8 && length != 4 {
+	if Len != 3 && Len != 6 && Len != 8 && Len != 4 {
 		strType.err = wrapError(strType.name, customError...)
 		return strType
 	}

@@ -7,8 +7,8 @@ type StringType struct {
 	err   error  // 错误
 }
 
-// FromString 输入string类型的值
-func FromString(value string, name ...string) *StringType {
+// FromStr 输入string类型的值
+func FromStr(value string, name ...string) *StringType {
 	strType := &StringType{
 		value: value,
 	}

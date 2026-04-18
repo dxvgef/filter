@@ -19,7 +19,7 @@ func TestStringType_Equals(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).Is(testCase.expected.value)
+			result := FromStr(testCase.value).Is(testCase.expected.value)
 			if (result.err != nil && testCase.expected.err == nil) || (result.err == nil && testCase.expected.err != nil) {
 				t.Errorf("输入: %s, 期望错误：%v, 实际错误：%v", testCase.value, testCase.expected.err, result.err)
 			}
@@ -41,7 +41,7 @@ func TestStringType_NotEquals(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).IsNot(testCase.input)
+			result := FromStr(testCase.value).IsNot(testCase.input)
 			if (result.err != nil && testCase.err == nil) || (result.err == nil && testCase.err != nil) {
 				t.Errorf("期望：%v, 结果：%v", testCase.err, result.err)
 			}
@@ -64,7 +64,7 @@ func TestStringType_Contains(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).Contains(testCase.input)
+			result := FromStr(testCase.value).Contains(testCase.input)
 			if (result.err != nil && testCase.err == nil) || (result.err == nil && testCase.err != nil) {
 				t.Errorf("期望：%v, 结果：%v", testCase.err, result.err)
 			}
@@ -87,7 +87,7 @@ func TestStringType_NotContains(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).NotContains(testCase.input)
+			result := FromStr(testCase.value).NotContains(testCase.input)
 			if (result.err != nil && testCase.err == nil) || (result.err == nil && testCase.err != nil) {
 				t.Errorf("期望：%v, 结果：%v", testCase.err, result.err)
 			}

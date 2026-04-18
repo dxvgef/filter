@@ -7,8 +7,8 @@ type StringSliceType struct {
 	err   error    // 错误
 }
 
-// FromStringSlice 输入[]string类型的值
-func FromStringSlice(value []string, name ...string) *StringSliceType {
+// FromStrSlice 输入[]string类型的值
+func FromStrSlice(value []string, name ...string) *StringSliceType {
 	strType := &StringSliceType{
 		value: value,
 	}

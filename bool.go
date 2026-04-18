@@ -7,8 +7,8 @@ type BooleanType struct {
 	err   error  // 错误
 }
 
-// FromBoolean 输入布尔类型的值
-func FromBoolean(value bool, name ...string) *BooleanType {
+// FromBool 输入布尔类型的值
+func FromBool(value bool, name ...string) *BooleanType {
 	boolType := &BooleanType{
 		value: value,
 	}

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestFromString(t *testing.T) {
+func TestFromStr(t *testing.T) {
 	// 测试从字符串初始化
 	cases := []struct {
 		input    string
@@ -19,7 +19,7 @@ func TestFromString(t *testing.T) {
 
 	for _, tt := range cases {
 		t.Run(tt.input, func(t *testing.T) {
-			result := FromString(tt.input, tt.name)
+			result := FromStr(tt.input, tt.name)
 			if (result.err != nil) != tt.hasError {
 				t.Errorf("期望错误：%v, 实际结果：%v", tt.hasError, result.err)
 			}
@@ -37,7 +37,7 @@ func TestCustom(t *testing.T) {
 	}
 
 	// 测试正常情况
-	strType := FromString("testValue")
+	strType := FromStr("testValue")
 	result := strType.Custom(customFunc)
 	if result.err != nil {
 		t.Errorf("期望没有错误, 错误：%v", result.err)
@@ -50,7 +50,7 @@ func TestCustom(t *testing.T) {
 	customFuncWithError := func(strType *StringType) (string, error) {
 		return strType.value + "_modified", errors.New("testError")
 	}
-	strTypeWithError := FromString("testValue")
+	strTypeWithError := FromStr("testValue")
 	resultWithError := strTypeWithError.Custom(customFuncWithError)
 	if resultWithError.err == nil {
 		t.Errorf("期望有错误，但结果为 nil")

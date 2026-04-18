@@ -7,8 +7,8 @@ type BooleanSliceType struct {
 	err   error  // 错误
 }
 
-// FromBooleanSlice 输入布尔切片类型的值
-func FromBooleanSlice(value []bool, name ...string) *BooleanSliceType {
+// FromBoolSlice 输入布尔切片类型的值
+func FromBoolSlice(value []bool, name ...string) *BooleanSliceType {
 	boolSliceType := &BooleanSliceType{
 		value: value,
 	}

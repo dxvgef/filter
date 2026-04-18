@@ -19,7 +19,7 @@ func TestStringType_ToUpper(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.name, func(t *testing.T) {
-			result := FromString(testCase.value, testCase.name).ToUpper()
+			result := FromStr(testCase.value, testCase.name).ToUpper()
 			if (result.Error() != nil) != testCase.hasError {
 				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
 			}
@@ -44,7 +44,7 @@ func TestStringType_ToLower(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.name, func(t *testing.T) {
-			result := FromString(testCase.value, testCase.name).ToLower()
+			result := FromStr(testCase.value, testCase.name).ToLower()
 			if (result.Error() != nil) != testCase.hasError {
 				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
 			}
@@ -70,7 +70,7 @@ func TestStringType_Trim(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).Trim("o")
+			result := FromStr(testCase.value).Trim("o")
 			if (result.Error() != nil) != testCase.hasError {
 				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
 			}
@@ -94,7 +94,7 @@ func TestStringType_RemoveSpace(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).RemoveSpace()
+			result := FromStr(testCase.value).RemoveSpace()
 			if (result.Error() != nil) != testCase.hasError {
 				t.Errorf("期望错误：%v, 实际结果：%v", testCase.hasError, result.Error())
 			}
@@ -117,7 +117,7 @@ func TestStringType_ToSnakeCase(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).ToSnakeCase()
+			result := FromStr(testCase.value).ToSnakeCase()
 			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
 				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
 			}
@@ -137,7 +137,7 @@ func TestStringType_ToCamelCase(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.value, func(t *testing.T) {
-			result := FromString(testCase.value).ToCamelCase()
+			result := FromStr(testCase.value).ToCamelCase()
 			if result.Value() != testCase.expected.value || !errors.Is(result.Error(), testCase.expected.err) {
 				t.Errorf("期望：%v, 结果：%v", testCase.expected, result)
 			}

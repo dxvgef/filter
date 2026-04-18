@@ -7,8 +7,8 @@ type IntegerSliceType struct {
 	err   error   // 错误
 }
 
-// FromIntegerSlice 输入整数切片类型的值
-func FromIntegerSlice(value []int64, name ...string) *IntegerSliceType {
+// FromIntSlice 输入整数切片类型的值
+func FromIntSlice(value []int64, name ...string) *IntegerSliceType {
 	intSliceType := &IntegerSliceType{
 		value: value,
 	}

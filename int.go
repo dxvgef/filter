@@ -7,8 +7,8 @@ type IntegerType struct {
 	err   error  // 错误
 }
 
-// FromInteger 输入整数类型的值
-func FromInteger(value int64, name ...string) *IntegerType {
+// FromInt 输入整数类型的值
+func FromInt(value int64, name ...string) *IntegerType {
 	intType := &IntegerType{
 		value: value,
 	}

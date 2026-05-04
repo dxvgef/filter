@@ -415,6 +415,21 @@ func (strType *StringType) IsUpper(customError ...string) *StringType {
 	return strType
 }
 
+// IsNumber 是数字
+func (strType *StringType) IsNumber(customError ...string) *StringType {
+	if strType.err != nil {
+		return strType
+	}
+
+	for _, v := range strType.value {
+		if !unicode.IsDigit(v) {
+			strType.err = wrapError(strType.name, customError...)
+			break
+		}
+	}
+	return strType
+}
+
 // IsLetter 是字母
 func (strType *StringType) IsLetter(customError ...string) *StringType {
 	if strType.err != nil {

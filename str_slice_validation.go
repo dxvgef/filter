@@ -550,6 +550,23 @@ func (strSliceType *StringSliceType) IsLetter(customError ...string) *StringSlic
 	return strSliceType
 }
 
+// IsNumber 是数字
+func (strSliceType *StringSliceType) IsNumber(customError ...string) *StringSliceType {
+	if strSliceType.err != nil {
+		return strSliceType
+	}
+
+	for k := range strSliceType.value {
+		for _, v := range strSliceType.value[k] {
+			if !unicode.IsDigit(v) {
+				strSliceType.err = wrapError(strSliceType.name, customError...)
+				return strSliceType
+			}
+		}
+	}
+	return strSliceType
+}
+
 // IsLowerOrNumber 是小写字母或数字
 func (strSliceType *StringSliceType) IsLowerOrNumber(customError ...string) *StringSliceType {
 	if strSliceType.err != nil {
